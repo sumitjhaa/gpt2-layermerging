@@ -152,8 +152,8 @@ at five merges runs from $+1{,}385\%$ (Experiment~B) to $+83{,}745\%$
 composition with calibration-based selection (Experiment~C) and calibrated
 SLERP (Experiment~D) both beat deletion at one or two merges, but the winner
 changes with the pair and the model. Every per-pair ranking and control is in
-the body; the experiment we would run next is the same merging on a
-multilingual backbone.
+the body. If we had one experiment left to run, it would be the same merges on
+a multilingual backbone, where we suspect the picture shifts again.
 \end{abstract}
 
 \hrule height 0.4pt
@@ -219,47 +219,39 @@ low-rankness are different properties.
 \subsection{Mentor Feedback Since Presentation 1}
 \label{sec:feedback}
 
-The study is organised around the feedback received after Presentation~1 and in
-the weekly mentor meetings.
+The study is organised around the feedback received after Presentation~1 and
+in the weekly mentor meetings. Right after the presentation the mentor asked us
+to \emph{tackle a wide variety of experiments}, calling adjacent-layer merging
+a brand-new branch of research that the group should help map; the only hard
+rule was that \emph{only adjacent layers may be merged}, and every method had
+to improve both perplexity and the parameter-reduction rate at once. That
+pushed us into a portfolio design: each of us took one distinct
+approach---a learned weight-space merger, an iterative comparison of
+operators, affine merging with a calibration-based selector,
+similarity-guided spherical interpolation, and the closed-form training-free
+merges---so the set of ideas covers the design space instead of repeating each
+other.
 
-\begin{itemize}
-  \item \emph{Presentation~1 follow-up (group-wide).} The mentor asked us to
-    ``tackle a wide variety of experiments'' because he sees adjacent-layer
-    merging as a brand-new branch of research, subject to the hard constraint that
-    \emph{only adjacent layers may be merged}, and that the group must improve
-    both perplexity and the parameter-reduction rate. We spread the work so
-    that each member owns one distinct operator family (weight-space
-    hypernetwork, iterative operator comparison, affine/CGOS, calibrated SLERP,
-    and training-free closed-form merges) and the portfolio covers the design
-    space.
-  \item \emph{Follow-up (multilingual).} The mentor noted that applying
-    adjacent merges to \emph{multilingual} models is interesting. That is why
-    every operator here is backbone-agnostic, and why we name multilingual
-    transfer as the primary follow-up (Section~\ref{sec:limits}).
-  \item \emph{Week~1.} A learned merger must not be compared against a
-    straw-man, and reconstruction loss alone is not evidence of
-    language-modelling quality. We therefore let Experiment~A start from
-    \dropfirst{} exactly---its learned correction is zero-initialised---and
-    added a temperature-scaled KL term; Experiment~B promotes \removeop{} to a
-    first-class operator under one exact evaluator.
-  \item \emph{Week~2.} An approximate scorer could bias the comparison.
-    Every experiment moved to exact, token-weighted sliding-window perplexity,
-    and Experiment~B added SHA-256 hashes to lock the protocol.
-  \item \emph{Week~3.} Demonstrate that merge semantics are correct before
-    trusting results, and isolate selection from test. Experiment~A gained a
-    preflight equality check and a disjoint ranking partition; Experiment~B
-    runs five structural self-checks on a tiny GPT-2; Experiments~C and~D carve
-    calibration/window holdouts and touch the test set once.
-  \item \emph{Week~4.} Hyperparameter ablation and explicit computational
-    resources. Each experiment carries a targeted ablation (Tables
-    \ref{tab:batch}\,\&\,\ref{tab:gap} for~A; \ref{tab:ablation-b} for~B;
-    SG-SC/rank sweeps for~C; a weight-mode grid for~D) and a resources
-    paragraph (Section~\ref{sec:management}).
-  \item \emph{Week~5.} Keep the evaluation protocol identical across methods
-    and state limitations honestly. We converged on one shared evaluator and
-    committed to saying plainly where the evidence is thin;
-    Section~\ref{sec:limits} does that.
-\end{itemize}
+Most of the later notes came from the weekly meetings and acted as
+checkpoints. The mentor flagged that reconstruction loss alone would not prove
+language-modelling quality, so Experiment~A starts from \dropfirst{} exactly
+(its learned correction begins at zero) and adds a temperature-scaled
+distillation term, and Experiment~B promotes \removeop{} to a proper operator
+under one exact evaluator. He also worried that an approximate scorer could
+quietly bias the comparison, so every experiment moved to exact,
+token-weighted sliding-window perplexity and Experiment~B locks the protocol
+with SHA-256 hashes. A check-in on trusting results led to the preflight
+equality check and disjoint ranking partition in Experiment~A, the five
+structural self-checks on a tiny GPT-2 in Experiment~B, and the held-out
+calibration and evaluation windows in Experiments~C and~D so the test set is
+touched exactly once. A request for explicit cost accounting produced a
+targeted ablation and a resources paragraph in every experiment, and a final
+note about keeping the evaluation protocol identical across methods is why we
+converged on one shared evaluator and committed to saying plainly, in
+Section~\ref{sec:limits}, where the evidence is thin. The mentor also pointed
+out that applying these merges to multilingual models would be the interesting
+next step; every operator is therefore model-agnostic, and multilingual
+transfer is named as the primary follow-up in Section~\ref{sec:limits}.
 
 \subsection{Baselines and State of the Art}
 \label{sec:sota}
@@ -268,21 +260,24 @@ Depth reduction in Transformers has moved from simply deleting layers to
 learning how to fuse them, and we grouped the relevant work into four families,
 treating the closest members as explicit baselines.
 
-\paragraph{Layer removal.} \citet{gromov2024unreasonable} show that the deeper
-layers of decoder-only Transformers are often redundant and can be deleted with
-little perplexity loss. \citet{men2024shortgpt} formalise this with the
-\emph{Block Influence} (BI) score, the cosine similarity between a block's input
-and output, and remove the least influential blocks. The \dropfirst{} control in
-Experiments~A and~B, the \removeop{} operator in Experiments~B and~C, and the
-foundational BI baseline are exactly this family.
+\paragraph{Layer removal.} The simplest line of work treats depth as redundant:
+for decoder-only Transformers, \citet{gromov2024unreasonable} showed that the
+deeper blocks can often be dropped with little perplexity loss, and
+\citet{men2024shortgpt} turned that into a score---\emph{Block Influence}
+(BI), the cosine similarity between a block's input and output---removing the
+least influential blocks first. Our own controls sit squarely in this family:
+the \dropfirst{} baseline in Experiments~A and~B, the \removeop{} operator in
+Experiments~B and~C, and the BI-based baseline of the foundational
+exploration.
 
-\paragraph{Static layer merging.} \citet{yang2024laco} collapse rear layers into
-preceding ones with the Reserving-Differences-while-Seeking-Common (RDSC) rule
-and no training. \citet{liu2024pruning} identify mergeable layers by manifold
-alignment in activation space and combine them by closed-form averaging. Both
-use \emph{fixed} coefficients from a similarity heuristic. The \averageop{}
+\paragraph{Static layer merging.} A second family merges without any training.
+\citet{yang2024laco} collapse rear layers into the preceding ones by the
+Reserving-Differences-while-Seeking-Common (RDSC) rule, while
+\citet{liu2024pruning} find mergeable layers through manifold alignment in
+activation space and combine them with closed-form averaging; both fix their
+coefficients from a similarity heuristic. This is the family our \averageop{}
 operator (Experiments~B, C, D) and the Random-Weight-Average control
-(Experiment~C) represent this family.
+(Experiment~C) belong to.
 
 \paragraph{Affine composition.} \linop{} (Experiment~B) fits a linear map from a
 group's input to its output and absorbs the span into a single affine block,
@@ -327,22 +322,23 @@ mechanism as a like-for-like control.
 \subsection{Datasets}
 \label{sec:datasets}
 
-\paragraph{Training and selection data.} All learning, calibration and model
-selection use only \textbf{WikiText-2} \citep{merity2016pointer}, loaded as
-\texttt{Salesforce/wikitext}, config \texttt{wikitext-2-raw-v1}. Raw rows are
-reassembled into whole articles where needed, exact duplicate articles are
-removed, and the unique text is partitioned \emph{before} tokenisation into
-disjoint train/checkpoint/ranking (A) or train/calibration/evaluation (C, D)
-roles with a fixed permutation and seed; every partition and its hash are
-recorded.
+\paragraph{Training and selection data.} Every bit of learning, calibration and
+model selection in this study runs on \textbf{WikiText-2}
+\citep{merity2016pointer}, loaded as \texttt{Salesforce/wikitext}, config
+\texttt{wikitext-2-raw-v1}. Raw rows are sewn back into whole articles where
+needed, exact duplicates are dropped, and the remaining text is partitioned
+\emph{before} tokenisation into disjoint roles---train/checkpoint/ranking for
+A, train/calibration/evaluation for C and D---under a fixed permutation and
+seed, with every partition and its hash recorded.
 
-\paragraph{In-domain final evaluation.} The full official WikiText-2 validation
-split is used only at the end and only for the selected configuration; the
-scored-token counts range from $244{,}824$ (A) to $249{,}748$ (B) across
-experiments because of small differences in boundary-token treatment. The
-original model reaches $\mathrm{PPL}=29.37$ (A), $28.61$ (B), and $33.94$ (D, on
-its own validation windows); we never compare absolute values across experiments
-because the exact evaluators differ in window size and stride.
+\paragraph{In-domain final evaluation.} The full official WikiText-2
+validation split is opened only at the end, and only for the configuration that
+was selected. Scored-token counts run from $244{,}824$ (A) to $249{,}748$ (B)
+across experiments, the difference being small boundary-token treatment; the
+original model sits at $\mathrm{PPL}=29.37$ (A), $28.61$ (B) and $33.94$ (D,
+on its own validation windows). We deliberately never compare absolute values
+between experiments, because window size and stride differ between the exact
+evaluators.
 
 \paragraph{Out-of-domain test data.} We evaluate on three external test sets
 chosen so that their relationship to WikiText-2 varies along two axes,
@@ -368,17 +364,17 @@ on calibration or holdout windows. Finally, unseen domains are reported
 relative to their own GPT-2 baseline, so a vocabulary mismatch between corpora
 cannot dress itself up as a compression effect.
 
-\paragraph{Bottleneck.} The dominant bottleneck varies by experiment. In~A it is
-GPU memory during logit materialisation, handled by scoring in chunks of $128$
-tokens under activation checkpointing; the secondary bottleneck is the
-exhaustive non-overlapping-set search for $k$ merges. In~B it is evaluation and
-distillation cost, so each unseen corpus is capped and the evaluator batched; the
-second bottleneck is \emph{stage-wise coupling}. In~C and~D it is the
-calibration/activation pass and the affine solve. The foundational exploration's
-bottleneck is that all fifteen approaches ran on one free Apple-Silicon MPS
-laptop with no paid GPU, forcing $60$--$80$-step training budgets. The common
-bottleneck is two shared six-hour-class accelerators, which caps training
-passes.
+\paragraph{Bottleneck.} The dominant bottleneck changes with the experiment. In~A
+it is GPU memory during logit materialisation, which we handled by scoring in
+chunks of $128$ tokens under activation checkpointing, followed by the cost of
+the exhaustive non-overlapping-set search for $k$ merges. In~B it is evaluation
+and distillation cost, so each unseen corpus is capped and the evaluator
+batched, with stage-wise coupling a close second. In~C and~D the binding cost is
+the calibration and activation pass and the affine solve. The foundational
+exploration had the tightest constraints of all: fifteen approaches on one free
+Apple-Silicon MPS laptop with no paid GPU, forcing $60$--$80$-step training
+budgets. Across the board, the shared six-hour-class accelerators cap the
+number of training passes we can afford.
 
 \paragraph{Dataset extension and difference from the previous version.}
 Relative to Presentation~1, which used a single WikiText-2 split, the data
@@ -472,10 +468,10 @@ calibration--validation selection agreement in C. We deliberately skipped BLEU
 and ROUGE; this is a preservation study, not a generation study, so
 string-repetition metrics would have told us nothing.
 
-\paragraph{Criteria.} A gain is reported only when (i) it is measured on
-held-out text, (ii) it beats the matching control, and (iii) it survives the
-experiment's selection/guard rule. Unseen-domain data are used only for final
-reporting, never for selection.
+\paragraph{Criteria.} A gain is reported only when it is measured on held-out
+text, beats the matching control, and survives the experiment's selection or
+guard rule. Unseen-domain data are used only for final reporting, never for
+selection.
 
 \paragraph{System effort and demonstration.} Most of the system effort went into
 four awkward corners: the weight-tokenisation/unpack round-trip and the
@@ -550,13 +546,13 @@ spanning original blocks $i,\dots,j$.
 \subsection{Experiment A: Second-Block-Anchored Learnable Weight Merging}
 \label{sec:expA}
 
-\paragraph{Idea.} A compact bidirectional Transformer (a \emph{hypernetwork over
-weights}) reads the parameter tensors of two adjacent blocks and emits
-\emph{additive corrections} to the parameters of the \emph{second} block so that
-it absorbs the function of the first. Because every correction head is
-zero-initialised, the untrained model is \emph{exactly} \dropfirst{} and the
-deployed architecture is byte-identical to GPT-2; this gives a clean starting
-point and a strict control.
+\paragraph{Idea.} The idea behind Experiment~A is to train a small bidirectional
+network that looks at two adjacent blocks as raw weight arrays and writes a
+correction onto the second one, so the surviving block takes over the job of
+both. Every correction head starts at zero. That single choice makes the
+untrained merger \emph{exactly} \dropfirst{} and keeps the final model
+byte-identical to ordinary GPT-2, giving us a clean starting point and a strict
+control in one.
 
 \paragraph{Weight tokenisation into patch tokens.} Every parameter tensor of a
 block is flattened into fixed-size patches that become tokens for the merger. A
@@ -1192,11 +1188,12 @@ checkpoints are hash-locked and the unseen test is run exactly once.
 \subsection{Experiment C: Affine Merging with SG-SC and CGOS}
 \label{sec:expC}
 
-\paragraph{Idea.} Treat each block as an affine map, then ask three questions
-about it. Do the obvious fixed operators (deletion, averaging, plain
-composition) hold up? Does replacing the fixed rule with a similarity-gated,
-error-weighted SLERP version (SG-SC) help? And can a calibration-based selector
-(CGOS) pick the right operator per pair without extra hyperparameters?
+\paragraph{Idea.} The starting point is to treat each block as an affine map and
+check what happens with the obvious fixed operators---deletion, averaging,
+plain composition---before trying anything clever. Two refinements follow: a
+similarity-gated, error-weighted SLERP composition (SG-SC) in place of the
+fixed rule, and a calibration-based selector (CGOS) that picks the right
+operator for each pair without adding hyperparameters.
 
 \paragraph{Affine composition.} Using a row-vector convention a block is
 $M_\ell(x)=x A_\ell + b_\ell$. For adjacent maps $(A_1,b_1)$ and $(A_2,b_2)$:
@@ -1259,9 +1256,9 @@ Final test PPL & $47.9306$ & CGOS agreement & $9/11 = 81.82\%$ \\
 
 \paragraph{Idea.} The idea is to let the model tell us which pair to merge,
 rather than guessing. Adjacent pairs are ranked by how similar their hidden
-states are, the chosen pair is merged with SLERP at a weight tuned on a handful
-of calibration tokens---separate weights for attention and MLP---and the
-process repeats, with no gradient training anywhere.
+states are, the chosen pair is merged with spherical interpolation at a weight
+tuned on a handful of calibration tokens---separate weights for attention and
+MLP---and the process repeats, with no gradient training anywhere.
 
 \paragraph{Method.} For every adjacent pair $(L,L{+}1)$ we compute linear CKA
 and the cosine similarity of their z-scored block outputs and fold them into a
@@ -1585,29 +1582,33 @@ guarantees on unseen domains. Seventh, we did not re-run FuseGPT, which has no
 official release, so that comparison is qualitative. Finally, all experiments
 share one backbone: no transfer to other checkpoints is claimed.
 
-\paragraph{Cost.} Learnable methods (A, B) strictly cost more than training-free
-ones; their advantage is a quality result, not a compute result. A's
-$39.4$M-parameter merger is discarded at deployment. \linop{} (B) is the most
-expensive training-free operator because it needs activation collection and a
-Cholesky solve per span per stage.
+\paragraph{Cost.} The learnable methods (A and B) cost strictly more than the
+training-free ones, and we would not pretend otherwise; their advantage is a
+quality result, never a compute result. A's $39.4$M-parameter merger is
+discarded at deployment. \linop{} (B) is the most expensive training-free
+operator, because it needs activation collection and a Cholesky solve per span
+per stage.
 
 \paragraph{Multilingual extension.} The mentor suggested applying the same
 merges to multilingual models. Every operator here is backbone-agnostic, and a
-multilingual checkpoint would test whether the fusion advantage survives richer
-token statistics and faster LayerNorm/attention drift. We leave this to future
+multilingual checkpoint would test whether the fusion advantage survives
+richer token statistics and faster LayerNorm and attention drift. Our guess is
+that it does, but we have not run it, so it stays a guess and a piece of future
 work.
 
-\paragraph{Takeaways.} Putting the four experiments together, the story is
-consistent. Once compression goes past one or two merges, something trained is
-doing the work: the learnable methods (A, B) are the only ones that hold up at
-depth, and their lead over training-free operators grows as more blocks are
-removed. Averaging two blocks is not a merging strategy---the neurons simply do
-not line up---except when an entire contiguous tail span is averaged, and even
-then it is still beaten. Among training-free rules the winner depends on the
-model and the pair: affine composition on one pair (C), calibrated SLERP on
-another (D), LayerDrop on small models. That is why we report every per-pair
-ranking rather than a single recipe. If we had to pick one cheap baseline to
-reuse, it would be Block-Influence removal patched with distillation.
+\paragraph{Takeaways.} Putting the four experiments together, the story we keep
+arriving at is consistent. Once compression goes past one or two merges,
+something trained has to be doing the work: the learnable methods (A, B) are
+the only ones that hold up at depth, and their lead over the training-free
+operators seems to grow as more blocks come out. Averaging two blocks is not,
+as far as we can tell, a merging strategy---the neurons simply do not line
+up---except when an entire contiguous tail span is averaged, and even then it
+is still beaten. Among the training-free rules the winner depends on the model
+and on the pair: affine composition on one (C), calibrated SLERP on another
+(D), LayerDrop on the small models. That is why we report every per-pair
+ranking instead of a single recipe. If we had to pick one cheap baseline to
+reuse, we would take Block-Influence removal patched with distillation; at
+this compute budget it is hard to beat.
 
 %==============================================================================
 \subsection{Code and Reproducibility}
