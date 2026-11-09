@@ -1,11 +1,26 @@
-# macOS
-.DS_Store
+# macOS (any folder depth)
+**/.DS_Store
+.DS_Store?
 .AppleDouble
 .LSOverride
 ._*
+Icon[]
+__MACOSX/
 .Spotlight-V100
 .Trashes
 .fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+.apdisk
+
+# Assignment 3 (Sumit): archived experiments (not in the top 3) and Kaggle queue state
+Assignment3/Sumit/archive/
+Assignment3/Sumit/paper/queue_state.json
+Assignment3/Sumit/paper/queue*.log
 
 # Python
 __pycache__/

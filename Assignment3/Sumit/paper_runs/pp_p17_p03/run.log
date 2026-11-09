@@ -1,0 +1,406 @@
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+
+
+
+
+
+
+
+
+
+
+
+started p17_xtc on GPU 0
+started p03_aam on GPU 1
+[   60s] p17_xtc: Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+[   60s] p03_aam:   group 12-13: held-out mismatch when kept alone L12 23.3%, L13 23.5% -> keep L12
+[  120s] p17_xtc:   group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+[  120s] p03_aam:   step   50  alpha 0.920  kl 0.0093  hid 0.0010  (40s)
+[  180s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  180s] p03_aam:   step  100  alpha 0.712  kl 0.0076  hid 0.0070  (79s)
+[  240s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  240s] p03_aam:   step  200  alpha 0.184  kl 0.0412  hid 0.0490  (159s)
+[  300s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  300s] p03_aam:   step  250  alpha 0.026  kl 0.0435  hid 0.0504  (199s)
+[  360s] p17_xtc:   step   50  alpha 0.920  kl 0.0002  hid 0.0002  (182s)
+[  360s] p03_aam:   step  350  alpha 0.000  kl 0.0346  hid 0.0549  (276s)
+[  420s] p17_xtc:   step   50  alpha 0.920  kl 0.0002  hid 0.0002  (182s)
+[  420s] p03_aam:   step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+[  480s] p17_xtc:   step   50  alpha 0.920  kl 0.0002  hid 0.0002  (182s)
+[  480s] p03_aam:   step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+[  540s] p17_xtc:   step  100  alpha 0.712  kl 0.0017  hid 0.0022  (361s)
+[  540s] p03_aam:   step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+[  600s] p17_xtc:   step  100  alpha 0.712  kl 0.0017  hid 0.0022  (361s)
+[  600s] p03_aam:   step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+[  660s] p17_xtc:   step  100  alpha 0.712  kl 0.0017  hid 0.0022  (361s)
+[  660s] p03_aam:   step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+[  720s] p17_xtc:   step  150  alpha 0.438  kl 0.0068  hid 0.0079  (541s)
+[  720s] p03_aam:     eval en: 332s
+[  780s] p17_xtc:   step  150  alpha 0.438  kl 0.0068  hid 0.0079  (541s)
+[  780s] p03_aam:     eval en: 332s
+[  840s] p17_xtc:   step  150  alpha 0.438  kl 0.0068  hid 0.0079  (541s)
+[  840s] p03_aam:     eval en: 332s
+[  900s] p17_xtc:   step  200  alpha 0.184  kl 0.0250  hid 0.0197  (720s)
+[  900s] p03_aam:     eval en: 332s
+[  960s] p17_xtc:   step  200  alpha 0.184  kl 0.0250  hid 0.0197  (720s)
+[  960s] p03_aam:     eval en: 332s
+[ 1020s] p17_xtc:   step  200  alpha 0.184  kl 0.0250  hid 0.0197  (720s)
+[ 1020s] p03_aam:     eval en: 332s
+[ 1080s] p17_xtc:   step  250  alpha 0.026  kl 0.0390  hid 0.0303  (899s)
+[ 1080s] p03_aam:     eval en: 332s
+[ 1140s] p17_xtc:   step  250  alpha 0.026  kl 0.0390  hid 0.0303  (899s)
+[ 1140s] p03_aam:     eval hi: 376s
+[ 1200s] p17_xtc:   step  250  alpha 0.026  kl 0.0390  hid 0.0303  (899s)
+[ 1200s] p03_aam:     eval hi: 376s
+[ 1260s] p17_xtc:   step  300  alpha 0.000  kl 0.0346  hid 0.0468  (1073s)
+[ 1260s] p03_aam:     eval hi: 376s
+[ 1320s] p17_xtc:   step  300  alpha 0.000  kl 0.0346  hid 0.0468  (1073s)
+[ 1320s] p03_aam:     eval hi: 376s
+[ 1380s] p17_xtc:   step  350  alpha 0.000  kl 0.0290  hid 0.0456  (1240s)
+[ 1380s] p03_aam:     eval hi: 376s
+[ 1440s] p17_xtc:   step  350  alpha 0.000  kl 0.0290  hid 0.0456  (1240s)
+[ 1440s] p03_aam:     eval hi: 376s
+[ 1500s] p17_xtc:   step  350  alpha 0.000  kl 0.0290  hid 0.0456  (1240s)
+[ 1500s] p03_aam:     eval hi: 376s
+[ 1560s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1560s] p03_aam:     eval fr: 436s
+[ 1620s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1620s] p03_aam:     eval fr: 436s
+[ 1680s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1680s] p03_aam:     eval fr: 436s
+[ 1740s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1740s] p03_aam:     eval fr: 436s
+[ 1800s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1800s] p03_aam:     eval fr: 436s
+[ 1860s] p17_xtc:   merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+[ 1860s] p03_aam:     eval fr: 436s
+[ 1920s] p17_xtc:     eval en: 337s
+[ 1920s] p03_aam:     eval fr: 436s
+[ 1980s] p17_xtc:     eval en: 337s
+[ 1980s] p03_aam:     eval es: 413s
+[ 2040s] p17_xtc:     eval en: 337s
+[ 2040s] p03_aam:     eval es: 413s
+[ 2100s] p17_xtc:     eval en: 337s
+[ 2100s] p03_aam:     eval es: 413s
+[ 2160s] p17_xtc:     eval en: 337s
+[ 2160s] p03_aam:     eval es: 413s
+[ 2220s] p17_xtc:     eval en: 337s
+[ 2220s] p03_aam:     eval es: 413s
+[ 2280s] p17_xtc:     eval en: 337s
+[ 2280s] p03_aam:     eval es: 413s
+[ 2340s] p17_xtc:     eval hi: 398s
+[ 2340s] p03_aam:     eval es: 413s
+[ 2400s] p17_xtc:     eval hi: 398s
+[ 2400s] p03_aam:     eval de: 427s
+[ 2460s] p17_xtc:     eval hi: 398s
+[ 2460s] p03_aam:     eval de: 427s
+[ 2520s] p17_xtc:     eval hi: 398s
+[ 2520s] p03_aam:     eval de: 427s
+[ 2580s] p17_xtc:     eval hi: 398s
+[ 2580s] p03_aam:     eval de: 427s
+[ 2640s] p17_xtc:     eval hi: 398s
+[ 2640s] p03_aam:     eval de: 427s
+[ 2700s] p17_xtc:     eval hi: 398s
+[ 2700s] p03_aam:     eval de: 427s
+[ 2760s] p17_xtc:     eval fr: 429s
+[ 2760s] p03_aam:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+[ 2820s] p17_xtc:     eval fr: 429s
+[ 2820s] p03_aam:   step   50  alpha 0.920  kl 0.0505  hid 0.0017  (42s)
+[ 2880s] p17_xtc:     eval fr: 429s
+[ 2880s] p03_aam:   step  150  alpha 0.438  kl 0.0603  hid 0.0359  (125s)
+[ 2940s] p17_xtc:     eval fr: 429s
+[ 2940s] p03_aam:   step  200  alpha 0.184  kl 0.1329  hid 0.0687  (166s)
+[ 3000s] p17_xtc:     eval fr: 429s
+[ 3000s] p03_aam:   step  300  alpha 0.000  kl 0.1309  hid 0.1078  (247s)
+[ 3060s] p17_xtc:     eval fr: 429s
+[ 3060s] p03_aam:   step  350  alpha 0.000  kl 0.1121  hid 0.1072  (285s)
+[ 3120s] p17_xtc:     eval fr: 429s
+[ 3120s] p03_aam:   step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+[ 3180s] p17_xtc:     eval es: 409s
+[ 3180s] p03_aam:   step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+[ 3240s] p17_xtc:     eval es: 409s
+[ 3240s] p03_aam:   step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+[ 3300s] p17_xtc:     eval es: 409s
+[ 3300s] p03_aam:   step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+[ 3360s] p17_xtc:     eval es: 409s
+[ 3360s] p03_aam:   step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+[ 3420s] p17_xtc:     eval es: 409s
+[ 3420s] p03_aam:     eval en: 323s
+[ 3480s] p17_xtc:     eval es: 409s
+[ 3480s] p03_aam:     eval en: 323s
+[ 3540s] p17_xtc:     eval es: 409s
+[ 3540s] p03_aam:     eval en: 323s
+[ 3600s] p17_xtc:     eval de: 429s
+[ 3600s] p03_aam:     eval en: 323s
+[ 3660s] p17_xtc:     eval de: 429s
+[ 3660s] p03_aam:     eval en: 323s
+[ 3720s] p17_xtc:     eval de: 429s
+[ 3720s] p03_aam:     eval en: 323s
+[ 3780s] p17_xtc:     eval de: 429s
+[ 3780s] p03_aam:     eval hi: 349s
+[ 3840s] p17_xtc:     eval de: 429s
+[ 3840s] p03_aam:     eval hi: 349s
+[ 3900s] p17_xtc:     eval de: 429s
+[ 3900s] p03_aam:     eval hi: 349s
+[ 3960s] p17_xtc: === 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+[ 3960s] p03_aam:     eval hi: 349s
+[ 4020s] p17_xtc:   group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+[ 4020s] p03_aam:     eval hi: 349s
+[ 4080s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4080s] p03_aam:     eval hi: 349s
+[ 4140s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4140s] p03_aam:     eval hi: 349s
+[ 4200s] p17_xtc:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4200s] p03_aam:     eval fr: 407s
+[ 4260s] p17_xtc:   step   50  alpha 0.920  kl 0.0006  hid 0.0003  (206s)
+[ 4260s] p03_aam:     eval fr: 407s
+[ 4320s] p17_xtc:   step   50  alpha 0.920  kl 0.0006  hid 0.0003  (206s)
+[ 4320s] p03_aam:     eval fr: 407s
+[ 4380s] p17_xtc:   step   50  alpha 0.920  kl 0.0006  hid 0.0003  (206s)
+[ 4380s] p03_aam:     eval fr: 407s
+[ 4440s] p17_xtc:   step   50  alpha 0.920  kl 0.0006  hid 0.0003  (206s)
+[ 4440s] p03_aam:     eval fr: 407s
+[ 4500s] p17_xtc:   step  100  alpha 0.712  kl 0.0064  hid 0.0032  (409s)
+[ 4500s] p03_aam:     eval fr: 407s
+[ 4560s] p17_xtc:   step  100  alpha 0.712  kl 0.0064  hid 0.0032  (409s)
+[ 4560s] p03_aam:     eval es: 386s
+[ 4620s] p17_xtc:   step  100  alpha 0.712  kl 0.0064  hid 0.0032  (409s)
+[ 4620s] p03_aam:     eval es: 386s
+[ 4680s] p17_xtc:   step  150  alpha 0.438  kl 0.0198  hid 0.0118  (612s)
+[ 4680s] p03_aam:     eval es: 386s
+[ 4740s] p17_xtc:   step  150  alpha 0.438  kl 0.0198  hid 0.0118  (612s)
+[ 4740s] p03_aam:     eval es: 386s
+[ 4800s] p17_xtc:   step  150  alpha 0.438  kl 0.0198  hid 0.0118  (612s)
+[ 4800s] p03_aam:     eval es: 386s
+[ 4860s] p17_xtc:   step  150  alpha 0.438  kl 0.0198  hid 0.0118  (612s)
+[ 4860s] p03_aam:     eval es: 386s
+[ 4920s] p17_xtc:   step  200  alpha 0.184  kl 0.0592  hid 0.0248  (816s)
+[ 4920s] p03_aam:     eval es: 386s
+[ 4980s] p17_xtc:   step  200  alpha 0.184  kl 0.0592  hid 0.0248  (816s)
+[ 4980s] p03_aam:     eval de: 398s
+[ 5040s] p17_xtc:   step  200  alpha 0.184  kl 0.0592  hid 0.0248  (816s)
+[ 5040s] p03_aam:     eval de: 398s
+[ 5100s] p17_xtc:   step  250  alpha 0.026  kl 0.1035  hid 0.0343  (1020s)
+[ 5100s] p03_aam:     eval de: 398s
+[ 5160s] p17_xtc:   step  250  alpha 0.026  kl 0.1035  hid 0.0343  (1020s)
+[ 5160s] p03_aam:     eval de: 398s
+[ 5220s] p17_xtc:   step  250  alpha 0.026  kl 0.1035  hid 0.0343  (1020s)
+[ 5220s] p03_aam:     eval de: 398s
+[ 5280s] p17_xtc:   step  300  alpha 0.000  kl 0.0786  hid 0.0841  (1210s)
+[ 5280s] p03_aam: 4           drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19
+[ 5340s] p17_xtc:   step  300  alpha 0.000  kl 0.0786  hid 0.0841  (1210s)
+
+============================== p03_aam (exit 0) ==============================
+shared data: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/p03_aam/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<06:17,  1.22s/it]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 247.14it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+  group 12-13: held-out mismatch when kept alone L12 23.3%, L13 23.5% -> keep L12
+  group 14-15: held-out mismatch when kept alone L14 28.9%, L15 26.6% -> keep L15
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+  step   50  alpha 0.920  kl 0.0093  hid 0.0010  (40s)
+  step  100  alpha 0.712  kl 0.0076  hid 0.0070  (79s)
+  step  150  alpha 0.438  kl 0.0195  hid 0.0258  (119s)
+  step  200  alpha 0.184  kl 0.0412  hid 0.0490  (159s)
+  step  250  alpha 0.026  kl 0.0435  hid 0.0504  (199s)
+  step  300  alpha 0.000  kl 0.0425  hid 0.0556  (238s)
+  step  350  alpha 0.000  kl 0.0346  hid 0.0549  (276s)
+  step  399  alpha 0.000  kl 0.0408  hid 0.0534  (313s)
+    eval en: 332s
+    eval hi: 376s
+    eval fr: 436s
+    eval es: 413s
+    eval de: 427s
+    eval zh: 355s
+aam_anneal0.7 k=2 [12-13; 14-15]: eval 2344s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: held-out mismatch when kept alone L10 34.5%, L11 33.2% -> keep L11
+  group 12-13: held-out mismatch when kept alone L12 23.3%, L13 23.5% -> keep L12
+  group 14-15: held-out mismatch when kept alone L14 28.9%, L15 26.6% -> keep L15
+  group 16-17: held-out mismatch when kept alone L16 35.8%, L17 36.9% -> keep L16
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+  step   50  alpha 0.920  kl 0.0505  hid 0.0017  (42s)
+  step  100  alpha 0.712  kl 0.0256  hid 0.0102  (83s)
+  step  150  alpha 0.438  kl 0.0603  hid 0.0359  (125s)
+  step  200  alpha 0.184  kl 0.1329  hid 0.0687  (166s)
+  step  250  alpha 0.026  kl 0.1417  hid 0.0765  (207s)
+  step  300  alpha 0.000  kl 0.1309  hid 0.1078  (247s)
+  step  350  alpha 0.000  kl 0.1121  hid 0.1072  (285s)
+  step  399  alpha 0.000  kl 0.1172  hid 0.1014  (323s)
+    eval en: 323s
+    eval hi: 349s
+    eval fr: 407s
+    eval es: 386s
+    eval de: 398s
+    eval zh: 337s
+aam_anneal0.7 k=4 [10-11; 12-13; 14-15; 16-17]: eval 2206s
+This algorithm vs the references:
+          method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0       original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1  aam_anneal0.7        2                12-13; 14-15          5.3         6.0           8.2          4.2            6.3   37.4     34.5  13.7      38.6  46.3     34.1    0.2030          18.7    325.3
+2           drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+3  aam_anneal0.7        4  10-11; 12-13; 14-15; 16-17         10.6        22.8          39.1         14.7           21.3   30.1     27.1   2.1      27.8  42.1     25.8    0.3367          20.2    348.5
+4           drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+Every algorithm whose results are in /kaggle/working/p03_aam/layer_merging (run the other notebooks with the same data_dir):
+          method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0       original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1  aam_anneal0.7        2                12-13; 14-15          5.3         6.0           8.2          4.2            6.3   37.4     34.5  13.7      38.6  46.3     34.1    0.2030          18.7    325.3
+2           drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+3  aam_anneal0.7        4  10-11; 12-13; 14-15; 16-17         10.6        22.8          39.1         14.7           21.3   30.1     27.1   2.1      27.8  42.1     25.8    0.3367          20.2    348.5
+4           drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+
+[ 5400s] p17_xtc:   step  300  alpha 0.000  kl 0.0786  hid 0.0841  (1210s)
+[ 5460s] p17_xtc:   step  350  alpha 0.000  kl 0.0698  hid 0.0774  (1384s)
+[ 5520s] p17_xtc:   step  350  alpha 0.000  kl 0.0698  hid 0.0774  (1384s)
+[ 5580s] p17_xtc:   step  350  alpha 0.000  kl 0.0698  hid 0.0774  (1384s)
+[ 5640s] p17_xtc:   group 14-15: held-out error, trained union at alpha=0 28.9% = extracted layer 28.9%
+[ 5700s] p17_xtc:   merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+[ 5760s] p17_xtc:   merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+[ 5820s] p17_xtc:   merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+[ 5880s] p17_xtc:   merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+[ 5940s] p17_xtc:   merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+[ 6000s] p17_xtc:     eval en: 325s
+[ 6060s] p17_xtc:     eval en: 325s
+[ 6120s] p17_xtc:     eval en: 325s
+[ 6180s] p17_xtc:     eval en: 325s
+[ 6240s] p17_xtc:     eval en: 325s
+[ 6300s] p17_xtc:     eval en: 325s
+[ 6360s] p17_xtc:     eval hi: 371s
+[ 6420s] p17_xtc:     eval hi: 371s
+[ 6480s] p17_xtc:     eval hi: 371s
+[ 6540s] p17_xtc:     eval hi: 371s
+[ 6600s] p17_xtc:     eval hi: 371s
+[ 6660s] p17_xtc:     eval hi: 371s
+[ 6720s] p17_xtc:     eval hi: 371s
+[ 6780s] p17_xtc:     eval fr: 406s
+[ 6840s] p17_xtc:     eval fr: 406s
+[ 6900s] p17_xtc:     eval fr: 406s
+[ 6960s] p17_xtc:     eval fr: 406s
+[ 7020s] p17_xtc:     eval fr: 406s
+[ 7080s] p17_xtc:     eval fr: 406s
+[ 7140s] p17_xtc:     eval es: 380s
+[ 7200s] p17_xtc:     eval es: 380s
+[ 7260s] p17_xtc:     eval es: 380s
+[ 7320s] p17_xtc:     eval es: 380s
+[ 7380s] p17_xtc:     eval es: 380s
+[ 7440s] p17_xtc:     eval es: 380s
+[ 7500s] p17_xtc:     eval es: 380s
+[ 7560s] p17_xtc:     eval de: 404s
+[ 7620s] p17_xtc:     eval de: 404s
+[ 7680s] p17_xtc:     eval de: 404s
+[ 7740s] p17_xtc:     eval de: 404s
+[ 7800s] p17_xtc:     eval de: 404s
+[ 7860s] p17_xtc:     eval de: 404s
+
+============================== p17_xtc (exit 0) ==============================
+shared data: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/p17_xtc/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<05:41,  1.11s/it]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 258.38it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+  group 12-13: XTC rank 64, held-out error of the parallel union 19.1% -> + XTC 17.4%
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: XTC rank 64, held-out error of the parallel union 22.5% -> + XTC 20.4%
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0002  hid 0.0002  (182s)
+  step  100  alpha 0.712  kl 0.0017  hid 0.0022  (361s)
+  step  150  alpha 0.438  kl 0.0068  hid 0.0079  (541s)
+  step  200  alpha 0.184  kl 0.0250  hid 0.0197  (720s)
+  step  250  alpha 0.026  kl 0.0390  hid 0.0303  (899s)
+  step  300  alpha 0.000  kl 0.0346  hid 0.0468  (1073s)
+  step  350  alpha 0.000  kl 0.0290  hid 0.0456  (1240s)
+  step  399  alpha 0.000  kl 0.0289  hid 0.0410  (1403s)
+  group 12-13: held-out error, trained union at alpha=0 17.6% = extracted layer 17.6%
+  group 14-15: held-out error, trained union at alpha=0 22.6% = extracted layer 22.6%
+  merged model: 26 layers (original 28); 564,986,880 params (incl. 393,216 LSR/XTC = 0.07 % of the original)
+    eval en: 337s
+    eval hi: 398s
+    eval fr: 429s
+    eval es: 409s
+    eval de: 429s
+    eval zh: 367s
+xtc_shrink_icl k=2 [12-13; 14-15]: eval 2375s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: XTC rank 64, held-out error of the parallel union 23.2% -> + XTC 20.8%
+  group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+  group 12-13: XTC rank 64, held-out error of the parallel union 19.1% -> + XTC 17.4%
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: XTC rank 64, held-out error of the parallel union 22.5% -> + XTC 20.4%
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  group 16-17: XTC rank 64, held-out error of the parallel union 23.8% -> + XTC 20.6%
+  group 16-17: input cosine 0.932; kept L16: 2 KV groups + 1353 neurons, L17: 6 KV groups + 1719 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0006  hid 0.0003  (206s)
+  step  100  alpha 0.712  kl 0.0064  hid 0.0032  (409s)
+  step  150  alpha 0.438  kl 0.0198  hid 0.0118  (612s)
+  step  200  alpha 0.184  kl 0.0592  hid 0.0248  (816s)
+  step  250  alpha 0.026  kl 0.1035  hid 0.0343  (1020s)
+  step  300  alpha 0.000  kl 0.0786  hid 0.0841  (1210s)
+  step  350  alpha 0.000  kl 0.0698  hid 0.0774  (1384s)
+  step  399  alpha 0.000  kl 0.0568  hid 0.0695  (1554s)
+  group 10-11: held-out error, trained union at alpha=0 22.3% = extracted layer 22.3%
+  group 12-13: held-out error, trained union at alpha=0 25.9% = extracted layer 25.9%
+  group 14-15: held-out error, trained union at alpha=0 28.9% = extracted layer 28.9%
+  group 16-17: held-out error, trained union at alpha=0 29.6% = extracted layer 29.6%
+  merged model: 24 layers (original 28); 533,923,840 params (incl. 786,432 LSR/XTC = 0.13 % of the original)
+    eval en: 325s
+    eval hi: 371s
+    eval fr: 406s
+    eval es: 380s
+    eval de: 404s
+    eval zh: 343s
+xtc_shrink_icl k=4 [10-11; 12-13; 14-15; 16-17]: eval 2234s
+This algorithm vs the references:
+           method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0        original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1            drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  xtc_shrink_icl        2                12-13; 14-15          5.2         6.3           9.3          3.8            6.2   28.3     30.6   7.3      28.2  44.8     27.8    0.1274          19.0   1486.2
+3  xtc_shrink_icl        4  10-11; 12-13; 14-15; 16-17         10.4        17.1          24.8         10.4           16.6   24.6     27.9   2.0      23.6  39.4     23.5    0.2118          20.2   1714.5
+4            drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+Every algorithm whose results are in /kaggle/working/p17_xtc/layer_merging
+           method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0        original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1            drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  xtc_shrink_icl        2                12-13; 14-15          5.2         6.3           9.3          3.8            6.2   28.3     30.6   7.3      28.2  44.8     27.8    0.1274          19.0   1486.2
+3  xtc_shrink_icl        4  10-11; 12-13; 14-15; 16-17         10.4        17.1          24.8         10.4           16.6   24.6     27.9   2.0      23.6  39.4     23.5    0.2118          20.2   1714.5
+4            drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+
+/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+[NbConvertApp] Writing 131206 bytes to __notebook__.ipynb
+[NbConvertApp] Converting notebook __notebook__.ipynb to html
+[NbConvertApp] Writing 492831 bytes to __results__.html
