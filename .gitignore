@@ -17,11 +17,6 @@ __MACOSX/
 .AppleDesktop
 .apdisk
 
-# Assignment 3 (Sumit): archived experiments (not in the top 3) and Kaggle queue state
-Assignment3/Sumit/archive/
-Assignment3/Sumit/paper/queue_state.json
-Assignment3/Sumit/paper/queue*.log
-
 # Python
 __pycache__/
 *.py[cod]

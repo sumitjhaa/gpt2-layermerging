@@ -1,59 +1,74 @@
 # Assignment 3 (Sumit): merging consecutive layers of a multilingual LLM
 
-**Repository contents.** The two methods for the paper: **PRISM-Shrink** (the new method: `experimented/11_*`,
-`experimented/13_*`, `paper_runs/pp_p13_p16/p13_shrink_icl`) and **AAM** (strong baseline: `experimented/03_*`,
-`paper_runs/pp_p17_p03/p03_aam`). Their comparisons: original + drop (`paper_runs/p20a_data_refs`), the matched
-drop + KD control (`baselines/drop_kd_control`), the published LaCo baseline (`baselines/laco_published`), and the
-layer analysis behind the figures (`analysis/layer_analysis`). The other experiments (ablations and negative results,
-incl. PolyShrink, SKM, XTC) live in the gitignored `archive/` folder; their numbers are kept in
-`RESULTS_COMPARISON.md`, `experimented/README.md` and `paper/RESULTS.md`. Full explanation: `LAYER_MERGING_EXPLAINED.md`.
+Remove 2 or 4 of the 28 layers of **Qwen3-0.6B-Base** by merging pairs of consecutive layers, and lose as little as
+possible in six languages (en, hi, fr, es, de, zh).
 
-Model `Qwen/Qwen3-0.6B-Base` (28 layers); languages en, hi, fr, es, de, zh. **Tests** (never used for fitting):
-MMMLU 5-shot (MMLU for English), INCLUDE 5-shot, MGSM 4-shot chain of thought, Belebele 3-shot, XNLI 3-shot, mC4 and
-Wiki-40B test perplexity. **Calibration / training:** Wiki-40B train. Every notebook runs on its own on Kaggle or Colab
-(GPU T4) and ends with one table of every method whose results are in its `data_dir`.
+- **PRISM-Shrink** (the new method). Rebuild a pair of layers exactly as one wide parallel layer, then shrink it
+  gradually to one standard layer while distilling from the original model.
+- **AAM** (annealed absorption, the strong baseline). Keep the better layer of each pair, fade the other out and
+  distill.
 
-Run from the terminal on Kaggle (GPU T4 x2): `./kaggle_run.sh push <notebook>`, then `./kaggle_run.sh status <notebook>`,
-and `./kaggle_run.sh archive <notebook>` to store the finished run in `experimented/`.
+## Main results (large test, 95 % confidence intervals)
 
-## Already run: see `experimented/` (notebooks, logs, results, one combined table)
-01 CD-RegMean, 02 SDCF, 03 AAM, 05 NUF (Colab); 07 PRISM-energy + parallel union, 11 PRISM-Shrink (Kaggle).
+| Layers removed | Method | mC4 perplexity | Few-shot avg acc | vs drop | Copying loss |
+|---|---|---|---|---|---|
+| 0 | original | — | 48.9 | — | 0.125 |
+| 2 | drop (delete one layer of each pair) | +14.2 % | 28.7 | — | 0.320 |
+| 2 | drop + the same distillation (control) | +7.9 % | 29.3 | +0.6 (p = 0.20) | 0.172 |
+| 2 | **AAM** | **+6.0 %** | **34.1** | **+5.4 (p < 0.001)** | 0.203 |
+| 2 | **PRISM-Shrink** | +6.2 % | 28.2 | −0.4 (p = 0.45) | **0.131** |
+| 4 | drop | +84.7 % | 22.6 | — | 2.220 |
+| 4 | drop + the same distillation (control) | +24.5 % | 23.5 | +1.0 (p = 0.05) | 0.372 |
+| 4 | **AAM** | +22.8 % | **25.8** | **+3.3 (p < 0.001)** | 0.337 |
+| 4 | **PRISM-Shrink** | **+16.5 %** | 23.5 | +0.9 (p = 0.15) | **0.212** |
 
-## The method: PolyShrink (notebook 15) and its ablations
-**Thesis.** In a pre-norm transformer, consecutive middle layers read nearly the same normalized residual stream
-(input cosine 0.93–0.97) and share read / write subspaces (overlap 6–7x random). So a pair run in sequence is close to
-the same pair run **in parallel**, which is one wider layer. Measured on a T4: the parallel union keeps the most
-few-shot ability of any method (avg acc 33.7 at 2 layers, 28.0 at 4; drop 30.6 / 23.8). PolyShrink turns that wider
-layer back into one standard layer without losing what it keeps:
+AAM gives the only significant few-shot gain. PRISM-Shrink gives the lowest perplexity at 4 layers and keeps
+in-context copying best. Against the matched control, it does 33 % less perplexity damage and has a 43 % lower
+copying loss, in all six languages. All other experiments are in `results/`.
 
-| Part | What it does | Notebook |
-|---|---|---|
-| PRISM exact parallel form | norm gains folded into read weights, per-head q/k-norm gains kept; lossless (asserted) | all |
-| Shrink | the parts to drop fade out (alpha 1 -> 0) while the union is distilled; a standard layer is extracted (checked equal) | 11 (archived) |
-| ICL-preserving packing | distillation sequences `[a, b, a]`: the repeat trains long-range copying, the language switch trains cross-lingual context | 13 |
-| Language-specific residual (LSR) | shared merged layer + per-language rank-16 delta, routed per token by a frozen linear language probe | 14 |
-| CoPlan | merge the pairs whose exact parallel union has the lowest error, not the lowest angular distance | 15 |
-| **PolyShrink** | all of the above | **15** |
+## Layout
 
-## Notebooks to run
-| # | Notebook | Role | Approx. Kaggle T4 time |
-|---|---|---|---|
-| 15 | `15_polyshrink_full` | **full method** | ~1.5–2 h |
-| 13 | `13_shrink_icl` | ablation: + ICL packing only | ~1.5 h |
-| 14 | `14_shrink_lsr` | ablation: + LSR only | ~1.5 h |
-| 12 | `12_laco_baseline` | published baseline (LaCo, Yang et al. 2024) | ~45 min |
-| 10 | `10_prism_heal` | variant: PRISM start + annealed KD (running on Kaggle) | ~1.5 h |
-| 08, 09 | `08_prism_span`, `09_prism_polyglot` | ablations of the selection rule (closed form) | ~1 h each |
-| 06 | `06_homotopy_distillation` | older SDCF start + annealing | ~1.5 h |
-| 04 | `04_acdc_fusion_search` | search for which layers to merge (slow) | ~2 h |
-| 00 | `00_layer_analysis` | figures: what each layer does, per language | ~10 min |
+```
+README.md
+docs/
+  layer_merging_explained.md     everything explained from LLM basics up, with figures
+  algorithm_notes.md             every algorithm, its maths and results, plus common questions
+  results_comparison.md          comparison of all experiments and the best per goal
+  figures/                       the figures used in the docs
+results/
+  small_test_results.md          all experiments, small test (100 items per benchmark)
+  large_test_results.md          main methods and ablations, large test (200-250 items, CIs, p-values)
+prism_shrink/                    PRISM-Shrink
+  prism_shrink.ipynb             small test
+  prism_shrink_icl.ipynb         small test, with ICL-preserving training text
+  prism_shrink_icl_large_test.ipynb
+  runs/                          run.log and result JSONs of each run
+aam/                             AAM (same layout)
+baselines/
+  reference/                     original model + drop (large-test notebook, runs)
+  drop_kd_control/               drop + the same distillation as the merge methods
+  laco/                          published LaCo baseline (Yang et al., 2024)
+analysis/
+  layer_analysis/                what each layer does, and scores for every pair of layers
+  attention_heads/               previous-token and induction score of every head
+  test_set/                      test tokens per language (>= 100k each)
+tools/
+  kaggle_run.sh                  push a notebook to Kaggle (GPU T4), check it, download its results
+  analyze.py                     rebuild results/large_test_results.md from the runs
+```
 
-Suggested order: `15` -> `13` and `14` (in parallel) -> `12` -> the rest. PRISM notebooks default to
-`merge_counts=[2, 4]`. Each training notebook's distillation uses 400 steps (`steps` in the settings cell).
+## Setup
 
-## Prior work to cite and position against
-Running consecutive layers in parallel was proposed before ("Leveraging the True Depth of LLMs", 2025; verify before
-citing). The contributions here are compressing that union back to one standard layer (Shrink), keeping few-shot
-ability (ICL packing), keeping every language (LSR), choosing pairs by parallelizability (CoPlan), and the
-measurements behind them. Not used (done before): plain drop / averaging (reference rows only), affine maps
-(Assignment 1), ShortGPT / TerGRASP / SVD / plain KD (Assignment 2), Amrita's hypernetwork merger.
+- **Calibration and training:** Wiki-40B train. **Tests** (never used for fitting): MMMLU 5-shot (MMLU for English),
+  INCLUDE 5-shot, MGSM 4-shot chain of thought, Belebele 3-shot, XNLI 3-shot, mC4 and Wiki-40B perplexity, and an
+  in-context copying probe.
+- **Hardware:** Kaggle GPU T4. Each notebook runs on its own. Example:
+  `cd tools && NB_DIR=../aam ./kaggle_run.sh push aam_large_test`.
+- **Rebuild the results table:** `python3 tools/analyze.py`.
+
+## Prior work
+
+Running consecutive layers in parallel was proposed before ("Leveraging the True Depth of LLMs", 2025). Layer removal
+by angular distance: Gromov et al.; ShortGPT. Merging baseline: LaCo. The contributions here are rebuilding a pair
+exactly as one parallel layer and shrinking it back to a standard layer (PRISM-Shrink), choosing pairs by how exactly
+they run in parallel (CoPlan), and the measurements behind them.
