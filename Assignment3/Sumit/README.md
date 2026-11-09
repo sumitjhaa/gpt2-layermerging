@@ -1,10 +1,12 @@
 # Assignment 3 (Sumit): merging consecutive layers of a multilingual LLM
 
-**Repository contents.** Only the top 3 methods are kept here: AAM (`experimented/03_*`, `paper_runs/pp_p17_p03/p03_aam`),
-PRISM-Shrink (`experimented/11_*`, `13_*`, `paper_runs/pp_p13_p16/p13_shrink_icl`) and PolyShrink + CoPlan
-(`experimented/15_*`), plus the shared reference rows (`paper_runs/p20a_data_refs`). The other experiments live in the
-gitignored `archive/` folder; their numbers are kept in `RESULTS_COMPARISON.md`, `experimented/README.md` and
-`paper/RESULTS.md`. Full explanation: `LAYER_MERGING_EXPLAINED.md`.
+**Repository contents.** The two methods for the paper: **PRISM-Shrink** (the new method: `experimented/11_*`,
+`experimented/13_*`, `paper_runs/pp_p13_p16/p13_shrink_icl`) and **AAM** (strong baseline: `experimented/03_*`,
+`paper_runs/pp_p17_p03/p03_aam`). Their comparisons: original + drop (`paper_runs/p20a_data_refs`), the matched
+drop + KD control (`baselines/drop_kd_control`), the published LaCo baseline (`baselines/laco_published`), and the
+layer analysis behind the figures (`analysis/layer_analysis`). The other experiments (ablations and negative results,
+incl. PolyShrink, SKM, XTC) live in the gitignored `archive/` folder; their numbers are kept in
+`RESULTS_COMPARISON.md`, `experimented/README.md` and `paper/RESULTS.md`. Full explanation: `LAYER_MERGING_EXPLAINED.md`.
 
 Model `Qwen/Qwen3-0.6B-Base` (28 layers); languages en, hi, fr, es, de, zh. **Tests** (never used for fitting):
 MMMLU 5-shot (MMLU for English), INCLUDE 5-shot, MGSM 4-shot chain of thought, Belebele 3-shot, XNLI 3-shot, mC4 and

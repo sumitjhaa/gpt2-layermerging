@@ -63,8 +63,10 @@ def ppl_inc(r, o, ds="mc4"):
 def main():
     root = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "paper_runs")
     R = load(root)
-    if len(sys.argv) < 2 and os.path.isdir(os.path.join(root, "..", "archive", "paper_runs")):  # archived runs, if present
-        R.update(load(os.path.join(root, "..", "archive", "paper_runs")))
+    if len(sys.argv) < 2:  # the committed baselines (drop + KD control), then archived runs if present
+        R.update(load(os.path.join(root, "..", "baselines")))
+        if os.path.isdir(os.path.join(root, "..", "archive", "paper_runs")):
+            R.update(load(os.path.join(root, "..", "archive", "paper_runs")))
     o = R["original|0|—"]
     drop = {(r["k"], r["plan"]): r for r in R.values() if r["method"] == "drop"}
     print("| removed | pairs | method | params cut % | mC4 ppl +% | avg acc [95% CI] | Δ vs drop [95% CI] | p | "
