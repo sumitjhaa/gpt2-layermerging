@@ -42,10 +42,10 @@ prism_shrink/                    PRISM-Shrink
   prism_shrink.ipynb             small test
   prism_shrink_icl.ipynb         small test, with ICL-preserving training text
   prism_shrink_icl_large_test.ipynb
-  runs/                          run.log and result JSONs of each run
+  runs/<notebook name>/          run.log and result JSONs of that notebook's run
 aam/                             AAM (same layout)
 baselines/
-  reference/                     original model + drop (large-test notebook, runs)
+  reference/                     original model + drop, on both tests
   drop_kd_control/               drop + the same distillation as the merge methods
   laco/                          published LaCo baseline (Yang et al., 2024)
 analysis/

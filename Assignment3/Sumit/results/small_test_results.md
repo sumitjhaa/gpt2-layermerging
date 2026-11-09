@@ -4,8 +4,8 @@ Model Qwen3-0.6B-Base; languages en, hi, fr, es, de, zh. All Kaggle runs: GPU T4
 language: 100 per benchmark (MGSM 40), so differences under ~10 points on one benchmark (~4 on avg acc) are noise.
 Accuracy = mean over languages, in %. "ppl +%" = increase over the original model (lower is better).
 
-Raw runs are kept in the repository for AAM (`../aam/runs/small_test`), PRISM-Shrink
-(`../prism_shrink/runs/small_test`) and the reference rows (`../baselines/reference/runs/small_test`); the other
+Raw runs are kept in the repository for AAM (`../aam/runs/aam`), PRISM-Shrink (`../prism_shrink/runs/prism_shrink`,
+`../prism_shrink/runs/prism_shrink_icl`) and the reference rows (`../baselines/reference/runs/reference_small_test`); the other
 experiments are kept as numbers only. AAM also ran on Colab with identical numbers.
 
 ## All Kaggle results (rows grouped by layers removed and by the pairs merged)

@@ -1225,5 +1225,5 @@ method that keeps few-shot ability better than simple training*. Nothing achieve
 
 ---
 
-*Every number here comes from the runs in this folder (`runs/small_test` = old test, `runs/large_test` = large test)
+*Every number here comes from the runs in `../aam/runs/`, `../prism_shrink/runs/` and `../baselines/` (one folder per notebook; `*_large_test` = large test)
 or, for the removed experiments, from the tables in `../results/`.*
