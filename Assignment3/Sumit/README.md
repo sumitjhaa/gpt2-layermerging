@@ -3,8 +3,9 @@
 Remove 2 to 8 of the 28 layers of **Qwen3-0.6B-Base** (and 4 of the 28 layers of **Qwen3-1.7B-Base**) by merging
 pairs of consecutive layers, and lose as little as possible in six languages (en, hi, fr, es, de, zh).
 
-- **PRISM-Shrink** (the new method). Rebuild a pair of layers exactly as one wide parallel layer, then shrink it
-  gradually to one standard layer while distilling from the original model.
+- **PRISM-Shrink** (a gradual, distilled variant of layer flattening; the closest prior work is FlattenGPT, see
+  Prior work). Rebuild a pair of layers exactly as one wide parallel layer, then shrink it gradually to one standard
+  layer while distilling from the original model.
 - **AAM** (annealed absorption, the strong baseline). Keep the better layer of each pair, fade the other out and
   distill.
 - **Control**: drop one layer of each pair and apply the same distillation. Any gain a method shows over this control
@@ -133,6 +134,19 @@ from the run folders alone.
 ## Prior work
 
 Running consecutive layers in parallel was proposed before ("Leveraging the True Depth of LLMs", 2025). Layer removal
-by angular distance: Gromov et al.; ShortGPT. Merging baseline: LaCo. The contributions here are rebuilding a pair
-exactly as one parallel layer and shrinking it back to a standard layer (PRISM-Shrink), choosing pairs by how exactly
-they run in parallel (CoPlan), and the measurements behind them.
+by angular distance: Gromov et al.; ShortGPT. Merging baseline: LaCo. **The closest prior work to PRISM-Shrink is
+FlattenGPT (Depth Compression for Transformer with Layer Flattening, arXiv 2602.08858, 2026)**: it also turns two adjacent layers into one wide layer
+(attention heads and MLP neurons of both, reading the same input) and prunes it back to the original width. It does so
+in one step without training (head scores, ridge leverage scores and a closed-form correction), on English
+benchmarks with 7B-70B models. Related: FuseGPT (folding removed blocks into their neighbours, 2024), LLM-Streamline
+(a small trained module replaces removed layers, ICLR 2025), Sliding Layer Merging (2025).
+
+What is added here:
+1. **The gradual hand-over:** training starts from the exact original pair and fades the dropped heads and neurons
+   out while distilling from the original model, instead of cutting in one step.
+2. **ICL-packed training text**, which protects in-context copying.
+3. **CoPlan:** choosing pairs by how exactly they run in parallel, not by similarity alone.
+4. **The measurements:** six languages plus two unseen ones, a competence check, a matched drop + distillation
+   control, paired tests and three seeds. They show that this family of methods cuts perplexity damage clearly
+   (+16.6 % vs +24.2 % for the control) but does not improve few-shot accuracy over the control; keeping the better
+   layer (AAM) is what improves accuracy.

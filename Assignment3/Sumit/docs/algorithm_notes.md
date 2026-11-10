@@ -292,7 +292,10 @@ Language-fair selection does **not** protect the worst language.
 **Results:** 2 removed +8.0 % / 29.5; 4 removed +23.3 % / 24.1. Better perplexity than AAM at 4 layers, worse
 few-shot — again the closed-form (refit) start hurts few-shot.
 
-### 11 · PRISM-Shrink (gradual, new — the core method)
+### 11 · PRISM-Shrink (gradual variant of layer flattening — the core method)
+Closest prior work: FlattenGPT (Depth Compression for Transformer with Layer Flattening, arXiv 2602.08858, 2026), which builds the
+same wide parallel layer and prunes it back in one step without training. What differs here is the gradual,
+distilled hand-over below.
 Never cut in one step; start from the **exact parallel union** and fade out what will be dropped:
 1. Build the parallel union U of the pair; choose the parts to keep (energy, as 07; no refit).
 2. `Shrink` module: group output = α · B(A(h)) + (1 − α) · U_α(h), where U_α is the union with every **discarded**
@@ -543,8 +546,9 @@ Why the absolute numbers are not a fair race: removing layers hurts Qwen3 far mo
 - **Weak:** no method beats AAM on few-shot accuracy at the same pairs; LSR did not work and ICL packing only helps
   copying; 3 seeds only for the main 0.6B 4-layer rows (one elsewhere); AAM and Shrink were not run on the CoPlan pairs. (The large test fixed the small
   test size, the Qwen3-1.7B runs added a second model size, and 3 seeds showed the 4-layer results are stable.)
-- **Prior work to cite:** running consecutive layers in parallel ("Leveraging the True Depth of LLMs", 2025),
-  LaCo, ShortGPT, SLEB, Gromov et al. (angular distance), RegMean, GPTQ. Check each before citing.
+- **Prior work to cite:** FlattenGPT (Depth Compression for Transformer with Layer Flattening, arXiv 2602.08858, 2026) (closest to
+  PRISM-Shrink); running consecutive layers in parallel ("Leveraging the True Depth of LLMs", 2025), FuseGPT,
+  LLM-Streamline, Sliding Layer Merging, LaCo, ShortGPT, SLEB, Gromov et al. (angular distance), RegMean, GPTQ. Check each before citing.
 
 ---
 

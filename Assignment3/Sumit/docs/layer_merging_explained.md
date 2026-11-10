@@ -747,7 +747,7 @@ Language-fair selection does not protect the worst language.
 **Result.** +8.0 % / 29.5 and **+23.3 %** / 24.1. Better perplexity than AAM at 4 layers, worse few-shot, the
 same lesson as 06: **a closed-form start hurts few-shot**.
 
-## 11 · PRISM-Shrink (gradual, new) ★ best perplexity
+## 11 · PRISM-Shrink (gradual variant of layer flattening, cf. FlattenGPT) ★ best perplexity
 
 **Idea.** Never cut in one step. Start from the **exact union** and **fade out the parts that will be dropped**
 while distillation retrains everything:
@@ -1207,7 +1207,8 @@ it is barely a *merge*. It is "keep the better layer, fade the other, distill", 
 **Why it works.** Consecutive middle layers read the same stream (cosine 0.96–0.97) and share read and write
 directions (6–7× random), so the union is a faithful starting point that genuinely contains both layers (knockouts
 prove it). The gradual fade gives the network time to move the dropped parts' work into the kept parts.
-**This is the most original contribution of the project.** **Weakness:** it does not recover few-shot accuracy.
+**Closest prior work: FlattenGPT (2026)** builds the same wide layer and prunes it in one step without training;
+the gradual, distilled hand-over and the ICL packing are what is added here (see 8.4). **Weakness:** it does not recover few-shot accuracy.
 
 ### 🥉 3. PolyShrink with CoPlan pair selection (notebook 15): the pair-choice insight
 
@@ -1266,7 +1267,8 @@ method that keeps few-shot ability better than simple training*. Nothing achieve
 | Deleting similar layers (angular distance) | prior (Gromov et al.; ShortGPT) |
 | LaCo, RegMean, GPTQ-style refitting | prior; used as baselines or tools |
 | Delete + distill / heal | prior (several layer-pruning papers) → AAM's novelty is the annealed fade + anchor choice |
-| **Exact parallel union with folded norms and per-head q/k gains, shrunk gradually and extracted to a standard layer (PRISM-Shrink)** | **likely new** |
+| Merging two adjacent layers into one wide parallel layer and pruning it back to the original width | prior: FlattenGPT (Depth Compression for Transformer with Layer Flattening, arXiv 2602.08858, 2026) (one step, no training) |
+| **PRISM-Shrink's gradual hand-over: start from the exact original pair, fade the dropped parts out while distilling, then extract a standard layer** | **likely new (a variant of FlattenGPT)** |
 | **CoPlan (pairs chosen by parallel-union error)** | **likely new** |
 | **SKM (smeared keys to rescue cross-layer circuits in merging)**, **XTC (bilinear cross term)** | likely new ideas, negative results so far |
 | Smeared keys themselves | prior (Olsson et al., 2022) |
