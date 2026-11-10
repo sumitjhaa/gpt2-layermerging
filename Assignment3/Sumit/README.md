@@ -103,6 +103,23 @@ tools/
   make_figures.py                rebuild the result figures in docs/figures/
 ```
 
+**Where each number comes from.** Every run has a notebook `<method folder>/<name>.ipynb` and its log and result
+JSONs in `<method folder>/runs/<name>/`. Notebook names say what the run is:
+
+| Name ends in | Run |
+|---|---|
+| `_large_test` | 2 and 4 layers removed, Qwen3-0.6B (seed 0, the main rows) |
+| `_deep`, `_deep6`, `_deep8` | 6 and 8 layers removed |
+| `_17b` | Qwen3-1.7B, 4 layers removed |
+| `aam_icl`, `drop_kd_control_plain`, `prism_shrink_plain` | training text ablation (ICL-packed vs plain), 4 layers |
+| `_steps1000` | 1,000 instead of 400 training steps |
+| `_seed1`, `_seed2` | the same 4-layer run with another seed |
+| no suffix (`aam`, `prism_shrink`, `prism_shrink_icl`, `laco`) | the small test (`results/small_test_results.md`) |
+
+The small-test reference rows (`baselines/reference/runs/reference_small_test/`) were computed inside the LaCo run
+(same file, see its log). `python3 tools/analyze.py . > results/large_test_results.md` rebuilds the large-test table
+from the run folders alone.
+
 ## Setup
 
 - **Calibration and training:** Wiki-40B train. **Tests** (never used for fitting): MMMLU 5-shot (MMLU for English),

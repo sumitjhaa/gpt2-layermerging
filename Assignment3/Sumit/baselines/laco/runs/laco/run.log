@@ -1,0 +1,89 @@
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Downloading data (first run only, ~5-15 min). Tip: add HF_TOKEN as a Colab/Kaggle secret to avoid rate limits.
+  en: mmmlu 100, mgsm 40, belebele 100, xnli 100 (57s)
+  hi: mmmlu 100, include 100, belebele 100, xnli 100 (88s)
+  fr: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (44s)
+  es: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (44s)
+  de: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (43s)
+  zh: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (40s)
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+    eval en: 83s
+    eval hi: 202s
+    eval fr: 112s
+    eval es: 107s
+    eval de: 114s
+    eval zh: 93s
+original k=0 [—]: eval 712s
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+    eval en: 80s
+    eval hi: 190s
+    eval fr: 105s
+    eval es: 98s
+    eval de: 107s
+    eval zh: 81s
+drop k=2 [12-13; 14-15]: eval 662s
+    eval en: 67s
+    eval hi: 189s
+    eval fr: 104s
+    eval es: 88s
+    eval de: 105s
+    eval zh: 80s
+laco k=2 [12-13; 14-15]: eval 633s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+    eval en: 75s
+    eval hi: 176s
+    eval fr: 99s
+    eval es: 94s
+    eval de: 100s
+    eval zh: 82s
+drop k=4 [10-11; 12-13; 14-15; 16-17]: eval 626s
+    eval en: 75s
+    eval hi: 176s
+    eval fr: 99s
+    eval es: 94s
+    eval de: 100s
+    eval zh: 82s
+laco k=4 [10-11; 12-13; 14-15; 16-17]: eval 626s
+This algorithm vs the references:
+Every algorithm whose results are in /kaggle/working/layer_merging (run the other notebooks with the same data_dir):
+/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+[NbConvertApp] Writing 2479729 bytes to __notebook__.ipynb
+[NbConvertApp] Converting notebook __notebook__.ipynb to html
+[NbConvertApp] Writing 2369884 bytes to __results__.html
