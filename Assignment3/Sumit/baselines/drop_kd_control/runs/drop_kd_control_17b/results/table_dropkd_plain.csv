@@ -1,0 +1,4 @@
+method,removed,plan,param red %,mc4 ppl +%,mc4 worst +%,wiki ppl +%,wiki worst +%,mmmlu,include,mgsm,belebele,xnli,avg acc,copy nll,decode tok/s,build s
+original,0,—,0.0,0.0,0.0,0.0,0.0,50.9,54.6,58.8,76.5,53.5,58.9,0.1061,21.2,0.0
+dropkd_plain,4,10-11; 12-13; 14-15; 23-24,11.7,32.1,37.9,27.9,33.6,33.2,34.8,6.3,34.7,45.4,30.9,1.1498,24.4,615.5
+drop,4,10-11; 12-13; 14-15; 23-24,11.7,70.5,78.2,75.6,94.1,22.2,29.8,1.8,26.1,40.6,24.1,2.8314,23.2,0.0

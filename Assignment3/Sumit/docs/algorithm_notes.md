@@ -357,7 +357,15 @@ Note: this run used the LSR learning rate 5e-5 (the fix came after), so its LSR 
 
 ---
 
-## 5. Final results (Kaggle T4, angular-distance pairs; full table with all 39 rows in `../results/small_test_results.md`)
+## 5. Final results
+
+**Large test (the numbers to cite):** `../results/large_test_results.md` (every run, 95 % CIs, paired p-values) and
+`results_comparison.md` (best method per goal). In short: AAM has the best accuracy at 2, 4, 6 and 8 layers removed
+and on Qwen3-1.7B, significantly above drop and above the matched control; PRISM-Shrink has the lowest perplexity
+damage and copying loss from 4 layers on, in all six languages, on both models, but its accuracy equals the control's.
+
+**Small test** (Kaggle T4, angular-distance pairs; 100 items per benchmark; all 39 rows in
+`../results/small_test_results.md`):
 
 | Removed | Method | mC4 ppl +% | worst lang +% | avg acc |
 |---|---|---|---|---|
@@ -532,8 +540,9 @@ Why the absolute numbers are not a fair race: removing layers hurts Qwen3 far mo
 - **Strong:** merging is proven (every merged pair beats both single layers; knockouts); PRISM-Shrink gives the best
   perplexity at standard size by a wide margin over AAM, LaCo and drop; CoPlan gives a clear few-shot gain from pair
   choice alone; Kaggle reproduced the Colab AAM numbers exactly.
-- **Weak:** no method beats AAM on few-shot accuracy at the same pairs; ICL packing and LSR did not work; one model
-  size; 100 test items per benchmark (±10 points); one seed; AAM and Shrink were not run on the CoPlan pairs.
+- **Weak:** no method beats AAM on few-shot accuracy at the same pairs; LSR did not work and ICL packing only helps
+  copying; one seed per method; AAM and Shrink were not run on the CoPlan pairs. (The large test fixed the small
+  test size, and the Qwen3-1.7B runs added a second model size.)
 - **Prior work to cite:** running consecutive layers in parallel ("Leveraging the True Depth of LLMs", 2025),
   LaCo, ShortGPT, SLEB, Gromov et al. (angular distance), RegMean, GPTQ. Check each before citing.
 
@@ -565,12 +574,22 @@ Why the absolute numbers are not a fair race: removing layers hurts Qwen3 far mo
     are not.
 11. *Why did the LSR not help?* The probe reads the language well, but a rank-16 per-language correction does not
     capture what is lost; the loss seems to be shared rather than language-specific.
+12. *Does it hold when more layers are removed?* Yes. At 6 and 8 layers AAM is still significantly above drop
+    (+2.3, +2.5) and the control, and PRISM-Shrink's perplexity damage is the lowest (+39 % and +69 % vs drop's +237 %
+    and +689 %), in all six languages.
+13. *Does it hold on a bigger model?* On Qwen3-1.7B (4 layers removed) the ranking is the same: AAM 34.1 (+10.0 over
+    drop), PRISM-Shrink 31.5 with the lowest perplexity (+22.3 %) and copying loss (0.26), control 30.9, drop 24.1.
+14. *Why is AAM better than the control?* Because it keeps the better layer of each pair. With the training text held
+    fixed this gives +1.6 to +2.5 points; changing only the text (plain vs ICL-packed) moves accuracy by at most 0.7.
+15. *Why does PRISM-Shrink need smaller micro-batches deeper or bigger?* Each union is twice a layer, trained in fp32
+    with Adam, so 6+ unions (0.6B) or 4 unions (1.7B) fill a 15 GB T4. Splitting each step into smaller micro-batches
+    gives the same gradient with less memory.
 
 ---
 
 ## 11. One line to memorise
 
 **Consecutive middle layers of a multilingual LLM are nearly parallel; merging them through their exact parallel
-union and shrinking it gradually (PRISM-Shrink) gives the lowest perplexity at standard size (+17.9 % vs +110 %
-for drop at 4 layers), while *which* pairs are merged (CoPlan) decides few-shot accuracy — and perplexity alone
-would hide that.**
+union and shrinking it gradually (PRISM-Shrink) gives the lowest perplexity and the best copying at every depth and
+on two model sizes, while keeping the better layer of each pair (AAM) gives the best few-shot accuracy — and
+perplexity alone would hide that difference.**

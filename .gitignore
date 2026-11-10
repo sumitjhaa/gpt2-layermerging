@@ -56,3 +56,8 @@ htmlcov/
 # IDEs
 .vscode/
 .idea/
+# Kaggle run working files (Assignment3/Sumit/tools)
+Assignment3/Sumit/tools/generated/
+Assignment3/Sumit/tools/runs_raw/
+Assignment3/Sumit/tools/queue_state.json
+Assignment3/Sumit/tools/queue*.log

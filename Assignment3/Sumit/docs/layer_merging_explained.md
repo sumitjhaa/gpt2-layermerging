@@ -29,7 +29,7 @@ Chinese. **Hardware:** Kaggle T4 GPUs. **Code and runs:** `../prism_shrink/`, `.
 ## The answer in 60 seconds
 
 ```
-  Goal: remove 2 or 4 of the 28 layers of Qwen3-0.6B and lose as little as possible, in 6 languages.
+  Goal: remove 2 to 8 of the 28 layers of Qwen3-0.6B (and 4 of Qwen3-1.7B), losing as little as possible, in 6 languages.
 
   What "losing" means here:
      perplexity  = how surprised the model is by normal text            (language-modelling quality)
@@ -51,6 +51,10 @@ Chinese. **Hardware:** Kaggle T4 GPUs. **Code and runs:** `../prism_shrink/`, `.
 - **AAM wins few-shot accuracy**, significantly (+5.4 points at 2 layers, +3.3 at 4).
 - **PRISM-Shrink wins perplexity at 4 layers and keeps in-context copying** almost perfectly. Against a fair
   control it does 33 % less perplexity damage and has a 43 % lower copying loss (4 layers removed). On few-shot accuracy, though, it is no better than deleting a layer.
+- **It holds deeper and bigger** (Part 6.7). At 6 and 8 layers removed and on Qwen3-1.7B, AAM keeps the best accuracy
+  (significant against drop and against the control everywhere) and PRISM-Shrink keeps the lowest perplexity damage
+  and the best copying, in all six languages. On Qwen3-1.7B, AAM gains +10.0 points over drop.
+- **AAM's win comes from keeping the better layer of each pair**, not from its training text (Part 6.7).
 - **The two newest ideas, SKM and XTC, did not add anything measurable.** There is a clear reason why: the pairs that
   were merged do not contain the circuit SKM repairs.
 - **Verdict:** yes, you came out with real, defensible results. They are an original construction (PRISM: the exact
@@ -1038,7 +1042,93 @@ for every model) and should not be compared.
    (L15 instead of L14, L11 instead of L10) and trains on **plain Wikipedia** instead of ICL-packed `[a, b, a]`
    sequences. One of these makes a 5-point difference. The ICL-packed models are also the ones that drop below drop
    on Belebele, so the packing is the main suspect. **Hypothesis, not yet tested:** training on exact repeats teaches
-   the merged layer to over-rely on copying, which hurts reading comprehension.
+   the merged layer to over-rely on copying, which hurts reading comprehension. **Tested in 6.7: it is the anchor
+   choice, not the packing.**
+
+## 6.7 Pushing further: more layers, a bigger model, and what really drives AAM
+
+Three new questions, each answered with its own runs on the same large test (Kaggle T4, two notebooks per session):
+
+```
+  1. DEPTH      What happens at 6 and 8 layers removed (16 % and 21 % of the parameters)?
+  2. MODEL      Does the picture hold on a bigger model that knows more (Qwen3-1.7B-Base)?
+  3. DATA       Is AAM's win from keeping the better layer, or from training on plain text?
+```
+
+### Depth: the gap between "repaired" and "deleted" grows
+
+![Accuracy and perplexity damage vs layers removed](figures/depth.png)
+
+```
+  layers removed        2          4          6          8
+  ─────────────────   ──────     ──────     ──────     ──────
+  drop          acc    28.7       22.6       21.5       20.9         ← falls to chance by 4 layers
+                ppl   +14 %      +85 %     +237 %     +689 %        ← perplexity explodes
+  control       acc    29.3       23.5       22.3       21.6         ← never significant vs drop
+  AAM           acc    34.1 ★     25.8 ★     23.8 ★     23.4 ★       ← significant everywhere
+  PRISM-Shrink  ppl    +6 %      +17 % ★    +39 % ★    +69 % ★      ← lowest damage from 4 layers
+```
+
+- In plain words: with 8 layers gone, deleting them makes the model **7.9×** more confused by normal text.
+  PRISM-Shrink keeps that to **1.7×**, and AAM and the control to about **2×**.
+- **Accuracy** is close to chance for everyone once 4 or more layers are gone (the original scores 48.9). AAM is still
+  significantly better than drop (+2.3 at 6, +2.5 at 8, p ≤ 0.001) and better than the control (p ≤ 0.018).
+  PRISM-Shrink is significantly better than drop at 6 and 8 layers (p ≈ 0.01-0.02) but not than the control.
+- PRISM-Shrink's perplexity is lower than the control's in **all six languages, on both test sets**, at every depth.
+
+### A bigger model: Qwen3-1.7B-Base, 4 layers removed
+
+![Methods on Qwen3-1.7B](figures/model_17b.png)
+
+| | original | drop | control | AAM | PRISM-Shrink |
+|---|---|---|---|---|---|
+| few-shot avg acc | 58.9 | 24.1 | 30.9 | **34.1** | 31.5 |
+| perplexity damage | — | +70.5 % | +32.1 % | +29.4 % | **+22.3 %** |
+| copying loss | 0.106 | 2.83 | 1.15 | 0.45 | **0.26** |
+
+- The bigger model knows much more (58.9 vs 48.9, and every test cell is clearly above chance, so the test can
+  show damage everywhere). It also has more to lose, and distillation recovers more of it: every method is +7 to +10
+  points above drop.
+- **Same ranking as on the small model:** AAM best on accuracy (+3.2 over the control, p < 0.001), PRISM-Shrink best
+  on perplexity and copying (4.5× lower copying loss than the control).
+- The 1.7B model is stored in half precision (16-bit) to fit a T4; only the trained layers are kept in 32-bit.
+
+### What really drives AAM: the kept layer, not the text
+
+![Data ablation and training steps](figures/ablations.png)
+
+AAM and the control differed in two things at once. Two extra runs separate them (4 layers removed):
+
+```
+                         plain text        ICL-packed text
+  keep FIRST layer        23.3              23.5             ← control
+  keep BETTER layer       25.8              25.1             ← AAM
+                          ────              ────
+  effect of the layer:   +2.5              +1.6   (both significant)
+  effect of the text:     at most 0.7 points (not significant)
+```
+
+- **The kept layer is the whole story for accuracy.** "Better" means the layer of the pair that alone reproduces the
+  pair's output best on held-out calibration text (e.g. L15 instead of L14).
+- **ICL-packed text does something else: it protects copying.** It lowers the copying loss for AAM (0.34 → 0.25) and
+  for the control (0.58 → 0.37), and costs at most 0.8 accuracy points.
+- The hypothesis in 6.6 (packing hurts reading comprehension) is therefore **rejected**.
+
+### Does training longer help? (400 vs 1000 steps)
+
+The right panel of the figure above trains AAM and PRISM-Shrink 2.5x longer:
+
+```
+                     400 steps → 1000 steps
+  AAM        acc     25.8      → 26.6    (+0.8, borderline: p = 0.05)
+             ppl     +22.8 %   → +20.6 %
+  PRISM-     acc     24.3      → 24.0    (no change)
+  Shrink     ppl     +17.5 %   → +15.8 %
+```
+
+- Longer training mostly **lowers perplexity a little** (about 2 points); accuracy barely moves.
+- **Copying gets worse** (AAM 0.34 → 0.51), because more steps on plain text pull the model further toward plain text.
+- The order of the methods is the same, so the 400-step comparison is fair.
 
 ---
 
@@ -1138,17 +1228,19 @@ method that keeps few-shot ability better than simple training*. Nothing achieve
 | # | Claim | Evidence |
 |---|---|---|
 | 1 | **PRISM**: two consecutive middle layers can be rebuilt **exactly** as one wide parallel layer, and the merged layer provably uses both | lossless self-check; input cosine 0.96–0.97; subspace overlap 6–7× random; knockouts |
-| 2 | **Shrink** (merging through the union) beats a matched delete-and-distill control on perplexity damage (−33 %) and copying loss (−43 %) at 4 layers, in every language | P13 vs P19, same data, steps and schedule |
+| 2 | **Shrink** (merging through the union) beats a matched delete-and-distill control on perplexity damage (−33 %) and copying loss (−43 %) at 4 layers, in every language; also at 6 and 8 layers and on Qwen3-1.7B (−31 % perplexity damage, 4.5× lower copying loss) | P13 vs P19 (same data, steps and schedule); Part 6.7 |
 | 3 | **AAM** gives a significant few-shot gain over deletion (+5.4 / +3.3 points, p < 0.001) at the lowest cost | P03, large test, paired bootstrap |
 | 4 | **Perplexity and few-shot ability come apart** under layer removal: many methods halve perplexity damage and gain nothing on few-shot | 15 old experiments + P-series |
 | 5 | **Pair choice matters more than merge method for accuracy**, and a parallelisability score (CoPlan) picks better pairs | notebook 15 (old test, needs re-run) |
 | 6 | **Negative results with mechanistic explanations:** ICL packing, LSR, selection rules, SKM and XTC do not help; SKM because the merged pairs hold no copying circuit, XTC because training absorbs the cross term | 13, 14, 07–09, P16–P18, P20a head analysis |
+| 7 | **It holds deeper and bigger:** AAM is significant against drop and the control at 6 and 8 layers and on Qwen3-1.7B (+10.0 over drop); PRISM-Shrink has the lowest perplexity in all six languages at 4-8 layers and on Qwen3-1.7B | Part 6.7, large test |
+| 8 | **AAM's gain comes from the anchor choice** (keep the better layer): +1.6 to +2.5 points with the text held fixed; the text changes accuracy by ≤ 0.7 | data ablation, Part 6.7 |
 
 ## 8.3 What you cannot claim
 
 - That any **merge** (as opposed to AAM's keep-and-distill) preserves few-shot accuracy better than deletion.
 - That SKM or XTC improve the model.
-- Anything about other models or sizes (one model, Qwen3-0.6B), or about seed robustness (one seed per method).
+- Anything about other model families (two sizes of Qwen3 only), or about seed robustness (one seed per method).
 
 ## 8.4 Honest novelty check (verify before citing)
 

@@ -17,10 +17,30 @@ TASKS = ["mmmlu", "include", "mgsm", "belebele", "xnli"]
 B = 2000
 
 
+NAMES = {"drop": "drop", "original": "original", "aam_anneal0.7": "AAM", "aam_icl": "AAM, ICL-packed text",
+         "dropkd_icl": "drop + KD (control)", "dropkd_plain": "drop + KD (control), plain text",
+         "prism_shrink_icl_energy0.7": "PRISM-Shrink + ICL", "prism_shrink_energy0.7": "PRISM-Shrink, plain text",
+         "skm_shrink_icl": "PRISM-Shrink + ICL + SKM", "xtc_shrink_icl": "PRISM-Shrink + ICL + XTC",
+         "skm_xtc_shrink_icl": "PRISM-Shrink + ICL + SKM + XTC"}
+CHANCE = {"mmmlu": 25.0, "include": 25.0, "belebele": 25.0, "xnli": 100 / 3, "mgsm": 0.0}
+
+
+def name(m):
+    base, _, tag = m.partition("_steps")
+    return NAMES.get(base, base) + (f", {tag} steps" if tag else "")
+
+
 def load(root):
-    R = {}
+    """{model: {key: row}}. Only rows with per-item results (the large test); when the same row was evaluated twice,
+    the run that covers more test cells (e.g. also the unseen languages) wins."""
+    R = defaultdict(dict)
     for p in sorted(glob.glob(os.path.join(root, "**", "results", "results_*.json"), recursive=True)):
-        R.update({k: r for k, r in json.load(open(p)).items() if "hits" in r["eval"]})  # small-test rows share keys
+        if "/s_" in p or "/runs_raw/" in p:  # smoke tests (tiny settings) / raw downloads: only the method folders count
+            continue
+        model = os.path.basename(p).rsplit("_", 1)[1][:-5]  # results_<method>_<model>.json
+        for k, r in json.load(open(p)).items():
+            if "hits" in r["eval"] and len(r["eval"]["hits"]) >= len(R[model].get(k, {"eval": {"hits": {}}})["eval"]["hits"]):
+                R[model][k] = r
     return R
 
 
@@ -58,15 +78,31 @@ def ppl_inc(r, o, ds="mc4"):
     return sum(inc) / len(inc)
 
 
-def main():
-    root = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-    R = load(root)
-    print("# Results on the large test (95 % bootstrap CIs, paired p-values vs drop on the same pairs)\n")
+def competence(o):
+    """Is the original model clearly above chance on every benchmark x language? A cell where it is not cannot show
+    damage, so it is flagged."""
+    print("| benchmark | " + " | ".join(LANGS + UNSEEN) + " |")
+    print("|---|" + "---|" * len(LANGS + UNSEEN))
+    for t in TASKS:
+        row = []
+        for l in LANGS + UNSEEN:
+            h = o["eval"]["hits"].get(f"{t}/{l}")
+            if not h:
+                row.append("—")
+                continue
+            est, lo, _, _ = boot({f"{t}/{l}": [int(c) for c in h]})
+            row.append(f"{est:.0f}" + ("" if lo > CHANCE[t] + 2 else " ⚠"))
+        print(f"| {t} (chance {CHANCE[t]:.0f}) | " + " | ".join(row) + " |")
+
+
+def table(R):
     o = R["original|0|—"]
     drop = {(r["k"], r["plan"]): r for r in R.values() if r["method"] == "drop"}
+    ou = cells(o, UNSEEN)
     print("| removed | pairs | method | params cut % | mC4 ppl +% | avg acc [95% CI] | Δ vs drop [95% CI] | p | "
-          "unseen acc | copy NLL | MGSM | decode tok/s |")
-    print("|---|---|---|---|---|---|---|---|---|---|---|---|")
+          f"unseen ja/ru acc (original {avg(ou, None):.1f}) | copy NLL | MGSM |" if ou else
+          "| removed | pairs | method | params cut % | mC4 ppl +% | avg acc [95% CI] | Δ vs drop [95% CI] | p | unseen acc | copy NLL | MGSM |")
+    print("|---|---|---|---|---|---|---|---|---|---|---|")
     groups = defaultdict(list)
     for r in R.values():
         head, _, tail = r["method"].rpartition("_s")
@@ -77,22 +113,36 @@ def main():
         c = cells(r, LANGS)
         est, lo, hi, _ = boot(c)
         d = drop.get((k, plan))
-        dl = "—"
-        pv = ""
+        dl, pv = "—", ""
         if d and m != "drop" and k:
             de, dlo, dhi, p = boot(c, cells(d, LANGS))
             dl, pv = f"{de:+.1f} [{dlo:+.1f}, {dhi:+.1f}]", f"{p:.3f}"
+        label = name(m)
         if len(rs) > 1:  # seeds
             vals = [avg(cells(x, LANGS), None) for x in rs]
             mu = sum(vals) / len(vals)
             sd = (sum((v - mu) ** 2 for v in vals) / (len(vals) - 1)) ** 0.5
-            m = f"{m} ({len(rs)} seeds: {mu:.1f} ± {sd:.1f})"
+            label += f" ({len(rs)} seeds: {mu:.1f} ± {sd:.1f})"
         un = cells(r, UNSEEN)
         mg = [v for kk, v in c.items() if kk.startswith("mgsm/")]
-        print(f"| {k} | {plan} | {m} | {100 * (1 - r['params'] / o['params']):.1f} | {ppl_inc(r, o):+.1f} | "
+        print(f"| {k} | {plan} | {label} | {100 * (1 - r['params'] / o['params']):.1f} | {ppl_inc(r, o):+.1f} | "
               f"{est:.1f} [{lo:.1f}, {hi:.1f}] | {dl} | {pv} | {f'{avg(un, None):.1f}' if un else '—'} | "
-              f"{r['eval'].get('copy_nll', float('nan')):.3f} | {100 * sum(map(sum, mg)) / max(1, sum(map(len, mg))):.1f} | "
-              f"{r['eval'].get('speed', {}).get('decode_tok_s', '')} |")
+              f"{r['eval'].get('copy_nll', float('nan')):.3f} | {100 * sum(map(sum, mg)) / max(1, sum(map(len, mg))):.1f} |")
+
+
+def main():
+    root = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    R = load(root)
+    print("# Results on the large test (95 % bootstrap CIs, paired p-values vs drop on the same pairs)\n")
+    for model in sorted(R, key=lambda m: ("1.7B" in m, m)):
+        if "original|0|—" not in R[model]:
+            continue
+        print(f"## {model}\n")
+        table(R[model])
+        print(f"\n**Competence check ({model}, original model, accuracy %):** ⚠ = not clearly above chance "
+              "(lower 95 % bound within 2 points of chance), so that cell cannot show damage.\n")
+        competence(R[model]["original|0|—"])
+        print()
 
 
 def _selftest():

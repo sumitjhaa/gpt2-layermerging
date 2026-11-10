@@ -45,16 +45,24 @@ EOF
           cp "$sub"/*.json "$sub"/*.csv "$out/$(basename "$(dirname "$sub")")/results/" 2>/dev/null || true
       done
       python3 - "$tmp" "$out" "$nb" "$id" <<'PY'
-import json, re, sys, glob
+import json, os, re, sys, glob
 tmp, out, nb, kid = sys.argv[1:]
-raw = open(glob.glob(f"{tmp}/*.log")[0]).read()
-try:
-    log = "".join(e.get("data", "") for e in json.loads(raw))
-except ValueError:
-    log = raw
-log = re.sub(r"\x1b\[[0-9;]*m", "", log)
-log = "\n".join(l.split("\r")[-1] for l in log.split("\n"))  # keep only the final state of progress-bar lines
+def clean(path):
+    raw = open(path, errors="replace").read()
+    try:
+        log = "".join(e.get("data", "") for e in json.loads(raw))
+    except ValueError:
+        log = raw
+    log = re.sub(r"\x1b\[[0-9;]*m", "", log)
+    return "\n".join(l.split("\r")[-1] for l in log.split("\n"))  # keep only the final state of progress-bar lines
+logs = sorted(glob.glob(f"{tmp}/*.log"))
+kernel = [p for p in logs if os.path.basename(p).startswith("layer-merging-")]  # Kaggle's session log
+log = clean((kernel or logs)[0])
 open(f"{out}/run.log", "w").write(log)
+for p in logs:  # paired runs: each inner notebook's own log -> <out>/<notebook>/run.log
+    d = f"{out}/{os.path.basename(p)[:-4]}"
+    if p not in kernel and os.path.isdir(d):
+        open(f"{d}/run.log", "w").write(clean(p))
 src = json.load(open(glob.glob(f"{tmp}/*.ipynb")[0]))
 src["cells"] += [
     {"cell_type": "markdown", "metadata": {}, "source": [f"## Kaggle run log ({kid}, GPU T4 x2)\n",
