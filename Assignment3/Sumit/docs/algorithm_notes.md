@@ -541,8 +541,8 @@ Why the absolute numbers are not a fair race: removing layers hurts Qwen3 far mo
   perplexity at standard size by a wide margin over AAM, LaCo and drop; CoPlan gives a clear few-shot gain from pair
   choice alone; Kaggle reproduced the Colab AAM numbers exactly.
 - **Weak:** no method beats AAM on few-shot accuracy at the same pairs; LSR did not work and ICL packing only helps
-  copying; one seed per method; AAM and Shrink were not run on the CoPlan pairs. (The large test fixed the small
-  test size, and the Qwen3-1.7B runs added a second model size.)
+  copying; 3 seeds only for the main 0.6B 4-layer rows (one elsewhere); AAM and Shrink were not run on the CoPlan pairs. (The large test fixed the small
+  test size, the Qwen3-1.7B runs added a second model size, and 3 seeds showed the 4-layer results are stable.)
 - **Prior work to cite:** running consecutive layers in parallel ("Leveraging the True Depth of LLMs", 2025),
   LaCo, ShortGPT, SLEB, Gromov et al. (angular distance), RegMean, GPTQ. Check each before citing.
 

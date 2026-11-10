@@ -1,0 +1,53 @@
+shared data: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-deep/reference_deep_a/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-deep/reference_deep_a/layer_merging/results_reference_Qwen3-0.6B-Base.json
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-deep/reference_deep_b/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/aam_seed2/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<05:24,  1.05s/it]
+Loading weights:  90%|████████▉ | 278/310 [00:01<00:00, 331.74it/s]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 258.57it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: keep L11 (held-out error alone: L10 34.5%, L11 33.2%)
+  group 12-13: keep L12 (held-out error alone: L12 23.3%, L13 23.5%)
+  group 14-15: keep L15 (held-out error alone: L14 28.9%, L15 26.6%)
+  group 16-17: keep L16 (held-out error alone: L16 35.8%, L17 36.9%)
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+  step   50  alpha 0.920  kl 0.0092  hid 0.0018  (41s)
+  step  100  alpha 0.712  kl 0.0245  hid 0.0099  (82s)
+  step  150  alpha 0.438  kl 0.0560  hid 0.0329  (123s)
+  step  200  alpha 0.184  kl 0.0850  hid 0.0637  (165s)
+  step  250  alpha 0.026  kl 0.1695  hid 0.0775  (208s)
+  step  300  alpha 0.000  kl 0.1519  hid 0.1147  (250s)
+  step  350  alpha 0.000  kl 0.1532  hid 0.1121  (291s)
+  step  399  alpha 0.000  kl 0.1204  hid 0.1065  (332s)
+    eval en: 329s
+    eval hi: 396s
+    eval fr: 418s
+    eval es: 401s
+    eval de: 406s
+    eval zh: 351s
+    eval ja: 401s
+    eval ru: 424s
+aam_anneal0.7_seed2 k=4 [10-11; 12-13; 14-15; 16-17]: eval 3132s
+This algorithm vs the references:
+                method  removed                                               plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  unseen acc  copy nll  decode tok/s  build s
+0             original        0                                                  —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9        45.0    0.1247          18.3      0.0
+1  aam_anneal0.7_seed2        4                         10-11; 12-13; 14-15; 16-17         10.6        23.2          39.0         14.8           21.2   30.7     27.6   1.8      27.4  42.8     26.1        24.9    0.3332          20.8    356.6
+2                 drop        4                         10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6        20.4    2.2204          21.1      0.0
+3                 drop        6             7-8; 10-11; 12-13; 14-15; 16-17; 24-25         15.8       236.6         306.9        261.6          472.3   25.1     28.0   1.4      19.2  33.9     21.5        19.4    4.2918          22.3      0.0
+4                 drop        8  5-6; 7-8; 10-11; 12-13; 14-15; 16-17; 22-23; 2...         21.1       689.4         854.2        832.4         1478.3   22.5     27.6   1.0      20.8  32.4     20.9        19.0   10.1119          24.8      0.0
+Every algorithm whose results are in /kaggle/working/aam_seed2/layer_merging
+                method  removed                                               plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  unseen acc  copy nll  decode tok/s  build s
+0             original        0                                                  —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9        45.0    0.1247          18.3      0.0
+1  aam_anneal0.7_seed2        4                         10-11; 12-13; 14-15; 16-17         10.6        23.2          39.0         14.8           21.2   30.7     27.6   1.8      27.4  42.8     26.1        24.9    0.3332          20.8    356.6
+2                 drop        4                         10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6        20.4    2.2204          21.1      0.0
+3                 drop        6             7-8; 10-11; 12-13; 14-15; 16-17; 24-25         15.8       236.6         306.9        261.6          472.3   25.1     28.0   1.4      19.2  33.9     21.5        19.4    4.2918          22.3      0.0
+4                 drop        8  5-6; 7-8; 10-11; 12-13; 14-15; 16-17; 22-23; 2...         21.1       689.4         854.2        832.4         1478.3   22.5     27.6   1.0      20.8  32.4     20.9        19.0   10.1119          24.8      0.0

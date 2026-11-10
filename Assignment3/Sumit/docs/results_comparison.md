@@ -57,6 +57,21 @@ training text changes accuracy by at most 0.8 points; ICL-packed text lowers the
 makes copying worse (the extra steps fit plain text more closely). AAM at 1000 steps is the best 4-layer model
 (+3.1 over the control, p < 0.001). The ranking of the methods does not change, so 400 steps was enough to compare them.
 
+### Three training seeds (4 layers removed)
+
+The seed changes the calibration text and the order of the training batches; seed 0 is the run reported above.
+
+| Method | Accuracy (seeds 0 / 1 / 2) | mean ± sd | vs control, same seed | mC4 ppl +% (mean) | copy (mean) |
+|---|---|---|---|---|---|
+| AAM | 25.8 / 25.4 / 26.1 | **25.8 ± 0.3** | +2.3, +1.8, +2.6 (p ≤ 0.009) | +23.0 % | 0.39 |
+| PRISM-Shrink + ICL | 23.5 / 23.7 / 23.5 | 23.6 ± 0.1 | −0.0, +0.1, +0.0 (p ≥ 0.91) | **+16.6 %** | **0.23** |
+| control (drop + KD) | 23.5 / 23.6 / 23.5 | 23.6 ± 0.1 | — | +24.2 % | 0.44 |
+
+Every conclusion holds on every seed: AAM is significantly more accurate than the control trained with the same seed,
+and PRISM-Shrink has the lowest perplexity damage with the same accuracy as the control. Accuracy and perplexity vary
+by less than 0.7 points across seeds; the copying loss varies more (AAM 0.33 to 0.50), so single copying numbers
+should be read with that spread in mind.
+
 ### Qwen3-1.7B (4 layers removed, plain text for every method)
 
 | Method | avg acc | vs drop | ppl | copy | MGSM |

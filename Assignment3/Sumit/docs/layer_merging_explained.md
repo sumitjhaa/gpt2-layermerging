@@ -1130,13 +1130,29 @@ The right panel of the figure above trains AAM and PRISM-Shrink 2.5x longer:
 - **Copying gets worse** (AAM 0.34 → 0.51), because more steps on plain text pull the model further toward plain text.
 - The order of the methods is the same, so the 400-step comparison is fair.
 
+### Is it luck? Three training seeds
+
+Each method was trained two more times with a different random seed (different calibration text and batch order):
+
+```
+                      accuracy (3 seeds)     mean     ppl damage (mean)
+  AAM                 25.8  25.4  26.1       25.8     +23.0 %
+  PRISM-Shrink + ICL  23.5  23.7  23.5       23.6     +16.6 %
+  control             23.5  23.6  23.5       23.6     +24.2 %
+```
+
+- The spread between seeds (under 0.7 points) is much smaller than AAM's gain over the control (+1.8 to +2.6, significant
+  on every seed). So the AAM result is not one lucky run.
+- PRISM-Shrink matches the control on accuracy on every seed and has the lowest perplexity damage on every seed.
+- The copying loss is the noisiest number (AAM: 0.33 to 0.50 across seeds).
+
 ---
 
 # Part 7. Leaderboard and the top three methods
 
 ## 7.1 Everything ranked
 
-**Large test (rigorous, angular pairs, single seed each):**
+**Large test (rigorous, angular pairs; the main 4-layer rows checked on 3 seeds):**
 
 | Rank | 2 removed: avg acc | 2 removed: perplexity | 4 removed: avg acc | 4 removed: perplexity | Copying (4 removed) |
 |---|---|---|---|---|---|
@@ -1240,7 +1256,7 @@ method that keeps few-shot ability better than simple training*. Nothing achieve
 
 - That any **merge** (as opposed to AAM's keep-and-distill) preserves few-shot accuracy better than deletion.
 - That SKM or XTC improve the model.
-- Anything about other model families (two sizes of Qwen3 only), or about seed robustness (one seed per method).
+- Anything about other model families (two sizes of Qwen3 only), or about seed robustness outside the 0.6B 4-layer runs (3 seeds there, one seed elsewhere).
 
 ## 8.4 Honest novelty check (verify before citing)
 

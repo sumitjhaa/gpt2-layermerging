@@ -20,7 +20,8 @@ KAGGLE = os.environ.get("KAGGLE", os.path.expanduser("~/.venvs/kaggle/bin/kaggle
 MAX = {"gpu": int(os.environ.get("MAX_GPU", 2)), "cpu": int(os.environ.get("MAX_CPU", 4))}
 POLL = int(os.environ.get("POLL", 300))
 # reference session -> method sessions that read its data and original / drop rows (priority order)
-PLAN = {"pp_reference_deep": ["pp_data_ablation", "pp_deep_methods", "pp_shrink_deep", "pp_deep_control", "pp_more_steps"],
+PLAN = {"pp_reference_deep": ["pp_data_ablation", "pp_deep_methods", "pp_shrink_deep", "pp_deep_control", "pp_more_steps",
+                              "pp_seeds_aam", "pp_seeds_shrink", "pp_seeds_control"],
         "pp_reference_17b": ["pp_methods_17b", "pp_shrink_17b"]}
 REFS = list(PLAN)
 JOBS = {"s_" + n: ([], False) for r, ms in PLAN.items() for n in [r] + ms}  # name -> (deps, gpu)
@@ -28,7 +29,8 @@ JOBS.update({r: (["s_" + r], True) for r in REFS})
 for r, ms in PLAN.items():
     JOBS.update({m: (["s_" + m, r], True) for m in ms})
 ORDER = ["pp_reference_deep", "pp_reference_17b", "pp_data_ablation", "pp_deep_methods", "pp_methods_17b",
-         "pp_shrink_deep", "pp_shrink_17b", "pp_deep_control", "pp_more_steps"]
+         "pp_shrink_deep", "pp_shrink_17b", "pp_deep_control", "pp_more_steps",
+         "pp_seeds_aam", "pp_seeds_shrink", "pp_seeds_control"]
 JOBS = {**{k: v for k, v in JOBS.items() if k.startswith("s_")}, **{k: JOBS[k] for k in ORDER}}
 
 

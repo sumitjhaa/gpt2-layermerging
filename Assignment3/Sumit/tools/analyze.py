@@ -26,8 +26,9 @@ CHANCE = {"mmmlu": 25.0, "include": 25.0, "belebele": 25.0, "xnli": 100 / 3, "mg
 
 
 def name(m):
-    base, _, tag = m.partition("_steps")
-    return NAMES.get(base, base) + (f", {tag} steps" if tag else "")
+    base, _, seed = m.partition("_seed")
+    base, _, tag = base.partition("_steps")
+    return NAMES.get(base, base) + (f", {tag} steps" if tag else "") + (f", seed {seed}" if seed else "")
 
 
 def load(root):

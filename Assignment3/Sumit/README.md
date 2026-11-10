@@ -63,7 +63,10 @@ text)
    the same depth.
 5. **Training longer (1000 instead of 400 steps)** lowers perplexity by about 2 points for both methods, moves accuracy
    by at most +0.8 (AAM 25.8 → 26.6, p = 0.05) and makes copying worse. The ranking of the methods does not change.
-6. **Test validity.** Every benchmark and language is answered clearly above chance by the original model, except
+6. **Three training seeds** (4 layers removed): AAM 25.8 ± 0.3, significantly above the control on every seed
+   (+1.8 to +2.6, p ≤ 0.009); PRISM-Shrink 23.6 ± 0.1 accuracy (same as the control) with the lowest perplexity
+   damage on every seed (+16.6 % vs +24.2 %). Copying loss is the noisiest measure across seeds.
+7. **Test validity.** Every benchmark and language is answered clearly above chance by the original model, except
    German XNLI on the 0.6B model (flagged in `results/large_test_results.md`).
 
 Figures: `docs/figures/depth.png`, `docs/figures/model_17b.png`, `docs/figures/ablations.png`. All rows, CIs, unseen

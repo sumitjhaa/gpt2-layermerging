@@ -420,6 +420,12 @@ JOBS = {
     "prism_shrink_plain": ("PRISM-Shrink trained on plain text (data ablation)", dict(merge_counts=[4]), SHRINK("prism_shrink_energy0.7", False)),
     "aam_steps1000": ("AAM with 1,000 distillation steps", dict(merge_counts=[4], steps=1000, tag="_steps1000"), KEEP("aam_anneal0.7", ', anchor="best", pack=False')),
     "prism_shrink_plain_steps1000": ("PRISM-Shrink (plain text) with 1,000 distillation steps", dict(merge_counts=[4], steps=1000, tag="_steps1000"), SHRINK("prism_shrink_energy0.7", False)),
+    # extra seeds for the main 4-layer rows (seed 0 = the original runs); the seed changes calibration and batch sampling
+    **{f"{n}_seed{s}": (f"{t}, seed {s}", dict(merge_counts=[4], seed=s, tag=f"_seed{s}"), cells)
+       for n, t, cells in (("aam", "AAM, 4 layers removed", KEEP("aam_anneal0.7", ', anchor="best", pack=False')),
+                           ("prism_shrink_icl", "PRISM-Shrink + ICL, 4 layers removed", SHRINK("prism_shrink_icl_energy0.7", True)),
+                           ("drop_kd_control", "Control (drop + the same distillation), 4 layers removed", KEEP("dropkd_icl", ', anchor="first", pack=True')))
+       for s in (1, 2)},
     "reference_17b_a": ("Qwen3-1.7B reference: original model", dict(M17, merge_counts=[]), REF),
     "reference_17b_b": ("Qwen3-1.7B reference: drop, 4 layers removed", dict(M17, merge_counts=[4], with_original=False), REF),
     "aam_17b": ("Qwen3-1.7B: AAM, 4 layers removed", dict(M17, merge_counts=[4]), KEEP("aam_anneal0.7", ', anchor="best", pack=False')),
@@ -435,7 +441,10 @@ PAIRS = {"pp_reference_deep": ("reference_deep_a", "reference_deep_b"),
          "pp_methods_17b": ("aam_17b", "prism_shrink_17b"),  # ran once: AAM done, Shrink out of memory
          "pp_shrink_17b": ("prism_shrink_17b", "drop_kd_control_17b"),
          "pp_deep_control": ("drop_kd_control_deep", "prism_shrink_plain"),
-         "pp_more_steps": ("aam_steps1000", "prism_shrink_plain_steps1000")}
+         "pp_more_steps": ("aam_steps1000", "prism_shrink_plain_steps1000"),
+         "pp_seeds_aam": ("aam_seed1", "aam_seed2"),
+         "pp_seeds_shrink": ("prism_shrink_icl_seed1", "prism_shrink_icl_seed2"),
+         "pp_seeds_control": ("drop_kd_control_seed1", "drop_kd_control_seed2")}
 
 FLOAT_UNION = ("        union = prism_layer(gid, nid).requires_grad_(True)\n",
                "        union = prism_layer(gid, nid).float().requires_grad_(True)  # fp32 master weights, also for an fp16 teacher\n")
