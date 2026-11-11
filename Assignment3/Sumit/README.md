@@ -11,6 +11,25 @@ pairs of consecutive layers, and lose as little as possible in six languages (en
 - **Control**: drop one layer of each pair and apply the same distillation. Any gain a method shows over this control
   comes from the method, not from the distillation.
 
+## Start here: reading guide
+
+| if you want to know | read |
+|---|---|
+| how LLMs and this project work, from zero | [`docs/layer_merging_explained.md`](docs/layer_merging_explained.md) (Part 1 = transformer basics) |
+| what every benchmark and number means, and how the results compare with random guessing, Qwen's official scores and quantization | [`docs/metrics_and_benchmarks.md`](docs/metrics_and_benchmarks.md) |
+| every weakness, failure and missing file | [`docs/limitations_and_issues.md`](docs/limitations_and_issues.md) |
+| how AAM works, step by step, with its runs | [`aam/README.md`](aam/README.md) |
+| how PRISM-Shrink works, step by step, with its runs | [`prism_shrink/README.md`](prism_shrink/README.md) |
+| the baselines (original, drop, control, LaCo) | [`baselines/README.md`](baselines/README.md) |
+| the layer and attention-head analysis | [`analysis/README.md`](analysis/README.md) |
+| how the runs were built, run on Kaggle and analysed | [`tools/README.md`](tools/README.md) |
+| every measurement of every run | [`results/all_metrics.md`](results/all_metrics.md) |
+
+**Honest summary.** AAM is the most accurate method (significant on every seed and model), and PRISM-Shrink keeps
+perplexity and copying best. But at 4+ layers removed from the 0.6B model every method is close to random guessing
+(the best keeps about 21 % of the original's above-chance skill), and for saving memory, quantization is far better
+than removing layers. Details: `docs/metrics_and_benchmarks.md` sections 7 and 9.
+
 ## Main results (large test, 95 % confidence intervals, p-values paired against drop)
 
 Few-shot avg acc = mean of MMMLU, INCLUDE, MGSM, Belebele and XNLI over the six languages (200-250 items per benchmark
@@ -81,26 +100,31 @@ docs/
   layer_merging_explained.md     everything explained from LLM basics up, with figures
   algorithm_notes.md             every algorithm, its maths and results, plus common questions
   results_comparison.md          comparison of all experiments and the best per goal
+  metrics_and_benchmarks.md      every benchmark and measurement explained; vs chance, official scores, quantization
+  limitations_and_issues.md      every weakness, problem and missing file
   figures/                       the figures used in the docs
 results/
   small_test_results.md          all experiments, small test (100 items per benchmark)
   large_test_results.md          every large-test run (200-250 items, CIs, p-values, competence check)
-prism_shrink/                    PRISM-Shrink: one notebook per run
+  all_metrics.md                 every measurement of every large-test run (per benchmark, language, speed)
+prism_shrink/                    PRISM-Shrink: README.md (how it works) + one notebook per run
   runs/<notebook name>/          run.log and result JSONs of that notebook's run
 aam/                             AAM (same layout)
-baselines/
+baselines/                       README.md: the three baselines
   reference/                     original model + drop (0.6B and 1.7B)
   drop_kd_control/               drop + the same distillation as the merge methods
   laco/                          published LaCo baseline (Yang et al., 2024)
-analysis/
+analysis/                        README.md: what each file and column means
   layer_analysis/                what each layer does, and scores for every pair of layers
   attention_heads/               previous-token and induction score of every head
   test_set/                      test tokens per language (>= 100k each)
-tools/
+tools/                           README.md: the whole pipeline
   make_notebooks.py              builds the large-test notebooks (depth, model size, data and step ablations)
   kaggle_queue.py                runs them on Kaggle (CPU smoke test first, two notebooks per T4 x2 session)
   kaggle_run.sh                  push one notebook to Kaggle, check it, download its results
+  organize_runs.py               file downloaded runs into the method folders
   analyze.py                     rebuild results/large_test_results.md from the runs
+  make_metrics.py                rebuild results/all_metrics.md from the runs
   make_figures.py                rebuild the result figures in docs/figures/
 ```
 

@@ -141,3 +141,42 @@ ax.set_xticks([0, 1], ["AAM", "PRISM-Shrink\n(plain text)"])
 ax.set_xlim(-0.75, 1.6)
 ax.set_title("Accuracy: 400 vs 1000 training steps", loc="left")
 save(fig, "ablations.png")
+
+# 4. each benchmark against random guessing, and the share of above-chance skill kept (4 layers removed)
+import make_metrics as MM  # noqa: E402
+
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(12.5, 4.2), gridspec_kw={"width_ratios": [1.7, 1]})
+S4 = [("original", 0, "original", DARK), ("drop", 4, "drop", MUTED), ("dropkd_icl", 4, "control", AQUA),
+      ("aam_anneal0.7", 4, "AAM", BLUE), ("prism_shrink_icl_energy0.7", 4, "PRISM-Shrink", ORANGE)]
+w = 0.16
+for j, (m, k, lab, c) in enumerate(S4):
+    a = MM.acc_by({"eval": {"hits": A.cells(by(R6, m, k), A.LANGS)}}, 0)
+    xs = [i + (j - 2) * w for i in range(len(A.TASKS))]
+    a1.bar(xs, [a[t] for t in A.TASKS], width=w, color=c, edgecolor=SURF, linewidth=1.5, label=lab)
+for i, t in enumerate(A.TASKS):
+    a1.plot([i - 2.6 * w, i + 2.6 * w], [A.CHANCE[t]] * 2, color=INK, lw=1.4, ls="--")
+a1.text(len(A.TASKS) - 0.55, A.CHANCE["xnli"] + 1, "random\nguessing", color=INK2, fontsize=8.5, va="bottom")
+a1.set_xticks(range(len(A.TASKS)), ["MMMLU", "INCLUDE", "MGSM\n(math)", "Belebele", "XNLI"])
+a1.set_ylabel("accuracy % (mean of 6 languages)")
+a1.set_title("Qwen3-0.6B, 4 layers removed: most benchmarks fall to guessing", loc="left")
+a1.legend(ncol=5, loc="upper left", fontsize=8.5)
+a1.set_ylim(0, 78)
+a1.grid(axis="x", visible=False)
+labs = ["drop", "control", "PRISM-Shrink", "AAM"]
+cols = [MUTED, AQUA, ORANGE, BLUE]
+v6 = [MM.skill_kept(by(R6, m, 4), O6) for m in ("drop", "dropkd_icl", "prism_shrink_icl_energy0.7", "aam_anneal0.7")]
+xs = range(len(labs))
+a2.bar([x - 0.19 for x in xs], v6, width=0.36, color=cols, edgecolor=SURF, linewidth=1.5)
+if "original|0|—" in R17:
+    v17 = [MM.skill_kept(by(R17, m, 4), O17) for m in ("drop", "dropkd_plain", "prism_shrink_energy0.7", "aam_anneal0.7")]
+    a2.bar([x + 0.19 for x in xs], v17, width=0.36, color=cols, alpha=0.55, hatch="//", edgecolor=SURF, linewidth=1.5)
+    for x, v in zip(xs, v17):
+        a2.text(x + 0.19, v + 1, f"{v:.0f}\n1.7B", ha="center", va="bottom", color=INK2, fontsize=8)
+for x, v in zip(xs, v6):
+    a2.text(x - 0.19, v + 1, f"{v:.0f}\n0.6B", ha="center", va="bottom", color=INK2, fontsize=8)
+a2.set_xticks(list(xs), labs)
+a2.set_ylim(0, 60)
+a2.set_ylabel("% of above-chance skill kept")
+a2.set_title("Skill kept (0 % = guessing, 100 % = original)", loc="left")
+a2.grid(axis="x", visible=False)
+save(fig, "benchmarks_vs_chance.png")
