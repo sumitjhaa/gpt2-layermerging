@@ -1,0 +1,53 @@
+shared data: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_a/layer_merging/data_Qwen3-1.7B-Base_ca0be118.pt
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_a/layer_merging/results_reference_Qwen3-1.7B-Base.json
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_b/layer_merging/results_reference_Qwen3-1.7B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/prism_shrink_17b/layer_merging/data_Qwen3-1.7B-Base_ca0be118.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:02<11:12,  2.18s/it]
+Loading weights:  69%|██████▊   | 213/310 [00:02<00:00, 128.66it/s]
+Loading weights: 100%|██████████| 310/310 [00:03<00:00, 132.37it/s]
+Loading weights: 100%|██████████| 310/310 [00:03<00:00, 103.08it/s]
+mixed precision torch.float16 (ppl fp32 15.840 vs half 15.840)
+Qwen3-1.7B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 23-24 ===
+  group 10-11: input cosine 0.927; kept L10: 3 KV groups + 2911 neurons, L11: 5 KV groups + 3233 neurons
+  group 12-13: input cosine 0.964; kept L12: 2 KV groups + 2787 neurons, L13: 6 KV groups + 3357 neurons
+  group 14-15: input cosine 0.957; kept L14: 3 KV groups + 2479 neurons, L15: 5 KV groups + 3665 neurons
+  group 23-24: input cosine 0.928; kept L23: 4 KV groups + 2529 neurons, L24: 4 KV groups + 3615 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (2s)
+  step   50  alpha 0.920  kl 0.0005  hid 0.0002  (110s)
+  step  100  alpha 0.712  kl 0.0179  hid 0.0039  (223s)
+  step  150  alpha 0.438  kl 0.1231  hid 0.0178  (336s)
+  step  200  alpha 0.184  kl 0.1331  hid 0.0291  (450s)
+  step  250  alpha 0.026  kl 0.2226  hid 0.0442  (563s)
+  step  300  alpha 0.000  kl 0.1647  hid 0.0905  (671s)
+  step  350  alpha 0.000  kl 0.1203  hid 0.0840  (771s)
+  step  399  alpha 0.000  kl 0.0575  hid 0.0725  (868s)
+  group 10-11: held-out error, trained union at alpha=0 25.9% = extracted layer 25.9%
+  group 12-13: held-out error, trained union at alpha=0 31.1% = extracted layer 31.1%
+  group 14-15: held-out error, trained union at alpha=0 35.3% = extracted layer 35.3%
+  group 23-24: held-out error, trained union at alpha=0 27.2% = extracted layer 27.2%
+  merged model: 24 layers (original 28); 1,519,242,240 params
+    eval en: 316s
+    eval hi: 550s
+    eval fr: 417s
+    eval es: 398s
+    eval de: 411s
+    eval zh: 345s
+prism_shrink_energy0.7 k=4 [10-11; 12-13; 14-15; 23-24]: eval 2443s
+This algorithm vs the references:
+                   method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0                original        0                           —          0.0         0.0           0.0          0.0            0.0   50.9     54.6  58.8      76.5  53.5     58.9    0.1061          21.2      0.0
+1  prism_shrink_energy0.7        4  10-11; 12-13; 14-15; 23-24         11.7        22.3          28.4         16.0           23.4   36.8     32.9   4.1      35.1  48.6     31.5    0.2573          24.9   1099.0
+2                    drop        4  10-11; 12-13; 14-15; 23-24         11.7        70.5          78.2         75.6           94.1   22.2     29.8   1.8      26.1  40.6     24.1    2.8314          23.2      0.0
+Every algorithm whose results are in /kaggle/working/prism_shrink_17b/layer_merging
+                   method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0                original        0                           —          0.0         0.0           0.0          0.0            0.0   50.9     54.6  58.8      76.5  53.5     58.9    0.1061          21.2      0.0
+1  prism_shrink_energy0.7        4  10-11; 12-13; 14-15; 23-24         11.7        22.3          28.4         16.0           23.4   36.8     32.9   4.1      35.1  48.6     31.5    0.2573          24.9   1099.0
+2                    drop        4  10-11; 12-13; 14-15; 23-24         11.7        70.5          78.2         75.6           94.1   22.2     29.8   1.8      26.1  40.6     24.1    2.8314          23.2      0.0

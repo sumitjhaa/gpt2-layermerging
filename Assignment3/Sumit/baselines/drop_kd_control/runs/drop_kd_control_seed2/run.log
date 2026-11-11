@@ -1,0 +1,52 @@
+shared data: /kaggle/input/layer-merging-pp-reference-deep/reference_deep_a/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/layer-merging-pp-reference-deep/reference_deep_a/layer_merging/results_reference_Qwen3-0.6B-Base.json
+shared reference rows: /kaggle/input/layer-merging-pp-reference-deep/reference_deep_b/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/drop_kd_control_seed2/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<05:49,  1.13s/it]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 255.85it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: keep L10
+  group 12-13: keep L12
+  group 14-15: keep L14
+  group 16-17: keep L16
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (3s)
+  step   50  alpha 0.920  kl 0.0099  hid 0.0007  (190s)
+  step  100  alpha 0.712  kl 0.0183  hid 0.0090  (378s)
+  step  150  alpha 0.438  kl 0.0366  hid 0.0250  (566s)
+  step  200  alpha 0.184  kl 0.0979  hid 0.0316  (754s)
+  step  250  alpha 0.026  kl 0.1451  hid 0.0273  (942s)
+  step  300  alpha 0.000  kl 0.1161  hid 0.1635  (1122s)
+  step  350  alpha 0.000  kl 0.0885  hid 0.1285  (1293s)
+  step  399  alpha 0.000  kl 0.0744  hid 0.1227  (1459s)
+    eval en: 333s
+    eval hi: 399s
+    eval fr: 421s
+    eval es: 387s
+    eval de: 413s
+    eval zh: 349s
+    eval ja: 400s
+    eval ru: 414s
+dropkd_icl_seed2 k=4 [10-11; 12-13; 14-15; 16-17]: eval 3122s
+This algorithm vs the references:
+             method  removed                                               plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  unseen acc  copy nll  decode tok/s  build s
+0          original        0                                                  —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9        45.0    0.1247          18.3      0.0
+1  dropkd_icl_seed2        4                         10-11; 12-13; 14-15; 16-17         10.6        24.0          44.3         14.2           20.8   24.8     28.0   3.0      19.5  42.2     23.5        21.3    0.5368          20.6   1461.5
+2              drop        4                         10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6        20.4    2.2204          21.1      0.0
+3              drop        6             7-8; 10-11; 12-13; 14-15; 16-17; 24-25         15.8       236.6         306.9        261.6          472.3   25.1     28.0   1.4      19.2  33.9     21.5        19.4    4.2918          22.3      0.0
+4              drop        8  5-6; 7-8; 10-11; 12-13; 14-15; 16-17; 22-23; 2...         21.1       689.4         854.2        832.4         1478.3   22.5     27.6   1.0      20.8  32.4     20.9        19.0   10.1119          24.8      0.0
+Every algorithm whose results are in /kaggle/working/drop_kd_control_seed2/layer_merging
+             method  removed                                               plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  unseen acc  copy nll  decode tok/s  build s
+0          original        0                                                  —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9        45.0    0.1247          18.3      0.0
+1  dropkd_icl_seed2        4                         10-11; 12-13; 14-15; 16-17         10.6        24.0          44.3         14.2           20.8   24.8     28.0   3.0      19.5  42.2     23.5        21.3    0.5368          20.6   1461.5
+2              drop        4                         10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6        20.4    2.2204          21.1      0.0
+3              drop        6             7-8; 10-11; 12-13; 14-15; 16-17; 24-25         15.8       236.6         306.9        261.6          472.3   25.1     28.0   1.4      19.2  33.9     21.5        19.4    4.2918          22.3      0.0
+4              drop        8  5-6; 7-8; 10-11; 12-13; 14-15; 16-17; 22-23; 2...         21.1       689.4         854.2        832.4         1478.3   22.5     27.6   1.0      20.8  32.4     20.9        19.0   10.1119          24.8      0.0

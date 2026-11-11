@@ -1,0 +1,123 @@
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Downloading data (first run only, ~5-15 min). Tip: add HF_TOKEN as a Colab/Kaggle secret to avoid rate limits.
+
+Generating test split:   0%|          | 0/14042 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 14042/14042 [00:00<00:00, 467687.99 examples/s]
+
+Generating validation split:   0%|          | 0/1531 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 1531/1531 [00:00<00:00, 344481.49 examples/s]
+
+Generating dev split:   0%|          | 0/285 [00:00<?, ? examples/s]
+Generating dev split: 100%|██████████| 285/285 [00:00<00:00, 127127.16 examples/s]
+
+Generating auxiliary_train split:   0%|          | 0/99842 [00:00<?, ? examples/s]
+Generating auxiliary_train split:  29%|██▉       | 29000/99842 [00:00<00:00, 286611.61 examples/s]
+Generating auxiliary_train split:  62%|██████▏   | 62000/99842 [00:00<00:00, 305657.42 examples/s]
+Generating auxiliary_train split: 100%|██████████| 99842/99842 [00:00<00:00, 360891.84 examples/s]
+
+Generating train split:   0%|          | 0/392702 [00:00<?, ? examples/s]
+Generating train split:  37%|███▋      | 146000/392702 [00:00<00:00, 1447775.23 examples/s]
+Generating train split:  83%|████████▎ | 327000/392702 [00:00<00:00, 1652439.28 examples/s]
+Generating train split: 100%|██████████| 392702/392702 [00:00<00:00, 1646640.63 examples/s]
+
+Generating test split:   0%|          | 0/5010 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 5010/5010 [00:00<00:00, 1002837.79 examples/s]
+
+Generating validation split:   0%|          | 0/2490 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 2490/2490 [00:00<00:00, 778227.79 examples/s]
+  en: mmmlu 200, mgsm 250, belebele 200, xnli 200 (17s)
+
+Generating test split:   0%|          | 0/14042 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 14042/14042 [00:00<00:00, 172827.76 examples/s]
+
+Generating test split:   0%|          | 0/547 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 547/547 [00:00<00:00, 120195.11 examples/s]
+
+Generating validation split:   0%|          | 0/40 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 40/40 [00:00<00:00, 14099.69 examples/s]
+
+Generating test split:   0%|          | 0/900 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 900/900 [00:00<00:00, 49494.21 examples/s]
+
+Generating train split:   0%|          | 0/392702 [00:00<?, ? examples/s]
+Generating train split:  24%|██▍       | 95000/392702 [00:00<00:00, 935485.63 examples/s]
+Generating train split:  49%|████▊     | 191000/392702 [00:00<00:00, 942390.88 examples/s]
+Generating train split:  79%|███████▉  | 310000/392702 [00:00<00:00, 1051413.21 examples/s]
+Generating train split: 100%|██████████| 392702/392702 [00:00<00:00, 1043490.11 examples/s]
+
+Generating test split:   0%|          | 0/5010 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 5010/5010 [00:00<00:00, 808801.16 examples/s]
+
+Generating validation split:   0%|          | 0/2490 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 2490/2490 [00:00<00:00, 736465.48 examples/s]
+  hi: mmmlu 200, include 200, belebele 200, xnli 200 (22s)
+
+Generating train split:   0%|          | 0/392702 [00:00<?, ? examples/s]
+Generating train split:  32%|███▏      | 126000/392702 [00:00<00:00, 1251165.51 examples/s]
+Generating train split:  71%|███████▏  | 280000/392702 [00:00<00:00, 1414622.00 examples/s]
+Generating train split: 100%|██████████| 392702/392702 [00:00<00:00, 1431321.28 examples/s]
+
+Generating test split:   0%|          | 0/5010 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 5010/5010 [00:00<00:00, 918219.93 examples/s]
+
+Generating validation split:   0%|          | 0/2490 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 2490/2490 [00:00<00:00, 799373.67 examples/s]
+  fr: mmmlu 200, include 200, mgsm 250, belebele 200, xnli 200 (14s)
+
+Generating test split:   0%|          | 0/900 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 900/900 [00:00<00:00, 134937.39 examples/s]
+  es: mmmlu 200, include 200, mgsm 250, belebele 200, xnli 200 (14s)
+  de: mmmlu 200, include 139, mgsm 250, belebele 200, xnli 200 (13s)
+
+Generating test split:   0%|          | 0/900 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 900/900 [00:00<00:00, 115609.26 examples/s]
+
+Generating train split:   0%|          | 0/392702 [00:00<?, ? examples/s]
+Generating train split:  45%|████▍     | 175000/392702 [00:00<00:00, 1730866.11 examples/s]
+Generating train split:  97%|█████████▋| 382000/392702 [00:00<00:00, 1893089.32 examples/s]
+Generating train split: 100%|██████████| 392702/392702 [00:00<00:00, 1851454.78 examples/s]
+
+Generating test split:   0%|          | 0/5010 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 5010/5010 [00:00<00:00, 1036013.56 examples/s]
+
+Generating validation split:   0%|          | 0/2490 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 2490/2490 [00:00<00:00, 851166.83 examples/s]
+  zh: mmmlu 200, include 200, mgsm 250, belebele 200, xnli 200 (12s)
+  ja: mmmlu 200, include 200, mgsm 250, belebele 200 (10s)
+
+Generating test split:   0%|          | 0/552 [00:00<?, ? examples/s]
+Generating test split: 100%|██████████| 552/552 [00:00<00:00, 132512.35 examples/s]
+
+Generating validation split:   0%|          | 0/40 [00:00<?, ? examples/s]
+Generating validation split: 100%|██████████| 40/40 [00:00<00:00, 12190.09 examples/s]
+  ru: include 200, mgsm 250, belebele 200, xnli 200 (13s)
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<09:55,  1.93s/it]
+Loading weights:  61%|██████▏   | 190/310 [00:02<00:00, 129.99it/s]
+Loading weights:  94%|█████████▍| 292/310 [00:02<00:00, 128.33it/s]
+Loading weights: 100%|██████████| 310/310 [00:02<00:00, 105.00it/s]
+mixed precision torch.float16 (ppl fp32 15.840 vs half 15.840)
+Qwen3-1.7B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== drop, 4 layers removed: 10-11; 12-13; 14-15; 23-24 ===
+    eval en: 276s
+    eval hi: 543s
+    eval fr: 384s
+    eval es: 366s
+    eval de: 380s
+    eval zh: 318s
+drop k=4 [10-11; 12-13; 14-15; 23-24]: eval 2273s
+{
+ "drop|4|10-11; 12-13; 14-15; 23-24": {
+  "en": 30.339,
+  "hi": 9.768,
+  "fr": 24.224,
+  "es": 24.201,
+  "de": 26.771,
+  "zh": 36.443
+ }
+}

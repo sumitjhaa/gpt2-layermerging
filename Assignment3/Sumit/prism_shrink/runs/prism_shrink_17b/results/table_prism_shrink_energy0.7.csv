@@ -1,0 +1,4 @@
+method,removed,plan,param red %,mc4 ppl +%,mc4 worst +%,wiki ppl +%,wiki worst +%,mmmlu,include,mgsm,belebele,xnli,avg acc,copy nll,decode tok/s,build s
+original,0,—,0.0,0.0,0.0,0.0,0.0,50.9,54.6,58.8,76.5,53.5,58.9,0.1061,21.2,0.0
+prism_shrink_energy0.7,4,10-11; 12-13; 14-15; 23-24,11.7,22.3,28.4,16.0,23.4,36.8,32.9,4.1,35.1,48.6,31.5,0.2573,24.9,1099.0
+drop,4,10-11; 12-13; 14-15; 23-24,11.7,70.5,78.2,75.6,94.1,22.2,29.8,1.8,26.1,40.6,24.1,2.8314,23.2,0.0

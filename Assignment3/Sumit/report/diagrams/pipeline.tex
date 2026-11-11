@@ -1,0 +1,15 @@
+% End-to-end experimental pipeline. Full text width.
+\begin{tikzpicture}[font=\scriptsize, >=Latex]
+\tikzset{box/.style={draw=inkc, rounded corners=2pt, minimum height=17mm, text width=2.15cm, inner sep=3pt, align=center, fill=white},
+         arr/.style={->, draw=inkc, line width=0.5pt}, hd/.style={font=\footnotesize\bfseries}}
+\node[box, fill=gray!12] (d) at (1.2,0) {{\footnotesize\bfseries 1. Data}\\Wiki-40B (fit), mC4 + Wiki test, 5 benchmarks, 6 + 2 languages};
+\node[box] (a) at (3.9,0) {{\footnotesize\bfseries 2. Analyse}\\layer profile; pairs by angular distance};
+\node[box, fill=cblue!14] (b) at (6.6,0) {{\footnotesize\bfseries 3. Build}\\drop, control, AAM, PRISM-Shrink};
+\node[box, fill=cblue!14] (k) at (9.3,0) {{\footnotesize\bfseries 4. Distill}\\400 steps, KL + hidden MSE, fade $\alpha$};
+\node[box, fill=corange!18] (v) at (12.0,0) {{\footnotesize\bfseries 5. Evaluate}\\perplexity, 5 benchmarks, copying, speed};
+\node[box, fill=corange!18] (s) at (14.7,0) {{\footnotesize\bfseries 6. Statistics}\\bootstrap CIs, paired tests, 3 seeds};
+\foreach \a/\b in {d/a, a/b, b/k, k/v, v/s} \draw[arr] (\a) -- (\b);
+\node[draw=mutedc, dashed, rounded corners=2pt, text width=15.4cm, align=center, inner sep=3pt, text=inkc] at (7.95,-1.45)
+  {orchestration: \texttt{make\_notebooks.py} $\rightarrow$ \texttt{kaggle\_queue.py} (2 $\times$ T4 per session) $\rightarrow$
+   \texttt{organize\_runs.py} $\rightarrow$ \texttt{analyze.py}, \texttt{make\_metrics.py}, \texttt{make\_figures.py}};
+\end{tikzpicture}
