@@ -39,38 +39,37 @@ Annealed Absorption and Gradual Layer Flattening on Qwen3}
 
 \begin{abstract}
 
-I try to make Qwen3-0.6B-Base shallower by merging pairs of neighbouring layers instead of deleting them. Between 2
-and 8 of its 28 layers are removed (and 4 from Qwen3-1.7B-Base), and every model is tested in six languages (en, hi,
-fr, es, de, zh) plus two that are never used for calibration or training (ja, ru). I compare two methods of my own
-against plain dropping, a drop + distillation control trained exactly like the methods, and LaCo. The first, AAM,
-keeps whichever layer of a pair works better on its own, fades the other one out and distills. The second,
-PRISM-Shrink, starts from the exact parallel union of the two layers and shrinks it down to one layer while
-distilling. AAM gives the best accuracy: +2.3 points over the control at 4 layers on 0.6B ($p=0.002$), +3.2 on 1.7B,
-and the gain is significant on all three seeds. PRISM-Shrink has the smallest perplexity increase once 4 or more
-layers are removed (+16.6\,\% against +24.2\,\% for the control, mean of 3 seeds), but it does not improve accuracy.
-The gains are modest, though: with 4 or more layers gone from the 0.6B model every method is close to random
-guessing, and even AAM keeps only 21\,\% of the original's above-chance skill. If the goal is memory, 8-bit quantization
-saves far more at almost no cost.
+I make Qwen3-0.6B-Base shallower by merging pairs of neighbouring layers rather than deleting them. I remove 2 to 8
+of its 28 layers (and 4 from Qwen3-1.7B-Base) and test every model in six languages (en, hi, fr, es, de, zh), plus
+Japanese and Russian, which are never used for calibration or training. Two methods of my own are compared with
+plain dropping, with LaCo, and with a control that drops layers and then distills exactly as my methods do. AAM keeps
+whichever layer of a pair works better alone, fades the other one out and distills. PRISM-Shrink starts from the
+exact parallel union of the two layers and shrinks it to one layer while distilling. AAM gives the best accuracy:
++2.3 points over the control at 4 layers on 0.6B ($p=0.002$) and +3.2 on 1.7B, significant on all three seeds.
+PRISM-Shrink keeps the perplexity increase smallest once 4 or more layers are gone (+16.6\,\% against +24.2\,\% for
+the control, mean of 3 seeds), but its accuracy is no better. Neither gain is large. With 4 or more layers gone from
+the 0.6B model, every method is close to random guessing, and even AAM keeps only 21\,\% of the original's
+above-chance skill. If memory is the goal, 8-bit quantization saves far more at almost no cost.
 \end{abstract}
 
 % =====================================================================================================================
 \section{Introduction}
 
-A decoder-only transformer runs its $L$ layers one after another, and each layer adds an update to the token's
-running state, the residual stream: $h_{i+1} = h_i + f_i(h_i)$. Qwen3-0.6B-Base has $L=28$ such layers
-\citep{qwen3}. Every layer that is removed is one sequential step less at inference time. The simplest way to remove
-layers is to delete the ones whose input and output are already similar, measured by angular distance
-\citep{gromov2024,shortgpt}. But deleting a layer throws away whatever it
-wrote into the residual stream, and merging is a way to keep the work of both layers of a pair in one.
+A decoder-only transformer runs its $L$ layers in sequence. Each layer adds an update to the token's running state,
+the residual stream: $h_{i+1} = h_i + f_i(h_i)$. Qwen3-0.6B-Base has $L=28$ of them \citep{qwen3}, and every layer I
+remove is one fewer sequential step at inference time. The simplest way to remove layers is to delete the ones whose
+input and output already look alike, measured by angular distance \citep{gromov2024,shortgpt}. The catch is that a
+deleted layer takes with it whatever it wrote into the residual stream. Merging tries to keep the work of both layers
+of a pair in a single layer.
 
-I evaluate in several languages because a shared layer has to work for all of them, and a merge that is harmless in
-one language may not be in another. I measure damage with perplexity, few-shot accuracy on five benchmarks and an
-in-context copying probe.
+I test in several languages because a merged layer is shared by all of them, and a merge that does no harm in one
+language may still hurt another. Damage is measured three ways: perplexity, few-shot accuracy on five benchmarks, and
+an in-context copying probe.
 
-My contributions are a controlled multilingual comparison (matched control, paired bootstrap tests, three seeds, and
-a check that the original model is competent on each test cell), the AAM method together with the observation that
-the choice of kept layer is what drives accuracy, and PRISM-Shrink, a gradual and distilled version of layer
-flattening \citep{flattengpt} trained on ICL-packed text.
+The first contribution is a controlled multilingual comparison, with a matched control, paired bootstrap tests, three
+seeds, and a check that the original model is competent on each test cell. I also propose AAM and show that which
+layer it keeps is what drives its accuracy. Last, PRISM-Shrink is a gradual, distilled version of layer flattening
+\citep{flattengpt}, trained on ICL-packed text.
 
 % =====================================================================================================================
 \section{Background: from the basics to this work}
@@ -85,8 +84,8 @@ the next token. Bottom: inside one layer, attention and the MLP each read a norm
 \label{fig:transformer}
 \end{figure*}
 
-Text is split into tokens (Qwen3 has a vocabulary of 151{,}936), and an embedding table turns each token into a
-vector of size $d$, which is 1{,}024 for the 0.6B model. The model predicts $p(x_t \mid x_{<t})$ and is trained with
+Text is split into tokens, and Qwen3's vocabulary has 151{,}936 of them. An embedding table maps each token to a
+vector of size $d$ (1{,}024 for the 0.6B model). The model predicts $p(x_t \mid x_{<t})$ and is trained with
 the cross-entropy $-\frac{1}{T}\sum_t \log p(x_t \mid x_{<t})$. The exponential of this loss is the perplexity, and
 lower is better.
 
@@ -101,18 +100,18 @@ h_{\mathrm{next}} &= h' + \mathrm{MLP}\big(N(h')\big), \\
 where $N$ is RMSNorm, $Q, K, V$ are linear maps of $x$, $M$ is the causal mask, and $W_g, W_u, W_d$ are the gate,
 up and down projections; grouped-query attention shares each key-value head between 2 of the 16 query heads.
 
-Since each layer only adds an update to $h$, the residual stream changes slowly. In the middle of the network the
-updates are small and neighbouring layers see almost the same input (cosine 0.96--0.97); merging neighbours relies
-on this.
+Because each layer only adds an update to $h$, the residual stream changes slowly. In the middle of the network the
+updates are small, and neighbouring layers see almost the same input (cosine 0.96--0.97). Merging neighbours depends
+on exactly this.
 
-In few-shot prompting the prompt contains solved examples, and a base model answers
-by continuing the pattern. This depends on \emph{induction heads}, attention heads that find an earlier copy of the
-current token and predict the token that followed it \citep{olsson2022}. Knowledge distillation \citep{hinton2015}
-trains a smaller or damaged student to match the teacher's output distribution (through a KL divergence) rather than
-only the correct token. Layer pruning deletes the layers whose input and output are most similar
-\citep{gromov2024,shortgpt}, and the deleted layer's contribution is gone unless some other part of the model learns
-it. For the statistics I use the bootstrap, which resamples the test questions to get a confidence interval, and a
-paired test, which compares two models on the same questions \citep{efron1993}.
+In few-shot prompting, the prompt holds a few solved examples and a base model answers by continuing the pattern.
+This relies on \emph{induction heads}: attention heads that find an earlier copy of the current token and predict
+whatever came after it \citep{olsson2022}. Knowledge distillation \citep{hinton2015} trains a smaller or damaged
+student to match the teacher's whole output distribution through a KL divergence, not just the correct token. Layer
+pruning deletes the layers whose input and output are most alike \citep{gromov2024,shortgpt}. What the deleted layer
+contributed is lost, unless some other part of the model learns to do it. For statistics I use the bootstrap, which
+resamples the test questions to get a confidence interval, and a paired test, which compares two models on the same
+questions \citep{efron1993}.
 
 \begin{table*}[t]
 \centering\small
@@ -149,18 +148,19 @@ Bootstrap CI, paired $p$ & range that contains the result 95\,\% of the time; ch
 \subsection{Feedback and novelties discussed with the mentor}
 
 
-This is what I have done since Presentation 2 (the repository history has the details). I first ran a small test of
-15 merging algorithms, covering closed-form least squares, gradual distillation, search, the PRISM family and LaCo,
-with 100 questions per benchmark and language. I then moved to a large test with 200--250 questions per benchmark
-and language, more than 100k unique test tokens per language, per-question results so that bootstrap confidence
-intervals can be computed, and Japanese and Russian added as unseen languages. To separate what a method does from
-what the training alone does, I added a matched control (drop plus the same distillation). On top of that come a
-depth study (2, 4, 6 and 8 layers removed), a second model size (Qwen3-1.7B), a data ablation (kept layer $\times$
-training text), a training-length ablation (400 vs 1{,}000 steps) and three seeds.
+This section covers what I did after Presentation 2; the repository history has the details. I started with a small
+test of 15 merging algorithms (closed-form least squares, gradual distillation, search, the PRISM family and LaCo)
+with 100 questions per benchmark and language. Then came the large test: 200--250 questions per benchmark and
+language, more than 100k unique test tokens per language, results saved per question so that bootstrap confidence
+intervals can be computed, and Japanese and Russian as unseen languages. I also wanted to know how much of a gain
+came from the method and how much from the training alone, so I added a matched control (drop plus the same
+distillation). On top of that I ran a depth study (2, 4, 6 and 8 layers removed), a second model size (Qwen3-1.7B),
+a data ablation (kept layer $\times$ training text), a training-length ablation (400 vs 1{,}000 steps) and three
+seeds.
 
-The new ideas I tried were PRISM (the exact parallel form of a layer pair), PRISM-Shrink (shrinking it gradually),
-AAM, ICL-packed training text, CoPlan pair selection, a language-specific residual (LSR), smeared-key merging (SKM)
-and a cross-term correction (XTC). SKM, XTC and LSR did not help, and I report them as negative results.
+The new ideas were PRISM (the exact parallel form of a layer pair), PRISM-Shrink (which shrinks it gradually), AAM,
+ICL-packed training text, CoPlan pair selection, a language-specific residual (LSR), smeared-key merging (SKM) and a
+cross-term correction (XTC). SKM, XTC and LSR did not help. I report them as negative results.
 
 \subsection{Baselines and state of the art}
 
@@ -185,14 +185,14 @@ Control (ours) & drop + the same distillation as the methods & yes & this repo &
 \label{tab:baselines}
 \end{table*}
 
-The closest earlier work to PRISM-Shrink is FlattenGPT \citep{flattengpt}. It merges two adjacent blocks into one
-wider block and then prunes it back to the original width in a single step, without training, and reports
-87--96\,\% of zero-shot performance retained at about 20\,\% compression on 7B--70B English models. In my
-version the hand-over is gradual and distilled and starts from the exact original pair, the training text is
-ICL-packed, and the evaluation is multilingual with a matched control and several seeds.
+FlattenGPT \citep{flattengpt} is the closest earlier work to PRISM-Shrink. It merges two adjacent blocks into one
+wider block, then prunes it back to the original width in one step with no training. On 7B--70B English models it
+keeps 87--96\,\% of zero-shot performance at about 20\,\% compression. My version is different. The hand-over is
+gradual and distilled, it starts from the exact original pair, the training text is ICL-packed, and the evaluation
+is multilingual, with a matched control and several seeds.
 
-The control is the baseline I care most about, because it gets the same training as the methods; any gain over it
-comes from the method and not from the extra training.
+Of all the baselines, the control is the one I care most about. It gets the same training as my methods, so any gain
+over it comes from the method itself and not from the extra training.
 
 \subsection{Datasets}
 
@@ -217,36 +217,35 @@ Inference & XNLI \citep{xnli} & 200 (3-shot) \\
 \label{tab:data}
 \end{table}
 
-Every language gets the same amount of calibration text, and every training step contains one sequence from each
-language. Calibration and training only use the Wiki-40B \emph{train} split, and the
-pairs to merge are fixed by angular distance on calibration text before anything is tested, so nothing leaks from
-the test sets. One calibration sequence per language is held out to measure every fit. A test cell (benchmark
-$\times$ language) only counts if the original model is clearly above chance on it; the only flagged cell is German
-XNLI on 0.6B. Japanese and Russian are only ever evaluated and never used for anything else, so that damage outside
-the training languages shows up. All models get the same shots and prompts, and the shots never overlap with test
-items.
+Every language gets the same amount of calibration text, and every training step holds one sequence from each
+language. Calibration and training use only the Wiki-40B \emph{train} split. The pairs to merge are fixed by angular
+distance on calibration text before anything is tested, so nothing leaks from the test sets. One calibration
+sequence per language is held out to score every fit. A test cell (benchmark $\times$ language) counts only if the
+original model is clearly above chance on it. Just one cell fails this check: German XNLI on 0.6B. Japanese and
+Russian are used for evaluation and nothing else, so that damage outside the training languages can show up. All
+models see the same shots and prompts, and no shot is also a test item.
 
-The main bottlenecks were GPU time (Kaggle T4s with a weekly quota) and GPU memory: the double-width layer in fp32
-ran out of memory at 6 or more layers and on 1.7B. Hindi also needs 2--4$\times$ more tokens per item, and MMMLU has
-no development split, so I use its first shuffled rows as shots.
+Two things limited the work most: GPU time (Kaggle T4s with a weekly quota) and GPU memory. In fp32 the double-width
+layer ran out of memory at 6 or more layers and on 1.7B. There were smaller problems too. Hindi needs 2--4$\times$ as
+many tokens per item, and MMMLU has no development split, so I take its first shuffled rows as shots.
 
-The data grew from the small test (100 questions per benchmark and language) to the large test, with 200--250
-questions, 128 instead of 16 perplexity sequences, per-question results, and ja and ru added. That gives more than
-100k unique test tokens per language (Table~\ref{tab:tokens} in the appendix). I also built ICL-packed training text.
-Each sequence is $[a,\,b,\,a]$: a passage, a passage in another language, and the first passage again (768 tokens in
-total), so during training the model has to copy from its own context.
+The small test had 100 questions per benchmark and language. The large test has 200--250, 128 perplexity sequences
+instead of 16, results per question, and ja and ru on top. That comes to more than 100k unique test tokens per
+language (Table~\ref{tab:tokens} in the appendix). I also built ICL-packed training text. Each sequence is
+$[a,\,b,\,a]$: a passage, a passage in another language, then the first passage again, 768 tokens in total. During
+training the model therefore has to copy from its own context.
 
 \subsection{Experimental plan}
 
 \subsubsection{Setting, training and robustness}
 
 I choose pairs by the angular distance $d(i) = \frac{1}{\pi}\arccos\cos(h_i, h_{i+2})$ averaged over tokens
-\citep{gromov2024}, and never touch the first or last two layers. For Qwen3-0.6B this gives pairs 12-13 and 14-15
-when 2 layers are removed and 10-11, 12-13, 14-15 and 16-17 for 4; removing 6 adds 7-8 and 24-25, and removing 8
-adds 5-6 and 22-23.
+\citep{gromov2024}, and I never touch the first or last two layers. On Qwen3-0.6B this gives pairs 12-13 and 14-15
+when 2 layers are removed, and 10-11, 12-13, 14-15 and 16-17 for 4. Removing 6 adds 7-8 and 24-25; removing 8 adds
+5-6 and 22-23.
 
-All trained methods share one distillation setup \citep{hinton2015}. The original model is a frozen teacher, and
-only the merged layers are trained, with the loss
+All trained methods share one distillation setup \citep{hinton2015}. The original model is a frozen teacher, and only
+the merged layers are trained. The loss is
 \begin{align}
 \mathcal{L} &= \mathcal{L}_{\mathrm{KL}} + \mathcal{L}_{h}, \\
 \mathcal{L}_{\mathrm{KL}} &= \tfrac{1}{T}\textstyle\sum_t \mathrm{KL}\big(p^{\mathrm{tea}}_t \,\|\, p^{\mathrm{stu}}_t\big), \\
@@ -257,8 +256,8 @@ hidden states at the output of each merged pair. The part being removed is faded
 \begin{equation}
 \alpha(s) = \tfrac{1}{2}\big(1+\cos(\pi (s+1)/A)\big)
 \end{equation}
-at step $s$, where $A = 0.7\times 400 = 280$; for the last 120 of the 400 steps $\alpha=0$
-(Figure~\ref{fig:alpha}). At $\alpha=1$ the student is exactly the original model, which I checked before training.
+at step $s$, where $A = 0.7\times 400 = 280$. For the last 120 of the 400 steps, $\alpha=0$
+(Figure~\ref{fig:alpha}). At $\alpha=1$ the student is exactly the original model; I checked this before training.
 
 \begin{figure}[t]
 \centering
@@ -267,9 +266,9 @@ at step $s$, where $A = 0.7\times 400 = 280$; for the last 120 of the 400 steps 
 \label{fig:distill}
 \end{figure}
 
-To keep the comparison fair, every method uses the same pairs, data, shots and training recipe. Beyond that there is
-the matched control, paired bootstrap tests on the same questions \citep{efron1993}, three seeds for the main
-4-layer runs, the competence check, and two model sizes.
+To keep the comparison fair, every method uses the same pairs, data, shots and training recipe. For robustness I add
+the matched control, paired bootstrap tests on the same questions \citep{efron1993}, three seeds for the main 4-layer
+runs, the competence check and a second model size.
 
 \subsubsection{Models and approaches}
 
@@ -281,28 +280,28 @@ pair; AAM and PRISM-Shrink differ in what the remaining layer learns from.}
 \label{fig:methods}
 \end{figure*}
 
-\textbf{Drop} deletes the second layer of each pair, with no training. The \textbf{control} drops in the same way
-and then runs the shared distillation, so the first layer of each pair is kept and trained.
+\textbf{Drop} deletes the second layer of each pair and does no training. The \textbf{control} drops the same
+layers and then runs the shared distillation, so it keeps and trains the first layer of each pair.
 
-\textbf{AAM} keeps the layer with the lower held-out error when it is used alone. For pair 14-15, for example, the
-errors are 28.9\,\% and 26.6\,\%, so L15 is kept. The other layer becomes $h + \alpha(f(h)-h)$, is faded out during
-distillation, and is then removed.
+\textbf{AAM} keeps whichever layer has the lower held-out error when used alone. Take pair 14-15: the errors are
+28.9\,\% and 26.6\,\%, so L15 stays. The other layer becomes $h + \alpha(f(h)-h)$. It is faded out during
+distillation and then removed.
 
-\textbf{PRISM} starts from the observation that in the middle of the network
+\textbf{PRISM} rests on one observation. In the middle of the network
 $h + A(h) + B(h + A(h)) \approx h + A(h) + B(h)$, because the inputs of the two layers have cosine 0.96--0.97. The
 right-hand side is exactly one wider layer: the attention head groups and MLP neurons of A and B sit side by side,
-and each layer's RMSNorm gain is folded into its own input weights. This rewrite is exact; I checked it to
+and each layer's RMSNorm gain is folded into its own input weights. The rewrite is exact, which I checked to
 $<10^{-4}$ relative error.
 
-\textbf{PRISM-Shrink} keeps 8 of the 16 key-value head groups and 3{,}072 of the 6{,}144 neurons, chosen by write
-energy. The output is $\alpha\,B(A(h)) + (1-\alpha)\,U_\alpha(h)$, where $U_\alpha$ is the wide layer with every
-dropped part scaled by $\alpha$. After distillation the kept parts are extracted as a normal layer.
+\textbf{PRISM-Shrink} keeps 8 of the 16 key-value head groups and 3{,}072 of the 6{,}144 neurons, picked by write
+energy. Its output is $\alpha\,B(A(h)) + (1-\alpha)\,U_\alpha(h)$, where $U_\alpha$ is the wide layer with every
+dropped part scaled by $\alpha$. After distillation, the kept parts are pulled out as a normal layer.
 
 \textbf{LaCo} sets $\theta = \theta_A + \sum_{j\neq A}(\theta_j - \theta_A)$ for every weight and needs no data.
 
-The control and AAM run the same code and differ in a single switch, namely which layer of the pair is kept. The gap
-between AAM and the control therefore measures the layer choice, and the gap between PRISM-Shrink and the control
-measures merging against deleting. Data, pairs, loss, optimizer and number of steps are the same for all of them.
+The control and AAM run the same code. Only one switch differs: which layer of the pair is kept. So the gap between
+AAM and the control measures the layer choice, and the gap between PRISM-Shrink and the control measures merging
+against deleting. Data, pairs, loss, optimizer and step count are identical for all of them.
 
 \subsubsection{Parameters and architecture}
 
@@ -336,9 +335,9 @@ Parameters cut & 10.6\,\% & 11.7\,\% \\
 \label{tab:params}
 \end{table}
 
-Every final model is an ordinary Qwen3 model with fewer layers of the same shape, so the architectures only differ
+Every final model is an ordinary Qwen3 model with fewer layers of the same shape. The architectures differ only
 during training. There, PRISM-Shrink holds a double-width layer for each pair (16 head groups, 6{,}144 neurons, plus
-a per-head q/k gain table of 5{,}632 parameters), while AAM and the control hold the two original layers with a fade
+a per-head q/k gain table of 5{,}632 parameters). AAM and the control hold the two original layers with a fade
 between them.
 
 \subsubsection{Hyperparameters and ablations}
@@ -388,45 +387,45 @@ increase (\%), Copy = copying loss (lower is better).}
 \label{tab:ablation}
 \end{table}
 
-I did not run a grid search. One Kaggle session per setting costs 1--3.5 GPU hours, so I fixed the recipe (learning
-rate, loss weight, fade length 0.7) on the small test and kept it identical for all methods. This keeps the
-comparison fair, but it also means no method was tuned for itself. In the ablations, the choice of kept layer moves
-accuracy by +1.6 to +2.5 points, while the training text moves it by at most 0.8. Training for 1{,}000 steps lowers
-perplexity by about 2 points and changes accuracy by at most +0.8 ($p=0.05$, AAM), but copying gets worse
-(Table~\ref{tab:ablation}, Figure~\ref{fig:ablations}).
+I did not run a grid search. One Kaggle session per setting costs 1--3.5 GPU hours, and on a weekly quota that adds
+up fast. So I fixed the recipe (learning rate, loss weight, fade length 0.7) on the small test and kept it the same
+for all methods. This keeps the comparison fair. It also means no method was tuned for itself. In the ablations,
+which layer is kept moves accuracy by +1.6 to +2.5 points, and the training text moves it by 0.8 at most. Training
+for 1{,}000 steps lowers perplexity by about 2 points and changes accuracy by +0.8 at most ($p=0.05$, AAM). Copying
+gets worse, though (Table~\ref{tab:ablation}, Figure~\ref{fig:ablations}).
 
 \subsubsection{Metrics}
 
-For general language-modelling damage I use perplexity,
-$\exp\big(-\frac{1}{T}\sum_t \log p(x_t\mid x_{<t})\big)$, on mC4 and Wiki-40B, reported as the increase over the
-original model averaged over languages. For task ability I use few-shot accuracy on MMMLU, INCLUDE, MGSM, Belebele
-and XNLI, averaged over the five. Random guessing gives 25, 25, 0, 25 and 33.3\,\% on these, which is 21.7\,\% on the
-average. I also report the skill kept above chance,
-$\frac{1}{5}\sum_b \frac{a_b - c_b}{a^{\text{orig}}_b - c_b}$, and a copying probe in which 32 random 128-token
-sequences are shown twice and the NLL is measured on the repeat; this targets induction heads \citep{olsson2022}.
-The remaining numbers are accuracy on the unseen languages, prefill and decode speed, and 95\,\% bootstrap confidence
-intervals with paired $p$-values.
+Perplexity, $\exp\big(-\frac{1}{T}\sum_t \log p(x_t\mid x_{<t})\big)$, on mC4 and Wiki-40B measures general
+language-modelling damage. I report it as the increase over the original model, averaged over languages. Task
+ability is few-shot accuracy on MMMLU, INCLUDE, MGSM, Belebele and XNLI, averaged over the five. Random guessing
+scores 25, 25, 0, 25 and 33.3\,\% on these, or 21.7\,\% on the average. I also report how much above-chance skill is
+kept, $\frac{1}{5}\sum_b \frac{a_b - c_b}{a^{\text{orig}}_b - c_b}$. The copying probe shows 32 random 128-token
+sequences twice and measures the NLL on the repeat, which targets induction heads \citep{olsson2022}. Beyond these I
+report accuracy on the unseen languages, prefill and decode speed, and 95\,\% bootstrap confidence intervals with
+paired $p$-values.
 
 \subsubsection{System effort and demo scenario}
 
-The large-test queue logged 21.0 session-hours of Kaggle GPU time over 13 paired sessions, three of which failed and
+The large-test queue logged 21.0 session-hours of Kaggle GPU time over 13 paired sessions. Three of them failed and
 had to be re-run (Table~\ref{tab:gpu} in the appendix). Earlier runs are not in this log. Each session uses two T4
-GPUs, with one notebook per GPU.
+GPUs, one notebook per GPU.
 
-Demo for the viva. A full 0.6B run takes 1--1.5 hours, so the demo has two parts. Live: run the CPU smoke-test
-version of a notebook (\texttt{tools/make\_notebooks.py} builds it with tiny settings: 64-token sequences, a few
-training and test items), which goes through every stage (pair selection, AAM or PRISM-Shrink build, distillation,
-perplexity, benchmarks, copying probe) in minutes and without a GPU. Then load one compressed model and generate text
-from a prompt next to the original model. Saved: open the logged Kaggle runs and rebuild the tables and figures of
-this report from their JSON results with \texttt{tools/analyze.py} and \texttt{make\_figures.py}.
+A full 0.6B run takes 1--1.5 hours, so the viva demo has two parts. The live part runs the CPU smoke-test version of
+a notebook, which \texttt{tools/make\_notebooks.py} builds with tiny settings (64-token sequences, a handful of
+training and test items). It still goes through every stage: pair selection, AAM or PRISM-Shrink build, distillation,
+perplexity, benchmarks and the copying probe. It finishes in minutes and needs no GPU. After that I load one
+compressed model and generate text from a prompt next to the original. The saved part opens the logged Kaggle runs
+and rebuilds this report's tables and figures from their JSON results with \texttt{tools/analyze.py} and
+\texttt{make\_figures.py}.
 
 \subsection{Project management}
 
-Most of the new ideas came out of analysis or earlier failures. A layer analysis (angular change per layer, write
+Most new ideas grew out of analysis or out of earlier failures. A layer analysis (angular change per layer, write
 sizes, update similarity, attention-head roles; Figure~\ref{fig:layers}) showed that the middle layers barely change
-the state and read nearly the same input, and that is where the parallel form (PRISM) came from. Closed-form fits
-did not hold up on few-shot accuracy, which pushed me towards gradual distillation (AAM, PRISM-Shrink). The copying
-probe and the head analysis led to ICL packing.
+the state and read nearly the same input. The parallel form, PRISM, came from that. Closed-form fits did not hold up
+on few-shot accuracy, which pushed me towards gradual distillation (AAM, PRISM-Shrink). ICL packing came from the
+copying probe and the head analysis.
 
 \begin{table}[t]
 \centering\small
@@ -461,7 +460,7 @@ GPU time & 21.0 session-hours logged \\
 \end{figure*}
 
 The code is at \url{https://github.com/sumitjhaa/gpt2-layermerging} (branch \texttt{assignment3-top3}, folder
-\texttt{Assignment3/Sumit}). The pipeline (Figure~\ref{fig:pipeline}) runs in five steps.
+\texttt{Assignment3/Sumit}). The pipeline (Figure~\ref{fig:pipeline}) has five steps.
 \begin{enumerate}
   \item Download and cache Wiki-40B, mC4 and the five benchmarks, and build the calibration, training and test
         splits. A reference run shares these with all other notebooks.
@@ -547,30 +546,30 @@ perplexity increase: AAM +23.0\,\%, PRISM-Shrink +16.6\,\%, control +24.2\,\%.}
 \label{tab:seeds}
 \end{table}
 
-With plain dropping, perplexity rises by 14\,\% at 2 layers and by 689\,\% at 8, and accuracy is already at chance
-from 4 layers on (Table~\ref{tab:main}, Figure~\ref{fig:depth}). Distillation repairs much of this. At 4 layers the
-control brings the perplexity increase down from +84.7\,\% to +24.5\,\%, but its accuracy goes up by only 1.0 point
-($p=0.05$); on 1.7B the gain is larger, +6.8.
+Plain dropping raises perplexity by 14\,\% at 2 layers and by 689\,\% at 8, and accuracy is at chance from 4 layers
+on (Table~\ref{tab:main}, Figure~\ref{fig:depth}). Distillation repairs a lot of this. At 4 layers the control cuts
+the perplexity increase from +84.7\,\% to +24.5\,\%. Its accuracy rises by only 1.0 point, though ($p=0.05$). On
+1.7B the gain is bigger: +6.8.
 
-AAM beats the control by +4.8, +2.3, +1.5 and +1.8 points at 2, 4, 6 and 8 layers (all $p\le 0.018$) and by +3.2 on
-1.7B (Figure~\ref{fig:forest}). Since AAM and the control differ only in which layer is kept, this gain comes from
-the layer choice; with the training text held fixed it is worth +1.6 to +2.5 points (Table~\ref{tab:ablation}).
-Over three seeds AAM gets 25.8$\pm$0.3 (Table~\ref{tab:seeds}, Figure~\ref{fig:seedsfig}).
+AAM beats the control by +4.8, +2.3, +1.5 and +1.8 points at 2, 4, 6 and 8 layers (all $p\le 0.018$), and by +3.2 on
+1.7B (Figure~\ref{fig:forest}). AAM and the control differ only in which layer is kept, so this gain comes from the
+layer choice. With the training text held fixed, that choice is worth +1.6 to +2.5 points (Table~\ref{tab:ablation}).
+Across three seeds AAM scores 25.8$\pm$0.3 (Table~\ref{tab:seeds}, Figure~\ref{fig:seedsfig}).
 
-PRISM-Shrink behaves differently. From 4 layers on, its perplexity is lower than both the control's and AAM's in all
-6 languages, on mC4 and on Wikipedia, at every depth and on both models (Figure~\ref{fig:lang}), and its copying loss
-is the lowest as well. Its accuracy, however, is never significantly different from the control's ($-1.0$ to $+1.0$,
-$p\ge 0.07$), so merging helps language modelling but not the benchmarks (Figure~\ref{fig:tradeoff}).
+PRISM-Shrink shows the opposite pattern. From 4 layers on, its perplexity is below both the control's and AAM's in
+all 6 languages, on mC4 and on Wikipedia, at every depth and on both models (Figure~\ref{fig:lang}). Its copying loss
+is the lowest too. Its accuracy, on the other hand, is never significantly different from the control's ($-1.0$ to
+$+1.0$, $p\ge 0.07$). Merging helps language modelling, then, but not the benchmarks (Figure~\ref{fig:tradeoff}).
 
-Model size matters a lot here: at 4 layers removed AAM keeps 41\,\% of the above-chance skill on 1.7B and only
-21\,\% on 0.6B (Table~\ref{tab:17b}, Figure~\ref{fig:chance}). Maths goes first. MGSM falls from 41\,\% to about
-2\,\% for every method at 4 layers (Table~\ref{tab:bench}), and on Belebele drop and the control even end up below
-chance (about 20\,\%).
+Model size matters a lot. At 4 layers removed, AAM keeps 41\,\% of the above-chance skill on 1.7B but only 21\,\% on
+0.6B (Table~\ref{tab:17b}, Figure~\ref{fig:chance}). Maths goes first. At 4 layers MGSM falls from 41\,\% to about
+2\,\% for every method (Table~\ref{tab:bench}), and on Belebele, drop and the control even end up below chance, at
+about 20\,\%.
 
-For saving memory, quantization is the better tool. 8-bit quantization halves memory with almost no loss on Qwen3,
-and 4-bit loses about 5 MMLU points on Qwen3-8B \citep{qwen3quant}, whereas removing 4 layers here saves 11\,\% and
-costs 23 points. In my view layer removal only makes sense for speed (roughly 10--20\,\% faster at 4 layers in my
-runs), and it can be combined with quantization.
+To save memory, quantization is the better tool. 8-bit quantization halves memory with almost no loss on Qwen3, and
+4-bit costs about 5 MMLU points on Qwen3-8B \citep{qwen3quant}. Removing 4 layers here saves 11\,\% and costs 23
+points. I think layer removal only makes sense for speed (roughly 10--20\,\% faster at 4 layers in my runs), and it
+can be used together with quantization.
 
 \begin{figure*}[t]
 \centering
@@ -634,35 +633,36 @@ PRISM-Shrink is lowest in every language.}
 
 \subsection{Deployment}
 
-Every compressed model is a standard Qwen3 model with fewer layers, so it can be saved with
-\texttt{save\_pretrained} and loaded with Hugging Face \texttt{transformers} without any custom code. I did not save
-the trained models in these runs; the notebooks rebuild them. The research pipeline itself is already runnable: one
-Kaggle notebook per experiment rebuilds the model, evaluates it and writes out the results
-(Section~\ref{sec:impl}), and a 0.6B run takes about 1--1.5 hours on one T4. For inference the weights need about
-1.2 GB (0.6B, fp16) or 3.4 GB (1.7B, fp16) of GPU memory. CPU inference works but is slow.
+Every compressed model is a standard Qwen3 model with fewer layers. It can be saved with \texttt{save\_pretrained}
+and loaded with Hugging Face \texttt{transformers}, with no custom code. I did not save the trained models in these
+runs; the notebooks rebuild them. The research pipeline already runs end to end. One Kaggle notebook per experiment
+rebuilds the model, evaluates it and writes out the results (Section~\ref{sec:impl}), and a 0.6B run takes about
+1--1.5 hours on one T4. For inference the weights need about 1.2 GB (0.6B, fp16) or 3.4 GB (1.7B, fp16) of GPU
+memory. CPU inference works, but slowly.
 
-I chose an executable research pipeline over a web interface or API. The output of this project is a comparison of
-methods, not a product, and every number has to be reproducible from code; a free Kaggle GPU also cannot host a
-permanent service. End to end, the input is a model name, the layer count to remove and the method; the pipeline
-picks the pairs, builds and distills the shortened model, evaluates it, and outputs one JSON row of results plus
-the tables and figures. The same shortened model can be prompted directly with \texttt{generate} to show its text
-output. Production deployment is not the goal: at 4 or more layers removed the 0.6B model is close to random
-guessing, so it would not be useful to serve.
+I built an executable research pipeline rather than a web interface or an API. This project produces a comparison of
+methods, not a product, and every number has to be reproducible from code. A free Kaggle GPU also cannot host a
+permanent service. The input is a model name, the number of layers to remove and the method. The pipeline picks the
+pairs, builds and distills the shortened model, evaluates it, and writes one JSON row of results plus the tables and
+figures. The shortened model can also be prompted directly with \texttt{generate} to see its text output. Production
+deployment is not the goal. With 4 or more layers removed, the 0.6B model is close to random guessing, so there is
+no point serving it.
 
 % =====================================================================================================================
 \section*{Limitations}
 
-With 4 or more layers removed from 0.6B, every method is close to random guessing and maths is lost entirely; this
-is the main weakness of the work. PRISM-Shrink gives no accuracy gain, and its core idea has already been published
-\citep{flattengpt}. Only the main 0.6B 4-layer runs have three seeds; every other setting is a single run. In the
-main 0.6B comparison AAM was trained on plain text while the control and PRISM-Shrink were trained on ICL-packed
-text. The text ablation puts this effect at 0.8 points at most, but the comparison is still not perfectly matched.
+The main weakness is easy to state. With 4 or more layers removed from 0.6B, every method is close to random
+guessing, and maths is lost entirely. PRISM-Shrink gives no accuracy gain, and its core idea has already been
+published \citep{flattengpt}. Only the main 0.6B 4-layer runs have three seeds; every other setting is a single run.
+The main 0.6B comparison is not perfectly matched either. AAM was trained on plain text, while the control and
+PRISM-Shrink were trained on ICL-packed text. The text ablation puts this effect at 0.8 points at most, but it is
+still a mismatch.
 
 The study covers one model family, two small sizes, six languages and 200--250 questions per cell. Apart from MGSM
-there are no instruction-following or generation-quality tests, and the hyperparameters were not tuned per method.
-The quantization comparison comes from the literature rather than from my own test, and the speed numbers are noisy
-because the GPUs were shared. Finally, some earlier experiments survive only as numbers, since their code and raw
-results were never committed (see \texttt{docs/limitations\_and\_issues.md}).
+there are no instruction-following or generation-quality tests, and I did not tune hyperparameters per method. The
+quantization comparison comes from the literature, not from my own test, and the speed numbers are noisy because the
+GPUs were shared. Some earlier experiments also survive only as numbers, because their code and raw results were
+never committed (see \texttt{docs/limitations\_and\_issues.md}).
 
 % =====================================================================================================================
 \section*{Team Contribution}
