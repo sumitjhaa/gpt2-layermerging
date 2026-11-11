@@ -1,0 +1,470 @@
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+
+
+
+
+
+
+
+
+
+
+
+started p13_shrink_icl on GPU 0
+started p16_skm on GPU 1
+[   60s] p13_shrink_icl: Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+[   60s] p16_skm: Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+[  120s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  120s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  180s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  180s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  240s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  240s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  300s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[  300s] p16_skm:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (194s)
+[  360s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (198s)
+[  360s] p16_skm:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (194s)
+[  420s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (198s)
+[  420s] p16_skm:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (194s)
+[  480s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (198s)
+[  480s] p16_skm:   step   50  alpha 0.920  kl 0.0001  hid 0.0002  (194s)
+[  540s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (393s)
+[  540s] p16_skm:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (386s)
+[  600s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (393s)
+[  600s] p16_skm:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (386s)
+[  660s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (393s)
+[  660s] p16_skm:   step  100  alpha 0.712  kl 0.0014  hid 0.0021  (386s)
+[  720s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0058  hid 0.0073  (588s)
+[  720s] p16_skm:   step  150  alpha 0.438  kl 0.0057  hid 0.0072  (578s)
+[  780s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0058  hid 0.0073  (588s)
+[  780s] p16_skm:   step  150  alpha 0.438  kl 0.0057  hid 0.0072  (578s)
+[  840s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0058  hid 0.0073  (588s)
+[  840s] p16_skm:   step  150  alpha 0.438  kl 0.0057  hid 0.0072  (578s)
+[  900s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0215  hid 0.0182  (783s)
+[  900s] p16_skm:   step  200  alpha 0.184  kl 0.0219  hid 0.0179  (771s)
+[  960s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0215  hid 0.0182  (783s)
+[  960s] p16_skm:   step  200  alpha 0.184  kl 0.0219  hid 0.0179  (771s)
+[ 1020s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0215  hid 0.0182  (783s)
+[ 1020s] p16_skm:   step  200  alpha 0.184  kl 0.0219  hid 0.0179  (771s)
+[ 1080s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0215  hid 0.0182  (783s)
+[ 1080s] p16_skm:   step  250  alpha 0.026  kl 0.0375  hid 0.0297  (963s)
+[ 1140s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0372  hid 0.0287  (978s)
+[ 1140s] p16_skm:   step  250  alpha 0.026  kl 0.0375  hid 0.0297  (963s)
+[ 1200s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0372  hid 0.0287  (978s)
+[ 1200s] p16_skm:   step  250  alpha 0.026  kl 0.0375  hid 0.0297  (963s)
+[ 1260s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0372  hid 0.0287  (978s)
+[ 1260s] p16_skm:   step  300  alpha 0.000  kl 0.0326  hid 0.0455  (1149s)
+[ 1320s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0328  hid 0.0454  (1167s)
+[ 1320s] p16_skm:   step  300  alpha 0.000  kl 0.0326  hid 0.0455  (1149s)
+[ 1380s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0328  hid 0.0454  (1167s)
+[ 1380s] p16_skm:   step  300  alpha 0.000  kl 0.0326  hid 0.0455  (1149s)
+[ 1440s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0328  hid 0.0454  (1167s)
+[ 1440s] p16_skm:   step  350  alpha 0.000  kl 0.0281  hid 0.0441  (1328s)
+[ 1500s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0281  hid 0.0440  (1348s)
+[ 1500s] p16_skm:   step  350  alpha 0.000  kl 0.0281  hid 0.0441  (1328s)
+[ 1560s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0281  hid 0.0440  (1348s)
+[ 1560s] p16_skm:   step  350  alpha 0.000  kl 0.0281  hid 0.0441  (1328s)
+[ 1620s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0281  hid 0.0440  (1348s)
+[ 1620s] p16_skm:   group 12-13: held-out error, trained union at alpha=0 17.4% = extracted layer 17.4%
+[ 1680s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1680s] p16_skm:   merged model: 26 layers (original 28); 564,593,680 params
+[ 1740s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1740s] p16_skm:   merged model: 26 layers (original 28); 564,593,680 params
+[ 1800s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1800s] p16_skm:   merged model: 26 layers (original 28); 564,593,680 params
+[ 1860s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1860s] p16_skm:   merged model: 26 layers (original 28); 564,593,680 params
+[ 1920s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1920s] p16_skm:   merged model: 26 layers (original 28); 564,593,680 params
+[ 1980s] p13_shrink_icl:   merged model: 26 layers (original 28); 564,593,664 params
+[ 1980s] p16_skm:     eval en: 341s
+[ 2040s] p13_shrink_icl:     eval en: 343s
+[ 2040s] p16_skm:     eval en: 341s
+[ 2100s] p13_shrink_icl:     eval en: 343s
+[ 2100s] p16_skm:     eval en: 341s
+[ 2160s] p13_shrink_icl:     eval en: 343s
+[ 2160s] p16_skm:     eval en: 341s
+[ 2220s] p13_shrink_icl:     eval en: 343s
+[ 2220s] p16_skm:     eval en: 341s
+[ 2280s] p13_shrink_icl:     eval en: 343s
+[ 2280s] p16_skm:     eval en: 341s
+[ 2340s] p13_shrink_icl:     eval en: 343s
+[ 2340s] p16_skm:     eval en: 341s
+[ 2400s] p13_shrink_icl:     eval en: 343s
+[ 2400s] p16_skm:     eval hi: 427s
+[ 2460s] p13_shrink_icl:     eval hi: 430s
+[ 2460s] p16_skm:     eval hi: 427s
+[ 2520s] p13_shrink_icl:     eval hi: 430s
+[ 2520s] p16_skm:     eval hi: 427s
+[ 2580s] p13_shrink_icl:     eval hi: 430s
+[ 2580s] p16_skm:     eval hi: 427s
+[ 2640s] p13_shrink_icl:     eval hi: 430s
+[ 2640s] p16_skm:     eval hi: 427s
+[ 2700s] p13_shrink_icl:     eval hi: 430s
+[ 2700s] p16_skm:     eval hi: 427s
+[ 2760s] p13_shrink_icl:     eval hi: 430s
+[ 2760s] p16_skm:     eval hi: 427s
+[ 2820s] p13_shrink_icl:     eval hi: 430s
+[ 2820s] p16_skm:     eval hi: 427s
+[ 2880s] p13_shrink_icl:     eval fr: 450s
+[ 2880s] p16_skm:     eval fr: 440s
+[ 2940s] p13_shrink_icl:     eval fr: 450s
+[ 2940s] p16_skm:     eval fr: 440s
+[ 3000s] p13_shrink_icl:     eval fr: 450s
+[ 3000s] p16_skm:     eval fr: 440s
+[ 3060s] p13_shrink_icl:     eval fr: 450s
+[ 3060s] p16_skm:     eval fr: 440s
+[ 3120s] p13_shrink_icl:     eval fr: 450s
+[ 3120s] p16_skm:     eval fr: 440s
+[ 3180s] p13_shrink_icl:     eval fr: 450s
+[ 3180s] p16_skm:     eval fr: 440s
+[ 3240s] p13_shrink_icl:     eval fr: 450s
+[ 3240s] p16_skm:     eval fr: 440s
+[ 3300s] p13_shrink_icl:     eval es: 417s
+[ 3300s] p16_skm:     eval es: 417s
+[ 3360s] p13_shrink_icl:     eval es: 417s
+[ 3360s] p16_skm:     eval es: 417s
+[ 3420s] p13_shrink_icl:     eval es: 417s
+[ 3420s] p16_skm:     eval es: 417s
+[ 3480s] p13_shrink_icl:     eval es: 417s
+[ 3480s] p16_skm:     eval es: 417s
+[ 3540s] p13_shrink_icl:     eval es: 417s
+[ 3540s] p16_skm:     eval es: 417s
+[ 3600s] p13_shrink_icl:     eval es: 417s
+[ 3600s] p16_skm:     eval es: 417s
+[ 3660s] p13_shrink_icl:     eval es: 417s
+[ 3660s] p16_skm:     eval es: 417s
+[ 3720s] p13_shrink_icl:     eval es: 417s
+[ 3720s] p16_skm:     eval de: 432s
+[ 3780s] p13_shrink_icl:     eval de: 433s
+[ 3780s] p16_skm:     eval de: 432s
+[ 3840s] p13_shrink_icl:     eval de: 433s
+[ 3840s] p16_skm:     eval de: 432s
+[ 3900s] p13_shrink_icl:     eval de: 433s
+[ 3900s] p16_skm:     eval de: 432s
+[ 3960s] p13_shrink_icl:     eval de: 433s
+[ 3960s] p16_skm:     eval de: 432s
+[ 4020s] p13_shrink_icl:     eval de: 433s
+[ 4020s] p16_skm:     eval de: 432s
+[ 4080s] p13_shrink_icl:     eval de: 433s
+[ 4080s] p16_skm:   group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+[ 4140s] p13_shrink_icl:   group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+[ 4140s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4200s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4200s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4260s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4260s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4320s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4320s] p16_skm:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4380s] p13_shrink_icl:   step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+[ 4380s] p16_skm:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4440s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4440s] p16_skm:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4500s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4500s] p16_skm:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4560s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4560s] p16_skm:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4620s] p13_shrink_icl:   step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+[ 4620s] p16_skm:   step  100  alpha 0.712  kl 0.0059  hid 0.0030  (440s)
+[ 4680s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0055  hid 0.0028  (442s)
+[ 4680s] p16_skm:   step  100  alpha 0.712  kl 0.0059  hid 0.0030  (440s)
+[ 4740s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0055  hid 0.0028  (442s)
+[ 4740s] p16_skm:   step  100  alpha 0.712  kl 0.0059  hid 0.0030  (440s)
+[ 4800s] p13_shrink_icl:   step  100  alpha 0.712  kl 0.0055  hid 0.0028  (442s)
+[ 4800s] p16_skm:   step  150  alpha 0.438  kl 0.0165  hid 0.0107  (657s)
+[ 4860s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0170  hid 0.0104  (664s)
+[ 4860s] p16_skm:   step  150  alpha 0.438  kl 0.0165  hid 0.0107  (657s)
+[ 4920s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0170  hid 0.0104  (664s)
+[ 4920s] p16_skm:   step  150  alpha 0.438  kl 0.0165  hid 0.0107  (657s)
+[ 4980s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0170  hid 0.0104  (664s)
+[ 4980s] p16_skm:   step  150  alpha 0.438  kl 0.0165  hid 0.0107  (657s)
+[ 5040s] p13_shrink_icl:   step  150  alpha 0.438  kl 0.0170  hid 0.0104  (664s)
+[ 5040s] p16_skm:   step  200  alpha 0.184  kl 0.0550  hid 0.0234  (875s)
+[ 5100s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0551  hid 0.0233  (887s)
+[ 5100s] p16_skm:   step  200  alpha 0.184  kl 0.0550  hid 0.0234  (875s)
+[ 5160s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0551  hid 0.0233  (887s)
+[ 5160s] p16_skm:   step  200  alpha 0.184  kl 0.0550  hid 0.0234  (875s)
+[ 5220s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0551  hid 0.0233  (887s)
+[ 5220s] p16_skm:   step  200  alpha 0.184  kl 0.0550  hid 0.0234  (875s)
+[ 5280s] p13_shrink_icl:   step  200  alpha 0.184  kl 0.0551  hid 0.0233  (887s)
+[ 5280s] p16_skm:   step  250  alpha 0.026  kl 0.0906  hid 0.0325  (1093s)
+[ 5340s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0902  hid 0.0328  (1110s)
+[ 5340s] p16_skm:   step  250  alpha 0.026  kl 0.0906  hid 0.0325  (1093s)
+[ 5400s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0902  hid 0.0328  (1110s)
+[ 5400s] p16_skm:   step  250  alpha 0.026  kl 0.0906  hid 0.0325  (1093s)
+[ 5460s] p13_shrink_icl:   step  250  alpha 0.026  kl 0.0902  hid 0.0328  (1110s)
+[ 5460s] p16_skm:   step  300  alpha 0.000  kl 0.0750  hid 0.0787  (1296s)
+[ 5520s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1318s)
+[ 5520s] p16_skm:   step  300  alpha 0.000  kl 0.0750  hid 0.0787  (1296s)
+[ 5580s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1318s)
+[ 5580s] p16_skm:   step  300  alpha 0.000  kl 0.0750  hid 0.0787  (1296s)
+[ 5640s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1318s)
+[ 5640s] p16_skm:   step  350  alpha 0.000  kl 0.0672  hid 0.0749  (1482s)
+[ 5700s] p13_shrink_icl:   step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1318s)
+[ 5700s] p16_skm:   step  350  alpha 0.000  kl 0.0672  hid 0.0749  (1482s)
+[ 5760s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0666  hid 0.0746  (1507s)
+[ 5760s] p16_skm:   step  350  alpha 0.000  kl 0.0672  hid 0.0749  (1482s)
+[ 5820s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0666  hid 0.0746  (1507s)
+[ 5820s] p16_skm:   group 10-11: held-out error, trained union at alpha=0 21.9% = extracted layer 21.9%
+[ 5880s] p13_shrink_icl:   step  350  alpha 0.000  kl 0.0666  hid 0.0746  (1507s)
+[ 5880s] p16_skm:   merged model: 24 layers (original 28); 533,137,440 params
+[ 5940s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 5940s] p16_skm:   merged model: 24 layers (original 28); 533,137,440 params
+[ 6000s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 6000s] p16_skm:   merged model: 24 layers (original 28); 533,137,440 params
+[ 6060s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 6060s] p16_skm:   merged model: 24 layers (original 28); 533,137,440 params
+[ 6120s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 6120s] p16_skm:   merged model: 24 layers (original 28); 533,137,440 params
+[ 6180s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 6180s] p16_skm:     eval en: 332s
+[ 6240s] p13_shrink_icl:   merged model: 24 layers (original 28); 533,137,408 params
+[ 6240s] p16_skm:     eval en: 332s
+[ 6300s] p13_shrink_icl:     eval en: 332s
+[ 6300s] p16_skm:     eval en: 332s
+[ 6360s] p13_shrink_icl:     eval en: 332s
+[ 6360s] p16_skm:     eval en: 332s
+[ 6420s] p13_shrink_icl:     eval en: 332s
+[ 6420s] p16_skm:     eval en: 332s
+[ 6480s] p13_shrink_icl:     eval en: 332s
+[ 6480s] p16_skm:     eval en: 332s
+[ 6540s] p13_shrink_icl:     eval en: 332s
+[ 6540s] p16_skm:     eval en: 332s
+[ 6600s] p13_shrink_icl:     eval en: 332s
+[ 6600s] p16_skm:     eval hi: 398s
+[ 6660s] p13_shrink_icl:     eval en: 332s
+[ 6660s] p16_skm:     eval hi: 398s
+[ 6720s] p13_shrink_icl:     eval hi: 400s
+[ 6720s] p16_skm:     eval hi: 398s
+[ 6780s] p13_shrink_icl:     eval hi: 400s
+[ 6780s] p16_skm:     eval hi: 398s
+[ 6840s] p13_shrink_icl:     eval hi: 400s
+[ 6840s] p16_skm:     eval hi: 398s
+[ 6900s] p13_shrink_icl:     eval hi: 400s
+[ 6900s] p16_skm:     eval hi: 398s
+[ 6960s] p13_shrink_icl:     eval hi: 400s
+[ 6960s] p16_skm:     eval hi: 398s
+[ 7020s] p13_shrink_icl:     eval hi: 400s
+[ 7020s] p16_skm:     eval fr: 420s
+[ 7080s] p13_shrink_icl:     eval hi: 400s
+[ 7080s] p16_skm:     eval fr: 420s
+[ 7140s] p13_shrink_icl:     eval fr: 421s
+[ 7140s] p16_skm:     eval fr: 420s
+[ 7200s] p13_shrink_icl:     eval fr: 421s
+[ 7200s] p16_skm:     eval fr: 420s
+[ 7260s] p13_shrink_icl:     eval fr: 421s
+[ 7260s] p16_skm:     eval fr: 420s
+[ 7320s] p13_shrink_icl:     eval fr: 421s
+[ 7320s] p16_skm:     eval fr: 420s
+[ 7380s] p13_shrink_icl:     eval fr: 421s
+[ 7380s] p16_skm:     eval fr: 420s
+[ 7440s] p13_shrink_icl:     eval fr: 421s
+[ 7440s] p16_skm:     eval es: 401s
+[ 7500s] p13_shrink_icl:     eval es: 400s
+[ 7500s] p16_skm:     eval es: 401s
+[ 7560s] p13_shrink_icl:     eval es: 400s
+[ 7560s] p16_skm:     eval es: 401s
+[ 7620s] p13_shrink_icl:     eval es: 400s
+[ 7620s] p16_skm:     eval es: 401s
+[ 7680s] p13_shrink_icl:     eval es: 400s
+[ 7680s] p16_skm:     eval es: 401s
+[ 7740s] p13_shrink_icl:     eval es: 400s
+[ 7740s] p16_skm:     eval es: 401s
+[ 7800s] p13_shrink_icl:     eval es: 400s
+[ 7800s] p16_skm:     eval es: 401s
+[ 7860s] p13_shrink_icl:     eval es: 400s
+[ 7860s] p16_skm:     eval de: 413s
+[ 7920s] p13_shrink_icl:     eval de: 415s
+[ 7920s] p16_skm:     eval de: 413s
+[ 7980s] p13_shrink_icl:     eval de: 415s
+[ 7980s] p16_skm:     eval de: 413s
+[ 8040s] p13_shrink_icl:     eval de: 415s
+[ 8040s] p16_skm:     eval de: 413s
+[ 8100s] p13_shrink_icl:     eval de: 415s
+[ 8100s] p16_skm:     eval de: 413s
+[ 8160s] p13_shrink_icl:     eval de: 415s
+[ 8160s] p16_skm:     eval zh: 349s
+[ 8220s] p13_shrink_icl:     eval de: 415s
+
+============================== p16_skm (exit 0) ==============================
+shared data: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/p16_skm/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<05:32,  1.07s/it]
+Loading weights:  67%|██████▋   | 208/310 [00:01<00:00, 243.57it/s]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 252.31it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0001  hid 0.0002  (194s)
+  step  100  alpha 0.712  kl 0.0014  hid 0.0021  (386s)
+  step  150  alpha 0.438  kl 0.0057  hid 0.0072  (578s)
+  step  200  alpha 0.184  kl 0.0219  hid 0.0179  (771s)
+  step  250  alpha 0.026  kl 0.0375  hid 0.0297  (963s)
+  step  300  alpha 0.000  kl 0.0326  hid 0.0455  (1149s)
+  step  350  alpha 0.000  kl 0.0281  hid 0.0441  (1328s)
+  step  399  alpha 0.000  kl 0.0276  hid 0.0400  (1503s)
+    learned key smearing s per kept KV group: L12g2 0.01, L12g3 0.01, L12g5 0.01, L13g2 0.03, L13g3 0.11, L13g4 0.02, L13g5 0.02, L13g6 0.01
+    learned key smearing s per kept KV group: L14g2 0.01, L14g4 0.01, L14g6 0.02, L15g1 0.04, L15g2 0.01, L15g4 0.02, L15g6 0.01, L15g7 0.01
+  group 12-13: held-out error, trained union at alpha=0 17.4% = extracted layer 17.4%
+  group 14-15: held-out error, trained union at alpha=0 22.3% = extracted layer 22.3%
+  merged model: 26 layers (original 28); 564,593,680 params
+    eval en: 341s
+    eval hi: 427s
+    eval fr: 440s
+    eval es: 417s
+    eval de: 432s
+    eval zh: 374s
+skm_shrink_icl k=2 [12-13; 14-15]: eval 2438s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  group 16-17: input cosine 0.932; kept L16: 2 KV groups + 1353 neurons, L17: 6 KV groups + 1719 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+  step  100  alpha 0.712  kl 0.0059  hid 0.0030  (440s)
+  step  150  alpha 0.438  kl 0.0165  hid 0.0107  (657s)
+  step  200  alpha 0.184  kl 0.0550  hid 0.0234  (875s)
+  step  250  alpha 0.026  kl 0.0906  hid 0.0325  (1093s)
+  step  300  alpha 0.000  kl 0.0750  hid 0.0787  (1296s)
+  step  350  alpha 0.000  kl 0.0672  hid 0.0749  (1482s)
+  step  399  alpha 0.000  kl 0.0554  hid 0.0670  (1663s)
+    learned key smearing s per kept KV group: L10g0 0.03, L10g1 0.01, L10g3 0.02, L10g5 0.01, L11g1 0.05, L11g2 0.02, L11g4 0.08, L11g7 0.03
+    learned key smearing s per kept KV group: L12g2 0.01, L12g3 0.02, L12g5 0.01, L13g2 0.02, L13g3 0.10, L13g4 0.03, L13g5 0.02, L13g6 0.01
+    learned key smearing s per kept KV group: L14g2 0.01, L14g4 0.01, L14g6 0.01, L15g1 0.03, L15g2 0.01, L15g4 0.01, L15g6 0.01, L15g7 0.02
+    learned key smearing s per kept KV group: L16g0 0.01, L16g6 0.01, L17g1 0.01, L17g2 0.02, L17g3 0.01, L17g4 0.02, L17g6 0.03, L17g7 0.03
+  group 10-11: held-out error, trained union at alpha=0 21.9% = extracted layer 21.9%
+  group 12-13: held-out error, trained union at alpha=0 25.3% = extracted layer 25.3%
+  group 14-15: held-out error, trained union at alpha=0 28.2% = extracted layer 28.2%
+  group 16-17: held-out error, trained union at alpha=0 29.1% = extracted layer 29.1%
+  merged model: 24 layers (original 28); 533,137,440 params
+    eval en: 332s
+    eval hi: 398s
+    eval fr: 420s
+    eval es: 401s
+    eval de: 413s
+    eval zh: 349s
+skm_shrink_icl k=4 [10-11; 12-13; 14-15; 16-17]: eval 2318s
+This algorithm vs the references:
+           method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0        original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1            drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  skm_shrink_icl        2                12-13; 14-15          5.3         6.3           9.1          3.7            6.0   28.7     31.4   7.4      28.2  44.5     28.0    0.1286          18.6   1560.8
+3  skm_shrink_icl        4  10-11; 12-13; 14-15; 16-17         10.6        16.5          23.8         10.1           16.5   24.9     29.0   1.6      24.3  39.1     23.8    0.2356          21.3   1780.8
+4            drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+Every algorithm whose results are in /kaggle/working/p16_skm/layer_merging
+           method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0        original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1            drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  skm_shrink_icl        2                12-13; 14-15          5.3         6.3           9.1          3.7            6.0   28.7     31.4   7.4      28.2  44.5     28.0    0.1286          18.6   1560.8
+3  skm_shrink_icl        4  10-11; 12-13; 14-15; 16-17         10.6        16.5          23.8         10.1           16.5   24.9     29.0   1.6      24.3  39.1     23.8    0.2356          21.3   1780.8
+4            drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+
+
+============================== p13_shrink_icl (exit 0) ==============================
+shared data: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/p13_shrink_icl/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<05:48,  1.13s/it]
+Loading weights:  97%|█████████▋| 300/310 [00:01<00:00, 335.77it/s]
+Loading weights: 100%|██████████| 310/310 [00:01<00:00, 250.20it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0001  hid 0.0002  (198s)
+  step  100  alpha 0.712  kl 0.0014  hid 0.0021  (393s)
+  step  150  alpha 0.438  kl 0.0058  hid 0.0073  (588s)
+  step  200  alpha 0.184  kl 0.0215  hid 0.0182  (783s)
+  step  250  alpha 0.026  kl 0.0372  hid 0.0287  (978s)
+  step  300  alpha 0.000  kl 0.0328  hid 0.0454  (1167s)
+  step  350  alpha 0.000  kl 0.0281  hid 0.0440  (1348s)
+  step  399  alpha 0.000  kl 0.0280  hid 0.0401  (1525s)
+  group 12-13: held-out error, trained union at alpha=0 17.4% = extracted layer 17.4%
+  group 14-15: held-out error, trained union at alpha=0 22.3% = extracted layer 22.3%
+  merged model: 26 layers (original 28); 564,593,664 params
+    eval en: 343s
+    eval hi: 430s
+    eval fr: 450s
+    eval es: 417s
+    eval de: 433s
+    eval zh: 377s
+prism_shrink_icl_energy0.7 k=2 [12-13; 14-15]: eval 2456s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  group 16-17: input cosine 0.932; kept L16: 2 KV groups + 1353 neurons, L17: 6 KV groups + 1719 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0004  hid 0.0002  (222s)
+  step  100  alpha 0.712  kl 0.0055  hid 0.0028  (442s)
+  step  150  alpha 0.438  kl 0.0170  hid 0.0104  (664s)
+  step  200  alpha 0.184  kl 0.0551  hid 0.0233  (887s)
+  step  250  alpha 0.026  kl 0.0902  hid 0.0328  (1110s)
+  step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1318s)
+  step  350  alpha 0.000  kl 0.0666  hid 0.0746  (1507s)
+  step  399  alpha 0.000  kl 0.0569  hid 0.0667  (1692s)
+  group 10-11: held-out error, trained union at alpha=0 21.9% = extracted layer 21.9%
+  group 12-13: held-out error, trained union at alpha=0 25.3% = extracted layer 25.3%
+  group 14-15: held-out error, trained union at alpha=0 28.2% = extracted layer 28.2%
+  group 16-17: held-out error, trained union at alpha=0 29.0% = extracted layer 29.0%
+  merged model: 24 layers (original 28); 533,137,408 params
+    eval en: 332s
+    eval hi: 400s
+    eval fr: 421s
+    eval es: 400s
+    eval de: 415s
+    eval zh: 351s
+prism_shrink_icl_energy0.7 k=4 [10-11; 12-13; 14-15; 16-17]: eval 2325s
+This algorithm vs the references:
+                       method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0                    original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1                        drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  prism_shrink_icl_energy0.7        2                12-13; 14-15          5.3         6.2           9.1          3.7            5.8   29.0     31.9   7.0      29.2  44.2     28.3    0.1306          18.3   1586.2
+3  prism_shrink_icl_energy0.7        4  10-11; 12-13; 14-15; 16-17         10.6        16.5          23.9         10.1           16.3   25.4     29.0   1.4      23.8  38.0     23.5    0.2123          20.9   1817.3
+4                        drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+Every algorithm whose results are in /kaggle/working/p13_shrink_icl/layer_merging (run the other notebooks with the same data_dir):
+                       method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0                    original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1                        drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+2  prism_shrink_icl_energy0.7        2                12-13; 14-15          5.3         6.2           9.1          3.7            5.8   29.0     31.9   7.0      29.2  44.2     28.3    0.1306          18.3   1586.2
+3  prism_shrink_icl_energy0.7        4  10-11; 12-13; 14-15; 16-17         10.6        16.5          23.9         10.1           16.3   25.4     29.0   1.4      23.8  38.0     23.5    0.2123          20.9   1817.3
+4                        drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+
+/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+[NbConvertApp] Writing 165884 bytes to __notebook__.ipynb
+[NbConvertApp] Converting notebook __notebook__.ipynb to html
+[NbConvertApp] Writing 548798 bytes to __results__.html

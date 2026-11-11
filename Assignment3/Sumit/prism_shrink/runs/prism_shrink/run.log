@@ -1,0 +1,127 @@
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+device: cuda
+Downloading data (first run only, ~5-15 min). Tip: add HF_TOKEN as a Colab/Kaggle secret to avoid rate limits.
+  en: mmmlu 100, mgsm 40, belebele 100, xnli 100 (18s)
+  hi: mmmlu 100, include 100, belebele 100, xnli 100 (23s)
+  fr: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (14s)
+  es: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (13s)
+  de: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (14s)
+HTTP Error 503 thrown while requesting GET https://huggingface.co/datasets/google/wiki40b/resolve/06bfe584d8193cf58f79c6354ecc2a2b94a7deea/zh-cn/test-00000-of-00001.parquet
+
+HTTP Error 503 thrown while requesting GET https://huggingface.co/datasets/google/wiki40b/resolve/06bfe584d8193cf58f79c6354ecc2a2b94a7deea/zh-cn/test-00000-of-00001.parquet
+Retrying in 1s [Retry 1/5].
+
+Retrying in 1s [Retry 1/5].
+  zh: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (18s)
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+    eval en: 85s
+    eval hi: 223s
+    eval fr: 116s
+    eval es: 111s
+    eval de: 118s
+    eval zh: 97s
+original k=0 [—]: eval 750s
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+    eval en: 82s
+    eval hi: 208s
+    eval fr: 109s
+    eval es: 101s
+    eval de: 111s
+    eval zh: 84s
+drop k=2 [12-13; 14-15]: eval 696s
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+  step   50  alpha 0.920  kl 0.0002  hid 0.0002  (49s)
+  step  100  alpha 0.712  kl 0.0029  hid 0.0021  (97s)
+  step  150  alpha 0.438  kl 0.0173  hid 0.0092  (146s)
+  step  200  alpha 0.184  kl 0.0379  hid 0.0222  (194s)
+  step  250  alpha 0.026  kl 0.0482  hid 0.0301  (242s)
+  step  300  alpha 0.000  kl 0.0425  hid 0.0429  (289s)
+  step  350  alpha 0.000  kl 0.0308  hid 0.0415  (335s)
+  step  399  alpha 0.000  kl 0.0383  hid 0.0414  (379s)
+  group 12-13: held-out error, trained union at alpha=0 17.7% = extracted layer 17.7%
+  group 14-15: held-out error, trained union at alpha=0 22.6% = extracted layer 22.6%
+  merged model: 26 layers (original 28); 564,593,664 params
+    eval en: 81s
+    eval hi: 208s
+    eval fr: 109s
+    eval es: 101s
+    eval de: 103s
+    eval zh: 84s
+prism_shrink_energy0.7 k=2 [12-13; 14-15]: eval 687s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+    eval en: 77s
+    eval hi: 193s
+    eval fr: 102s
+    eval es: 98s
+    eval de: 103s
+    eval zh: 85s
+drop k=4 [10-11; 12-13; 14-15; 16-17]: eval 658s
+  group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  group 16-17: input cosine 0.932; kept L16: 2 KV groups + 1353 neurons, L17: 6 KV groups + 1719 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (1s)
+  step   50  alpha 0.920  kl 0.0007  hid 0.0002  (57s)
+  step  100  alpha 0.712  kl 0.0084  hid 0.0033  (112s)
+  step  150  alpha 0.438  kl 0.0493  hid 0.0139  (168s)
+  step  200  alpha 0.184  kl 0.0894  hid 0.0302  (223s)
+  step  250  alpha 0.026  kl 0.1131  hid 0.0368  (278s)
+  step  300  alpha 0.000  kl 0.1119  hid 0.0776  (330s)
+  step  350  alpha 0.000  kl 0.1122  hid 0.0735  (378s)
+  step  399  alpha 0.000  kl 0.0950  hid 0.0726  (424s)
+  group 10-11: held-out error, trained union at alpha=0 22.6% = extracted layer 22.6%
+  group 12-13: held-out error, trained union at alpha=0 26.2% = extracted layer 26.2%
+  group 14-15: held-out error, trained union at alpha=0 29.1% = extracted layer 29.1%
+  group 16-17: held-out error, trained union at alpha=0 29.8% = extracted layer 29.8%
+  merged model: 24 layers (original 28); 533,137,408 params
+    eval en: 78s
+    eval hi: 193s
+    eval fr: 97s
+    eval es: 98s
+    eval de: 105s
+    eval zh: 83s
+prism_shrink_energy0.7 k=4 [10-11; 12-13; 14-15; 16-17]: eval 653s
+This algorithm vs the references:
+Every algorithm whose results are in /kaggle/working/layer_merging (run the other notebooks with the same data_dir):
+/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+[NbConvertApp] Writing 2512258 bytes to __notebook__.ipynb
+[NbConvertApp] Converting notebook __notebook__.ipynb to html
+[NbConvertApp] Writing 2512289 bytes to __results__.html

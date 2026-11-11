@@ -1,0 +1,49 @@
+shared data: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_a/layer_merging/data_Qwen3-1.7B-Base_ca0be118.pt
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_a/layer_merging/results_reference_Qwen3-1.7B-Base.json
+shared reference rows: /kaggle/input/notebooks/sumitjhaa/layer-merging-pp-reference-17b/reference_17b_b/layer_merging/results_reference_Qwen3-1.7B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/aam_17b/layer_merging/data_Qwen3-1.7B-Base_ca0be118.pt
+
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/310 [00:01<08:56,  1.74s/it]
+Loading weights:  58%|█████▊    | 179/310 [00:01<00:01, 129.03it/s]
+Loading weights:  78%|███████▊  | 241/310 [00:02<00:00, 133.36it/s]
+Loading weights:  91%|█████████ | 282/310 [00:02<00:00, 130.66it/s]
+Loading weights: 100%|██████████| 310/310 [00:02<00:00, 108.69it/s]
+mixed precision torch.float16 (ppl fp32 15.840 vs half 15.840)
+Qwen3-1.7B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 23-24 ===
+  group 10-11: keep L10 (held-out error alone: L10 36.6%, L11 37.0%)
+  group 12-13: keep L12 (held-out error alone: L12 26.7%, L13 27.0%)
+  group 14-15: keep L15 (held-out error alone: L14 33.7%, L15 29.1%)
+  group 23-24: keep L24 (held-out error alone: L23 37.1%, L24 33.6%)
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (2s)
+  step   50  alpha 0.920  kl 0.0288  hid 0.0023  (82s)
+  step  100  alpha 0.712  kl 0.0367  hid 0.0135  (162s)
+  step  150  alpha 0.438  kl 0.0769  hid 0.0509  (243s)
+  step  200  alpha 0.184  kl 0.1709  hid 0.0972  (324s)
+  step  250  alpha 0.026  kl 0.1885  hid 0.1050  (406s)
+  step  300  alpha 0.000  kl 0.1790  hid 0.1397  (483s)
+  step  350  alpha 0.000  kl 0.1686  hid 0.1360  (557s)
+  step  399  alpha 0.000  kl 0.2186  hid 0.1359  (630s)
+    eval en: 307s
+    eval hi: 532s
+    eval fr: 405s
+    eval es: 392s
+    eval de: 401s
+    eval zh: 339s
+aam_anneal0.7 k=4 [10-11; 12-13; 14-15; 23-24]: eval 2381s
+This algorithm vs the references:
+          method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0       original        0                           —          0.0         0.0           0.0          0.0            0.0   50.9     54.6  58.8      76.5  53.5     58.9    0.1061          21.2      0.0
+1  aam_anneal0.7        4  10-11; 12-13; 14-15; 23-24         11.7        29.4          33.3         26.4           31.9   39.7     35.6   9.0      38.8  47.6     34.1    0.4504          23.7    674.7
+2           drop        4  10-11; 12-13; 14-15; 23-24         11.7        70.5          78.2         75.6           94.1   22.2     29.8   1.8      26.1  40.6     24.1    2.8314          23.2      0.0
+Every algorithm whose results are in /kaggle/working/aam_17b/layer_merging
+          method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0       original        0                           —          0.0         0.0           0.0          0.0            0.0   50.9     54.6  58.8      76.5  53.5     58.9    0.1061          21.2      0.0
+1  aam_anneal0.7        4  10-11; 12-13; 14-15; 23-24         11.7        29.4          33.3         26.4           31.9   39.7     35.6   9.0      38.8  47.6     34.1    0.4504          23.7    674.7
+2           drop        4  10-11; 12-13; 14-15; 23-24         11.7        70.5          78.2         75.6           94.1   22.2     29.8   1.8      26.1  40.6     24.1    2.8314          23.2      0.0

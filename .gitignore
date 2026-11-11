@@ -1,11 +1,22 @@
-# macOS
-.DS_Store
+# macOS (any folder depth)
+**/.DS_Store
+.DS_Store?
 .AppleDouble
 .LSOverride
 ._*
+Icon[
+]
+__MACOSX/
 .Spotlight-V100
 .Trashes
 .fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+.apdisk
 
 # Python
 __pycache__/
@@ -46,3 +57,8 @@ htmlcov/
 # IDEs
 .vscode/
 .idea/
+# Kaggle run working files (Assignment3/Sumit/tools)
+Assignment3/Sumit/tools/generated/
+Assignment3/Sumit/tools/runs_raw/
+Assignment3/Sumit/tools/queue_state.json
+Assignment3/Sumit/tools/queue*.log

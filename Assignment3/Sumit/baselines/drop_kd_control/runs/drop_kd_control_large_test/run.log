@@ -1,0 +1,60 @@
+shared data: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+shared reference rows: /kaggle/input/notebooks/sumitzha/layer-merging-p20a-data-refs/layer_merging/results_reference_Qwen3-0.6B-Base.json
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+using cached data /kaggle/working/p19_dropkd_icl/layer_merging/data_Qwen3-0.6B-Base_36299c08.pt
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<04:39,  1.11it/s]Loading weights:  83%|████████▎ | 256/310 [00:01<00:00, 343.80it/s]Loading weights: 100%|██████████| 310/310 [00:01<00:00, 267.42it/s]
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (3s)
+  step   50  alpha 0.920  kl 0.0032  hid 0.0005  (168s)
+  step  100  alpha 0.712  kl 0.0048  hid 0.0058  (338s)
+  step  150  alpha 0.438  kl 0.0140  hid 0.0137  (509s)
+  step  200  alpha 0.184  kl 0.0450  hid 0.0163  (679s)
+  step  250  alpha 0.026  kl 0.0567  hid 0.0138  (849s)
+  step  300  alpha 0.000  kl 0.0477  hid 0.0860  (1015s)
+  step  350  alpha 0.000  kl 0.0378  hid 0.0711  (1177s)
+  step  399  alpha 0.000  kl 0.0355  hid 0.0639  (1335s)
+    eval en: 352s
+    eval hi: 408s
+    eval fr: 442s
+    eval es: 414s
+    eval de: 432s
+    eval zh: 362s
+dropkd_icl k=2 [12-13; 14-15]: eval 2416s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (3s)
+  step   50  alpha 0.920  kl 0.0067  hid 0.0007  (175s)
+  step  100  alpha 0.712  kl 0.0140  hid 0.0085  (349s)
+  step  150  alpha 0.438  kl 0.0302  hid 0.0238  (527s)
+  step  200  alpha 0.184  kl 0.0964  hid 0.0312  (704s)
+  step  250  alpha 0.026  kl 0.1489  hid 0.0265  (882s)
+  step  300  alpha 0.000  kl 0.1066  hid 0.1542  (1052s)
+  step  350  alpha 0.000  kl 0.0852  hid 0.1304  (1212s)
+  step  399  alpha 0.000  kl 0.0835  hid 0.1191  (1370s)
+    eval en: 326s
+    eval hi: 379s
+    eval fr: 406s
+    eval es: 351s
+    eval de: 377s
+    eval zh: 335s
+dropkd_icl k=4 [10-11; 12-13; 14-15; 16-17]: eval 2180s
+This algorithm vs the references:
+       method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0    original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1  dropkd_icl        2                12-13; 14-15          5.3         7.9          11.5          5.1            7.1   30.1     32.7  10.5      28.3  44.8     29.3    0.1719          19.3   1337.1
+2        drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+3  dropkd_icl        4  10-11; 12-13; 14-15; 16-17         10.6        24.5          43.3         14.1           20.5   26.1     27.9   2.1      19.7  41.9     23.5    0.3720          21.0   1371.9
+4        drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0
+Every algorithm whose results are in /kaggle/working/p19_dropkd_icl/layer_merging
+       method  removed                        plan  param red %  mc4 ppl +%  mc4 worst +%  wiki ppl +%  wiki worst +%  mmmlu  include  mgsm  belebele  xnli  avg acc  copy nll  decode tok/s  build s
+0    original        0                           —          0.0         0.0           0.0          0.0            0.0   47.9     43.6  41.2      63.1  48.9     48.9    0.1247          18.1      0.0
+1  dropkd_icl        2                12-13; 14-15          5.3         7.9          11.5          5.1            7.1   30.1     32.7  10.5      28.3  44.8     29.3    0.1719          19.3   1337.1
+2        drop        2                12-13; 14-15          5.3        14.2          19.3         14.1           20.3   30.8     33.5   5.9      30.7  42.7     28.7    0.3195          19.4      0.0
+3  dropkd_icl        4  10-11; 12-13; 14-15; 16-17         10.6        24.5          43.3         14.1           20.5   26.1     27.9   2.1      19.7  41.9     23.5    0.3720          21.0   1371.9
+4        drop        4  10-11; 12-13; 14-15; 16-17         10.6        84.7         101.1         88.9          156.3   26.0     28.3   2.2      19.8  36.6     22.6    2.2204          21.2      0.0

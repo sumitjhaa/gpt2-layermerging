@@ -1,0 +1,121 @@
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+
+/usr/local/lib/python3.13/dist-packages/pandas/core/arrays/masked.py:63: UserWarning: Pandas requires version '1.5.0' or newer of 'bottleneck' (version '1.4.2' currently installed).
+  from pandas.core import (
+device: cuda
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Downloading data (first run only, ~5-15 min). Tip: add HF_TOKEN as a Colab/Kaggle secret to avoid rate limits.
+  en: mmmlu 100, mgsm 40, belebele 100, xnli 100 (21s)
+  hi: mmmlu 100, include 100, belebele 100, xnli 100 (32s)
+  fr: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (22s)
+  es: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (18s)
+  de: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (18s)
+  zh: mmmlu 100, include 100, mgsm 40, belebele 100, xnli 100 (17s)
+mixed precision torch.float16 (ppl fp32 24.582 vs half 24.579)
+Qwen3-0.6B-Base: 28 layers, 24480 calibration tokens (1530 held out)
+    eval en: 85s
+    eval hi: 203s
+    eval fr: 112s
+    eval es: 107s
+    eval de: 114s
+    eval zh: 94s
+original k=0 [—]: eval 715s
+
+=== 2 layers removed: groups 12-13; 14-15 ===
+    eval en: 81s
+    eval hi: 189s
+    eval fr: 106s
+    eval es: 98s
+    eval de: 107s
+    eval zh: 81s
+drop k=2 [12-13; 14-15]: eval 662s
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0001  hid 0.0002  (180s)
+  step  100  alpha 0.712  kl 0.0014  hid 0.0021  (358s)
+  step  150  alpha 0.438  kl 0.0058  hid 0.0073  (535s)
+  step  200  alpha 0.184  kl 0.0215  hid 0.0182  (712s)
+  step  250  alpha 0.026  kl 0.0372  hid 0.0287  (889s)
+  step  300  alpha 0.000  kl 0.0328  hid 0.0454  (1061s)
+  step  350  alpha 0.000  kl 0.0281  hid 0.0440  (1226s)
+  step  399  alpha 0.000  kl 0.0280  hid 0.0401  (1388s)
+  group 12-13: held-out error, trained union at alpha=0 17.4% = extracted layer 17.4%
+  group 14-15: held-out error, trained union at alpha=0 22.3% = extracted layer 22.3%
+  merged model: 26 layers (original 28); 564,593,664 params
+    eval en: 78s
+    eval hi: 189s
+    eval fr: 106s
+    eval es: 93s
+    eval de: 102s
+    eval zh: 86s
+prism_shrink_icl_energy0.7 k=2 [12-13; 14-15]: eval 655s
+
+=== 4 layers removed: groups 10-11; 12-13; 14-15; 16-17 ===
+    eval en: 75s
+    eval hi: 175s
+    eval fr: 99s
+    eval es: 94s
+    eval de: 100s
+    eval zh: 83s
+drop k=4 [10-11; 12-13; 14-15; 16-17]: eval 627s
+  group 10-11: input cosine 0.934; kept L10: 4 KV groups + 1490 neurons, L11: 4 KV groups + 1582 neurons
+  group 12-13: input cosine 0.970; kept L12: 3 KV groups + 1507 neurons, L13: 5 KV groups + 1565 neurons
+  group 14-15: input cosine 0.963; kept L14: 3 KV groups + 1266 neurons, L15: 5 KV groups + 1806 neurons
+  group 16-17: input cosine 0.932; kept L16: 2 KV groups + 1353 neurons, L17: 6 KV groups + 1719 neurons
+  step    0  alpha 1.000  kl 0.0000  hid 0.0000  (4s)
+  step   50  alpha 0.920  kl 0.0004  hid 0.0002  (204s)
+  step  100  alpha 0.712  kl 0.0055  hid 0.0028  (405s)
+  step  150  alpha 0.438  kl 0.0170  hid 0.0104  (606s)
+  step  200  alpha 0.184  kl 0.0551  hid 0.0233  (807s)
+  step  250  alpha 0.026  kl 0.0902  hid 0.0328  (1008s)
+  step  300  alpha 0.000  kl 0.0735  hid 0.0789  (1196s)
+  step  350  alpha 0.000  kl 0.0666  hid 0.0746  (1368s)
+  step  399  alpha 0.000  kl 0.0569  hid 0.0667  (1537s)
+  group 10-11: held-out error, trained union at alpha=0 21.9% = extracted layer 21.9%
+  group 12-13: held-out error, trained union at alpha=0 25.3% = extracted layer 25.3%
+  group 14-15: held-out error, trained union at alpha=0 28.2% = extracted layer 28.2%
+  group 16-17: held-out error, trained union at alpha=0 29.0% = extracted layer 29.0%
+  merged model: 24 layers (original 28); 533,137,408 params
+    eval en: 76s
+    eval hi: 176s
+    eval fr: 99s
+    eval es: 84s
+    eval de: 97s
+    eval zh: 79s
+prism_shrink_icl_energy0.7 k=4 [10-11; 12-13; 14-15; 16-17]: eval 611s
+This algorithm vs the references:
+Every algorithm whose results are in /kaggle/working/layer_merging (run the other notebooks with the same data_dir):
+/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+[NbConvertApp] Writing 2518350 bytes to __notebook__.ipynb
+[NbConvertApp] Converting notebook __notebook__.ipynb to html
+[NbConvertApp] Writing 2544214 bytes to __results__.html
