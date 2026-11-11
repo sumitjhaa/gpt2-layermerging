@@ -1,0 +1,38 @@
+% Decoder-only transformer (top) and one layer with its residual stream (bottom). Full text width.
+\begin{tikzpicture}[font=\footnotesize, >=Latex, x=0.96cm]
+\tikzset{box/.style={draw=inkc, rounded corners=2pt, minimum height=7mm, inner sep=3pt, align=center, fill=white},
+         arr/.style={->, draw=inkc, line width=0.5pt}, sum/.style={circle, draw=inkc, inner sep=0.6pt, fill=white}}
+\node[box, fill=gray!12] (t) at (0.75,0) {tokens\\$x_1,\dots,x_T$};
+\node[box] (e) at (2.75,0) {embedding\\$x_t \mapsto h_0$};
+\node[box, fill=cblue!14] (L1) at (4.55,0) {layer 1};
+\node[box, fill=cblue!14] (L2) at (5.9,0) {layer 2};
+\node (d1) at (6.95,0) {$\cdots$};
+\node[box, fill=corange!18] (Li) at (8.0,0) {layer $i$};
+\node (d2) at (9.05,0) {$\cdots$};
+\node[box, fill=cblue!14] (L28) at (10.2,0) {layer 28};
+\node[box] (head) at (12.15,0) {RMSNorm\\+ LM head};
+\node[box, fill=gray!12] (p) at (14.6,0) {$p(x_{T+1} \mid x_{\le T})$\\next-token probs};
+\foreach \a/\b in {t/e, e/L1, L1/L2, L2/d1, d1/Li, Li/d2, d2/L28, L28/head, head/p} \draw[arr] (\a) -- (\b);
+% zoom into layer i
+\draw[dashed, draw=mutedc] (0.1,-0.75) rectangle (15.85,-3.45);
+\draw[dashed, draw=mutedc] (Li.south west) -- (0.1,-0.75);
+\draw[dashed, draw=mutedc] (Li.south east) -- (15.85,-0.75);
+\node[sum] (s1) at (7.4,-2.75) {$+$};
+\node[sum] (s2) at (13.1,-2.75) {$+$};
+\node (hin) at (0.75,-2.75) {$h$};
+\node (hout) at (15.1,-2.75) {$h_{\mathrm{next}}$};
+\draw[arr, line width=1pt] (hin) -- (s1);
+\draw[arr, line width=1pt] (s1) -- (s2);
+\draw[arr, line width=1pt] (s2) -- (hout);
+\node[box] (n1) at (2.85,-1.55) {RMSNorm};
+\node[box, fill=cblue!14] (att) at (5.35,-1.55) {attention\\16 query / 8 key-value heads};
+\node[box] (n2) at (9.0,-1.55) {RMSNorm};
+\node[box, fill=corange!18] (mlp) at (11.25,-1.55) {MLP (SwiGLU)\\$d \rightarrow d_{ff} \rightarrow d$};
+\draw[arr] (1.6,-2.75) |- (n1);
+\draw[arr] (n1) -- (att);
+\draw[arr] (att) -| (s1);
+\draw[arr] (7.9,-2.75) |- (n2);
+\draw[arr] (n2) -- (mlp);
+\draw[arr] (mlp) -| (s2);
+\node[text=inkc, font=\scriptsize] at (7.4,-3.2) {residual stream: every layer only \emph{adds} an update, $h_{\mathrm{next}} = h + \mathrm{Attn}(\cdot) + \mathrm{MLP}(\cdot)$};
+\end{tikzpicture}

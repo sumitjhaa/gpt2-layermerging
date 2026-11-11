@@ -1,0 +1,44 @@
+% The four ways to treat one pair of consecutive layers (A, B). Full text width.
+\begin{tikzpicture}[font=\footnotesize, >=Latex, x=0.96cm]
+\tikzset{box/.style={draw=inkc, rounded corners=2pt, minimum height=7mm, minimum width=2.6cm, inner sep=2pt, align=center, fill=white},
+         arr/.style={->, draw=inkc, line width=0.5pt}, sum/.style={circle, draw=inkc, inner sep=0.6pt, fill=white},
+         note/.style={text width=3.6cm, align=center, font=\scriptsize, text=inkc}, ttl/.style={font=\footnotesize\bfseries}}
+% (a) original
+\node[ttl] at (1.95,0.55) {(a) Original pair};
+\node (i1) at (1.95,0) {$h$};
+\node[box, fill=cblue!14] (a1) at (1.95,-0.95) {layer A};
+\node[box, fill=cblue!14] (b1) at (1.95,-2.05) {layer B};
+\node (o1) at (1.95,-3.0) {$h'$};
+\draw[arr] (i1) -- (a1); \draw[arr] (a1) -- (b1); \draw[arr] (b1) -- (o1);
+\node[note] at (1.95,-3.75) {$h' = h + A(h) + B\big(h + A(h)\big)$\\two layers in sequence};
+% (b) drop
+\node[ttl] at (5.9,0.55) {(b) Drop};
+\node (i2) at (5.9,0) {$h$};
+\node[box, fill=cblue!14] (a2) at (5.9,-0.95) {layer A};
+\node[box, draw=mutedc, text=mutedc, dashed] (b2) at (5.9,-2.05) {layer B (deleted)};
+\draw[draw=mutedc] (b2.south west) -- (b2.north east);
+\node (o2) at (5.9,-3.0) {$h'$};
+\draw[arr] (i2) -- (a2);
+\draw[arr] (a2.east) -- ++(0.25,0) |- (o2.east);
+\node[note] at (5.9,-3.75) {no training; the control adds the same distillation as the methods};
+% (c) AAM
+\node[ttl] at (9.85,0.55) {(c) AAM};
+\node (i3) at (9.85,0) {$h$};
+\node[box, fill=gray!12, dashed] (a3) at (9.85,-0.95) {A faded: $h + \alpha\,(A(h)-h)$};
+\node[box, fill=cblue!25] (b3) at (9.85,-2.05) {B kept and trained};
+\node (o3) at (9.85,-3.0) {$h'$};
+\draw[arr] (i3) -- (a3); \draw[arr] (a3) -- (b3); \draw[arr] (b3) -- (o3);
+\node[note] at (9.85,-3.75) {keep the better layer (lower held-out error); $\alpha: 1 \rightarrow 0$ while distilling; then remove A};
+% (d) PRISM-Shrink
+\node[ttl] at (13.85,0.55) {(d) PRISM-Shrink};
+\node (i4) at (13.85,0) {$h$};
+\node[box, minimum width=1.45cm, fill=corange!18] (a4) at (13.1,-1.35) {A's heads\\+ neurons};
+\node[box, minimum width=1.45cm, fill=corange!18] (b4) at (14.6,-1.35) {B's heads\\+ neurons};
+\node[sum] (s4) at (13.85,-2.35) {$+$};
+\node (o4) at (13.85,-3.0) {$h'$};
+\draw[arr] (i4) -- (a4.north); \draw[arr] (i4) -- (b4.north);
+\draw[arr] (a4.south) -- (s4); \draw[arr] (b4.south) -- (s4); \draw[arr] (s4) -- (o4);
+\draw[decorate, decoration={brace, amplitude=3pt}, draw=inkc] (12.3,-0.65) -- (15.4,-0.65)
+  node[midway, above=2pt, font=\scriptsize, text=inkc] {one wide layer: $h + A(h) + B(h)$};
+\node[note] at (13.85,-3.75) {keep 8/16 head groups and 3{,}072/6{,}144 neurons; fade the rest ($\alpha: 1 \rightarrow 0$); extract one normal layer};
+\end{tikzpicture}
